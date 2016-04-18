@@ -1,6 +1,7 @@
 /build/
 .settings/
-  
+/WebContent/
+
 # Java class files
 *.class
 
