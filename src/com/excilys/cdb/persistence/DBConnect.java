@@ -1,4 +1,4 @@
-package persistence;
+package com.excilys.cdb.persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,12 +29,7 @@ public class DBConnect {
 			System.out.println("Cannot load class !");
 			e.printStackTrace();
 		}
-		try {
-			connection = DriverManager.getConnection(BD_ADDR, USR_LOGIN, PSSWD_LOGIN);
-		} catch (SQLException e) {
-			System.out.println("Can't get connection from driver !");
-			e.printStackTrace();
-		}
+		open();
 	}
 
 	public ResultSet executeQuery(String query) {
@@ -62,7 +57,16 @@ public class DBConnect {
 		}
 		return res;
 	}
-
+	
+	public static void open() {
+		try {
+			connection = DriverManager.getConnection(BD_ADDR, USR_LOGIN, PSSWD_LOGIN);
+		} catch (SQLException e) {
+			System.out.println("Can't get connection from driver !");
+			e.printStackTrace();
+		}
+	}
+	
 	public static void close() {
 		try {
 			connection.close();
