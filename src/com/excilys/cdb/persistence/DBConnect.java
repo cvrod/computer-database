@@ -6,23 +6,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DAOConnect {
+public class DBConnect {
 	protected static final String USR_LOGIN = "admincdb";
 	protected static final String PSSWD_LOGIN = "qwerty1234";
 	protected static final String BD_ADDR = "jdbc:mysql://127.0.0.1:3306/computer-database-db";
 	protected static final String DB_DRIVER = "com.mysql.jdbc.Driver";
 
 	protected static Connection connection;
-	private static DAOConnect _instance = null;
+	private static DBConnect _instance = null;
 
-	public static DAOConnect getInstance() {
+	public static DBConnect getInstance() {
 		if (_instance == null) {
-			_instance = new DAOConnect();
+			_instance = new DBConnect();
 		}
 		return _instance;
 	}
 
-	private DAOConnect() {
+	private DBConnect() {
 		try {
 			Class.forName(DB_DRIVER);
 		} catch (ClassNotFoundException e) {

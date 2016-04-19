@@ -3,15 +3,19 @@ package com.excilys.cdb.CLI;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import com.excilys.cdb.DAO.CompanyDAO;
+import com.excilys.cdb.DAO.ComputerDAO;
+import com.excilys.cdb.DAO.GenericDAO;
 import com.excilys.cdb.exception.UnknowTypeException;
-import com.excilys.cdb.service.RequestHandler;
 
 public class CLI {
 
 	public static final int MAX_CHOICE = 9;
 	static Scanner sc = null;
 	static int choice = -1;
-	static RequestHandler queries = null;
+	static GenericDAO queries = null;
+	static ComputerDAO computerDAO = null;
+	static CompanyDAO companyDAO = null;
 
 	public static void showMenu() {
 		System.out.println("\n *****Main Menu*****");
@@ -66,18 +70,18 @@ public class CLI {
 			switch (choice) {
 			case 1: // List all Computer
 				System.out.println("\n--> Computer List : \n");
-				resultStr = queries.listAll(RequestHandler.COMPUTER_TABLE);
+				resultStr = queries.listAll(GenericDAO.COMPUTER_TABLE);
 				System.out.println(resultStr);
 				break;
 			case 2: // List all Companies
 				System.out.println("\n--> Companies List : \n");
-				resultStr = queries.listAll(RequestHandler.COMPANY_TABLE);
+				resultStr = queries.listAll(GenericDAO.COMPANY_TABLE);
 				System.out.println(resultStr);
 				break;
 			case 3: //Getting computer detail
 				System.out.println("\n--> Getting computer detail :");
 				int id = getValidId();
-				resultStr = queries.getComputerDetail(id);
+				resultStr = computerDAO.getComputerDetail(id);
 				System.out.println(resultStr);
 				break;
 			default:
@@ -89,7 +93,10 @@ public class CLI {
 	}
 
 	public static void main(String[] args) {
-		queries = new RequestHandler();
+		queries = new GenericDAO();
+		computerDAO = new ComputerDAO();
+		companyDAO = new CompanyDAO();
+		
 		boolean isFinished = false;
 		while (!isFinished) {
 
