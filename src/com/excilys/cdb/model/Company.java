@@ -6,6 +6,11 @@ public class Company implements Comparable<Company>{
 	
 	public Company() { };
 	
+	/**
+	 * Company constructor
+	 * @param id company id
+	 * @param name company name
+	 */
 	public Company(long id, String name) {
 		this.name = name;
 		this.id = id;
