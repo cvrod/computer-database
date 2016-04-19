@@ -6,36 +6,34 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DBConnect {
+public class DAOConnect {
 	protected static final String USR_LOGIN = "admincdb";
 	protected static final String PSSWD_LOGIN = "qwerty1234";
 	protected static final String BD_ADDR = "jdbc:mysql://127.0.0.1:3306/computer-database-db";
 	protected static final String DB_DRIVER = "com.mysql.jdbc.Driver";
 
 	protected static Connection connection;
-	private static DBConnect _instance = null;
+	private static DAOConnect _instance = null;
 
-	public static DBConnect getInstance() {
+	public static DAOConnect getInstance() {
 		if (_instance == null) {
-			_instance = new DBConnect();
+			_instance = new DAOConnect();
 		}
 		return _instance;
 	}
 
-	private DBConnect() {
+	private DAOConnect() {
 		try {
 			Class.forName(DB_DRIVER);
 		} catch (ClassNotFoundException e) {
 			System.out.println("Cannot load class !");
 			e.printStackTrace();
 		}
-		open();
 	}
 
 	public ResultSet executeQuery(String query) {
 		ResultSet res = null;
 		Statement statement = null;
-
 		try {
 			statement = connection.createStatement();
 			res = statement.executeQuery(query);
@@ -48,7 +46,6 @@ public class DBConnect {
 	public int executeUpdate(String query) {
 		int res = 0;
 		Statement statement = null;
-
 		try {
 			statement = connection.createStatement();
 			res = statement.executeUpdate(query);
@@ -57,8 +54,8 @@ public class DBConnect {
 		}
 		return res;
 	}
-	
-	public static void open() {
+
+	public void openConnection() {
 		try {
 			connection = DriverManager.getConnection(BD_ADDR, USR_LOGIN, PSSWD_LOGIN);
 		} catch (SQLException e) {
@@ -66,8 +63,8 @@ public class DBConnect {
 			e.printStackTrace();
 		}
 	}
-	
-	public static void close() {
+
+	public void closeConnection() {
 		try {
 			connection.close();
 		} catch (SQLException e) {
