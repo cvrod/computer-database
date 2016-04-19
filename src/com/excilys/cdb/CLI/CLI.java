@@ -24,6 +24,7 @@ public class CLI {
 		System.out.println("1/ List All Computer");
 		System.out.println("2/ List All Companies");
 		System.out.println("3/ Get Computer Detail");
+		System.out.println("4/ Delete Computer");
 		System.out.println("9/ Quit");
 	}
 
@@ -98,6 +99,12 @@ public class CLI {
 				System.out.println("\n--> Getting computer detail :");
 				int id = getValidId();
 				resultStr = computerDAO.getComputerDetail(id);
+				System.out.println(resultStr);
+				break;
+			case 4:
+				System.out.println("\n--> Delete Computer : ");
+				id = getValidId();
+				resultStr = computerDAO.deleteComputer(id);
 				System.out.println(resultStr);
 				break;
 			default:

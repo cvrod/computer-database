@@ -15,9 +15,29 @@ public class ComputerDAO extends GenericDAO {
 		connection = DBConnect.getInstance();
 		companyDAO = new CompanyDAO();
 	}
+	
+	public StringBuffer deleteComputer(int id){
+		String req = "DELETE FROM computer WHERE id = " + id + ";";
+		StringBuffer str = new StringBuffer();
+		
+		int res = -1;
+		connection.openConnection();
+		res = connection.executeUpdate(req);
+		connection.closeConnection();
+		if(res == 1){
+			return str.append("Delete Success !");
+		}
+		else if(res == 0){
+			str.append(id);
+			str.append(" doesn't match any computer");
+			return str;
+		}
+		else{
+			return str.append("Unexpected result...");
+		}
+	}
 
 	public StringBuffer getComputerDetail(int id) {
-		System.out.println("id : " + id);
 
 		String req = "SELECT * FROM computer WHERE id = " + id + ";";
 		connection.openConnection();
