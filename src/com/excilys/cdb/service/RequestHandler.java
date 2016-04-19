@@ -50,23 +50,64 @@ public class RequestHandler {
 		System.out.println("id : " + id);
 
 		String req = "SELECT * FROM computer WHERE id = " + id + ";";
-		
 		connection.openConnection();
 		setRes = connection.executeQuery(req);
 		
 		res = new StringBuffer();
+		boolean isEmpty = true;
 		
 		try {
 			while (setRes.next()) {
+				isEmpty = false;
 				res.append("ID : ");
 				res.append(setRes.getInt("id"));
+				res.append(", name : ");
+				res.append(setRes.getString("name"));
+				String tmp = setRes.getString("introduced");
+				if(!(tmp == null)){
+					res.append(", introduced : ");
+					res.append(tmp);
+				}
+				tmp = setRes.getString("discontinued");
+				if(!(tmp == null)){
+					res.append(", discontinued : ");
+					res.append(tmp);
+				}
+				int tmpId = setRes.getInt("company_id");
+				if(tmpId != 0){
+					res.append(", company : ");
+					res.append(getCompanyNameFromId(tmpId));
+				}
 			}
 			connection.closeConnection();
-			return res;
+			if(isEmpty){
+				res.append("Computer ");
+				res.append(id);
+				res.append(" doesn't exist !");
+			}
 		} catch (SQLException e) {
 
 		}
-
-		return null;
+		return res;
+	}
+	
+	public String getCompanyNameFromId(int id){
+		String req = "SELECT name FROM company WHERE id=" + id;
+		
+		connection.openConnection();
+		setRes = connection.executeQuery(req);
+		
+		String resStr = null;
+		
+		try {
+			while (setRes.next()) {
+				resStr = setRes.getString("name");
+			}
+			connection.closeConnection();
+			return resStr;
+		} catch (SQLException e) {
+			System.out.println("Cannot find name in table company");
+		}
+		return resStr;
 	}
 }
