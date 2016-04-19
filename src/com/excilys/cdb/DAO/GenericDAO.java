@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import com.excilys.cdb.exception.UnknowTypeException;
 import com.excilys.cdb.persistence.DBConnect;
 
-public class GenericDAO {
+public abstract class GenericDAO {
 	protected DBConnect connection = null;
 	public static final String COMPUTER_TABLE = "computer";
 	public static final String COMPANY_TABLE = "company";
@@ -16,7 +16,7 @@ public class GenericDAO {
 	public GenericDAO() {
 		connection = DBConnect.getInstance();
 	}
-	
+
 	public StringBuffer listAll(String type) throws UnknowTypeException {
 		if (type.equals(COMPUTER_TABLE) || type.equals(COMPANY_TABLE)) {
 

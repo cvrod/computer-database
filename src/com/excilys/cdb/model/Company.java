@@ -1,21 +1,25 @@
 package com.excilys.cdb.model;
 
-public class Company implements Comparable<Company>{
+public class Company implements Comparable<Company> {
 	protected String name = null;
 	protected long id = -1;
-	
-	public Company() { };
-	
+
+	public Company() {
+	};
+
 	/**
 	 * Company constructor
-	 * @param id company id
-	 * @param name company name
+	 * 
+	 * @param id
+	 *            company id
+	 * @param name
+	 *            company name
 	 */
 	public Company(long id, String name) {
 		this.name = name;
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -36,7 +40,7 @@ public class Company implements Comparable<Company>{
 	public int compareTo(Company o) {
 		return this.name.compareTo(o.getName());
 	}
-	
+
 	public boolean equals(Company o) {
 		if (this == o) {
 			return true;
@@ -60,10 +64,9 @@ public class Company implements Comparable<Company>{
 
 		return true;
 	}
-	
-	public String toString(){
+
+	public String toString() {
 		return this.name;
 	}
-	
-	
+
 }

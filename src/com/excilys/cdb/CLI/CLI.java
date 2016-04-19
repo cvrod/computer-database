@@ -13,10 +13,12 @@ public class CLI {
 	public static final int MAX_CHOICE = 9;
 	static Scanner sc = null;
 	static int choice = -1;
-	static GenericDAO genericDAO = null;
 	static ComputerDAO computerDAO = null;
 	static CompanyDAO companyDAO = null;
 
+	/**
+	 * Printing Menu
+	 */
 	public static void showMenu() {
 		System.out.println("\n *****Main Menu*****");
 		System.out.println("1/ List All Computer");
@@ -24,7 +26,12 @@ public class CLI {
 		System.out.println("3/ Get Computer Detail");
 		System.out.println("9/ Quit");
 	}
-	
+
+	/**
+	 * getting user choice from System.in
+	 * 
+	 * @return a valid choice
+	 */
 	public static int getChoice() {
 		boolean isValid = false;
 		int answer = -1;
@@ -45,6 +52,11 @@ public class CLI {
 		return answer;
 	}
 
+	/**
+	 * getting a valid id from System.in
+	 * 
+	 * @return a valid id (int)
+	 */
 	public static int getValidId() {
 		boolean isValid = false;
 		int answer = -1;
@@ -64,21 +76,25 @@ public class CLI {
 		return answer;
 	}
 
+	/**
+	 * 
+	 * @param choice
+	 */
 	public static void makeRequest(int choice) {
 		StringBuffer resultStr = null;
 		try {
 			switch (choice) {
 			case 1: // List all Computer
 				System.out.println("\n--> Computer List : \n");
-				resultStr = genericDAO.listAll(GenericDAO.COMPUTER_TABLE);
+				resultStr = computerDAO.listAll(GenericDAO.COMPUTER_TABLE);
 				System.out.println(resultStr);
 				break;
 			case 2: // List all Companies
 				System.out.println("\n--> Companies List : \n");
-				resultStr = genericDAO.listAll(GenericDAO.COMPANY_TABLE);
+				resultStr = companyDAO.listAll(GenericDAO.COMPANY_TABLE);
 				System.out.println(resultStr);
 				break;
-			case 3: //Getting computer detail
+			case 3: // Getting computer detail
 				System.out.println("\n--> Getting computer detail :");
 				int id = getValidId();
 				resultStr = computerDAO.getComputerDetail(id);
@@ -93,10 +109,10 @@ public class CLI {
 	}
 
 	public static void main(String[] args) {
-		genericDAO = new GenericDAO();
+
 		computerDAO = new ComputerDAO();
 		companyDAO = new CompanyDAO();
-		
+
 		boolean isFinished = false;
 		while (!isFinished) {
 

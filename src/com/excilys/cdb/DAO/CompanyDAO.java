@@ -4,20 +4,20 @@ import java.sql.SQLException;
 
 import com.excilys.cdb.persistence.DBConnect;
 
-public class CompanyDAO extends GenericDAO{
+public class CompanyDAO extends GenericDAO {
 
-	public CompanyDAO(){
+	public CompanyDAO() {
 		connection = DBConnect.getInstance();
 	}
-	
-	public String find(int id){
+
+	public String getCompanyNameById(int id) {
 		String req = "SELECT name FROM company WHERE id=" + id;
-		
+
 		connection.openConnection();
 		setRes = connection.executeQuery(req);
-		
+
 		String resStr = null;
-		
+
 		try {
 			while (setRes.next()) {
 				resStr = setRes.getString("name");

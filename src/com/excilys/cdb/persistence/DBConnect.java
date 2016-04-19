@@ -15,6 +15,10 @@ public class DBConnect {
 	protected static Connection connection;
 	private static DBConnect _instance = null;
 
+	/**
+	 * get instance of DBConnect
+	 * @return DBConnect instance
+	 */
 	public static DBConnect getInstance() {
 		if (_instance == null) {
 			_instance = new DBConnect();
@@ -22,6 +26,9 @@ public class DBConnect {
 		return _instance;
 	}
 
+	/**
+	 * BDConnect constructor
+	 */
 	private DBConnect() {
 		try {
 			Class.forName(DB_DRIVER);
@@ -31,6 +38,11 @@ public class DBConnect {
 		}
 	}
 
+	/**
+	 * Execute a query on Database
+	 * @param query query str
+	 * @return ResultSet from DB
+	 */
 	public ResultSet executeQuery(String query) {
 		ResultSet res = null;
 		Statement statement = null;
@@ -43,6 +55,11 @@ public class DBConnect {
 		return res;
 	}
 
+	/**
+	 * Execute an update on Database
+	 * @param query query str
+	 * @return
+	 */
 	public int executeUpdate(String query) {
 		int res = 0;
 		Statement statement = null;
@@ -55,6 +72,9 @@ public class DBConnect {
 		return res;
 	}
 
+	/**
+	 * open database connection
+	 */
 	public void openConnection() {
 		try {
 			connection = DriverManager.getConnection(BD_ADDR, USR_LOGIN, PSSWD_LOGIN);
@@ -64,6 +84,9 @@ public class DBConnect {
 		}
 	}
 
+	/**
+	 * close database connection
+	 */
 	public void closeConnection() {
 		try {
 			connection.close();
@@ -73,6 +96,9 @@ public class DBConnect {
 		}
 	}
 
+	/**
+	 * finalize : call database connection if connection is still open
+	 */
 	protected void finalize() {
 		try {
 			if (!connection.isClosed()) {
