@@ -16,7 +16,7 @@ public class GenericDAO {
 	public GenericDAO() {
 		connection = DBConnect.getInstance();
 	}
-
+	
 	public StringBuffer listAll(String type) throws UnknowTypeException {
 		if (type.equals(COMPUTER_TABLE) || type.equals(COMPANY_TABLE)) {
 

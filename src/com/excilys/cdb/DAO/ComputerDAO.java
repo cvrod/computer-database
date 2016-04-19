@@ -33,17 +33,17 @@ public class ComputerDAO extends GenericDAO{
 				String tmp = setRes.getString("introduced");
 				if(!(tmp == null)){
 					res.append(", introduced : ");
-					res.append(tmp);
+					res.append(tmp.split(" ")[0]);
 				}
 				tmp = setRes.getString("discontinued");
 				if(!(tmp == null)){
 					res.append(", discontinued : ");
-					res.append(tmp);
+					res.append(tmp.split(" ")[0]);
 				}
 				int tmpId = setRes.getInt("company_id");
 				if(tmpId != 0){
 					res.append(", company : ");
-					res.append(companyDAO.getCompanyNameFromId(tmpId));
+					res.append(companyDAO.find(tmpId));
 				}
 			}
 			connection.closeConnection();

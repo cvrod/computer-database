@@ -13,7 +13,7 @@ public class CLI {
 	public static final int MAX_CHOICE = 9;
 	static Scanner sc = null;
 	static int choice = -1;
-	static GenericDAO queries = null;
+	static GenericDAO genericDAO = null;
 	static ComputerDAO computerDAO = null;
 	static CompanyDAO companyDAO = null;
 
@@ -24,7 +24,7 @@ public class CLI {
 		System.out.println("3/ Get Computer Detail");
 		System.out.println("9/ Quit");
 	}
-
+	
 	public static int getChoice() {
 		boolean isValid = false;
 		int answer = -1;
@@ -70,12 +70,12 @@ public class CLI {
 			switch (choice) {
 			case 1: // List all Computer
 				System.out.println("\n--> Computer List : \n");
-				resultStr = queries.listAll(GenericDAO.COMPUTER_TABLE);
+				resultStr = genericDAO.listAll(GenericDAO.COMPUTER_TABLE);
 				System.out.println(resultStr);
 				break;
 			case 2: // List all Companies
 				System.out.println("\n--> Companies List : \n");
-				resultStr = queries.listAll(GenericDAO.COMPANY_TABLE);
+				resultStr = genericDAO.listAll(GenericDAO.COMPANY_TABLE);
 				System.out.println(resultStr);
 				break;
 			case 3: //Getting computer detail
@@ -93,7 +93,7 @@ public class CLI {
 	}
 
 	public static void main(String[] args) {
-		queries = new GenericDAO();
+		genericDAO = new GenericDAO();
 		computerDAO = new ComputerDAO();
 		companyDAO = new CompanyDAO();
 		

@@ -10,7 +10,7 @@ public class CompanyDAO extends GenericDAO{
 		connection = DBConnect.getInstance();
 	}
 	
-	public String getCompanyNameFromId(int id){
+	public String find(int id){
 		String req = "SELECT name FROM company WHERE id=" + id;
 		
 		connection.openConnection();
