@@ -16,9 +16,13 @@ public class Computer implements Comparable<Computer> {
 	 * Contructor without ID
 	 * 
 	 * @param name
+	 *            computer name
 	 * @param introduction
+	 *            introduction date (if exist)
 	 * @param discontinued
+	 *            discontinued date (if exist)
 	 * @param comp
+	 *            company name (if exist)
 	 */
 	public Computer(String name, String introduction, String discontinued, Company comp) {
 		this.setName(name);
@@ -41,6 +45,40 @@ public class Computer implements Comparable<Computer> {
 		} else {
 			this.setCompany(null);
 		}
+	}
+
+	/**
+	 * Contructor with an ID
+	 * 
+	 * @param id
+	 *            computer id
+	 * @param name
+	 *            computer name
+	 * @param introduced
+	 *            introduce date
+	 * @param discontinued
+	 *            discontinued date
+	 * @param comp
+	 *            company
+	 */
+	public Computer(long id, String name, String introduced, String discontinued, Company comp) {
+		this.id = id;
+		this.name = name;
+
+		if (introduced == null)
+			this.introduced = null;
+		else {
+			introduced = introduced.split(" ")[0];
+			this.introduced = LocalDate.parse(introduced);
+		}
+
+		if (discontinued == null)
+			this.discontinued = null;
+		else {
+			discontinued = discontinued.split(" ")[0];
+			this.discontinued = LocalDate.parse(discontinued);
+		}
+		this.company = comp;
 	}
 
 	protected Company getCompany() {
@@ -95,6 +133,19 @@ public class Computer implements Comparable<Computer> {
 			return -1;
 		}
 		return 0;
+	}
 
+	public String toString() {
+		StringBuffer s = new StringBuffer(name);
+		if (introduced != null)
+			s.append(", introduced in ");
+		s.append(this.introduced);
+		if (discontinued != null)
+			s.append(", discontinued in ");
+		s.append(this.discontinued);
+		if (company != null)
+			s.append(", provided by ");
+		s.append(this.company);
+		return s.toString();
 	}
 }
