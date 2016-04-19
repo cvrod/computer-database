@@ -1,5 +1,8 @@
 package com.excilys.cdb.model;
 
+/**
+ * Object company, contain a row from company table
+ */
 public class Company implements Comparable<Company> {
 	protected String name = null;
 	protected long id = -1;

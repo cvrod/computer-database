@@ -4,6 +4,10 @@ import java.sql.SQLException;
 
 import com.excilys.cdb.persistence.DBConnect;
 
+/**
+ * CompanyDAO : handle company request
+ *
+ */
 public class CompanyDAO extends GenericDAO {
 
 	public CompanyDAO() {

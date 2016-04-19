@@ -115,7 +115,6 @@ public class CLI {
 
 		boolean isFinished = false;
 		while (!isFinished) {
-
 			showMenu();
 			choice = getChoice();
 			System.out.println("Choice : " + choice);
@@ -126,7 +125,6 @@ public class CLI {
 			} else {
 				makeRequest(choice);
 			}
-
 		}
 	}
 }

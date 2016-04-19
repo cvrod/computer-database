@@ -6,6 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Database connection class
+ * Handle Query and update
+ */
 public class DBConnect {
 	protected static final String USR_LOGIN = "admincdb";
 	protected static final String PSSWD_LOGIN = "qwerty1234";

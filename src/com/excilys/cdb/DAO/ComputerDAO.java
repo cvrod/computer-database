@@ -4,6 +4,9 @@ import java.sql.SQLException;
 
 import com.excilys.cdb.persistence.DBConnect;
 
+/**
+ * Computer DAO, handle computer request
+ */
 public class ComputerDAO extends GenericDAO {
 
 	CompanyDAO companyDAO = null;

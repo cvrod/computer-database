@@ -2,6 +2,10 @@ package com.excilys.cdb.model;
 
 import java.time.LocalDate;
 
+/**
+ * Computer object
+ * Contain a row from computer table
+ */
 public class Computer implements Comparable<Computer> {
 	private long id = 0;
 	private String name = null;
