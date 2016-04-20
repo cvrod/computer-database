@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Database connection class
  * Handle Query and update
@@ -15,6 +18,7 @@ public class DBConnect {
 	protected static final String PSSWD_LOGIN = "qwerty1234";
 	protected static final String BD_ADDR = "jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
 	protected static final String DB_DRIVER = "com.mysql.jdbc.Driver";
+	final static Logger logger = LoggerFactory.getLogger(DBConnect.class);
 
 	protected static Connection connection;
 	private static DBConnect _instance = null;
@@ -37,6 +41,7 @@ public class DBConnect {
 		try {
 			Class.forName(DB_DRIVER);
 		} catch (ClassNotFoundException e) {
+			logger.warn("Cannot load class !");
 			System.out.println("Cannot load class !");
 			e.printStackTrace();
 		}
@@ -52,6 +57,7 @@ public class DBConnect {
 		Statement statement = null;
 		try {
 			statement = connection.createStatement();
+			logger.info("Executing Query : " + query);
 			res = statement.executeQuery(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -69,6 +75,7 @@ public class DBConnect {
 		Statement statement = null;
 		try {
 			statement = connection.createStatement();
+			logger.info("Executing Update : " + query);
 			res = statement.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();

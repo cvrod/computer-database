@@ -2,6 +2,9 @@ package com.excilys.cdb.model;
 
 import java.time.LocalDate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Computer object
  * Contain a row from computer table
@@ -12,6 +15,7 @@ public class Computer implements Comparable<Computer> {
 	private LocalDate introduced = null;
 	private LocalDate discontinued = null;
 	private Company company = null;
+	final static Logger logger = LoggerFactory.getLogger(Computer.class);
 
 	public Computer() {
 	};
@@ -29,8 +33,9 @@ public class Computer implements Comparable<Computer> {
 	 *            company name (if exist)
 	 */
 	public Computer(String name, String introduction, String discontinued, Company comp) {
+		logger.info("creating new Computer");
+		
 		this.setName(name);
-
 		if (introduction != null) {
 			introduction = introduction.split(" ")[0];
 			this.setIntroduced(LocalDate.parse(introduction));
@@ -66,6 +71,8 @@ public class Computer implements Comparable<Computer> {
 	 *            company
 	 */
 	public Computer(Long id, String name, String introduced, String discontinued, Company comp) {
+		logger.info("creating new Computer");
+		
 		this.id = id;
 		this.name = name;
 

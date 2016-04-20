@@ -2,6 +2,9 @@ package com.excilys.cdb.DAO;
 
 import java.sql.ResultSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.exception.UnknowTypeException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.persistence.DBConnect;
@@ -16,6 +19,7 @@ public abstract class GenericDAO {
 	CompanyMapper companyMapper = null;
 	public ResultSet setRes = null;
 	StringBuffer res;
+	final static Logger logger = LoggerFactory.getLogger(GenericDAO.class);
 
 	public GenericDAO() {
 		connection = DBConnect.getInstance();
@@ -30,6 +34,7 @@ public abstract class GenericDAO {
 	 * @throws UnknowTypeException
 	 */
 	public ResultSet listAll(String type) throws UnknowTypeException {
+		logger.info("listAll "+type);
 		if (type.equals(COMPUTER_TABLE) || type.equals(COMPANY_TABLE)) {
 
 			String req = "SELECT * FROM " + type + ";";

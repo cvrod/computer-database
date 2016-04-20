@@ -1,11 +1,15 @@
 package com.excilys.cdb.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Object company, contain a row from company table
  */
 public class Company implements Comparable<Company> {
 	protected String name = null;
 	protected Long id = null;
+	final static Logger logger = LoggerFactory.getLogger(Company.class);
 
 	public Company() {
 	};
@@ -19,6 +23,7 @@ public class Company implements Comparable<Company> {
 	 *            company name
 	 */
 	public Company(Long id, String name) {
+		logger.info("creating new Company");
 		this.name = name;
 		this.id = id;
 	}

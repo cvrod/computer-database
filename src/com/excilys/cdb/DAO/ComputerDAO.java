@@ -2,6 +2,9 @@ package com.excilys.cdb.DAO;
 
 import java.sql.ResultSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.model.Computer;
 
 /**
@@ -13,6 +16,7 @@ public class ComputerDAO extends GenericDAO {
 
 	CompanyDAO companyDAO = null;
 	public static final String NULL_TIMESTAMP = "0000-00-00";
+	final static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 
 	public ComputerDAO() {
 		companyDAO = new CompanyDAO();
@@ -26,6 +30,7 @@ public class ComputerDAO extends GenericDAO {
 	 * @return int : number of row affected (0 or 1)
 	 */
 	public int deleteComputer(int id) {
+		logger.debug("delete Computer");
 		String req = "DELETE FROM computer WHERE id = " + id + ";";
 		int res = -1;
 		connection.openConnection();
@@ -42,6 +47,7 @@ public class ComputerDAO extends GenericDAO {
 	 * @return 0 if Insert fail, 1 if everything is fine
 	 */
 	public int addingComputer(Computer c) {
+		logger.debug("adding Computer");
 		String introduced;
 		String discontinued;
 		Long companyId;
@@ -79,6 +85,7 @@ public class ComputerDAO extends GenericDAO {
 	 * @return ResultSet who contain computer detail
 	 */
 	public ResultSet getComputerDetail(int id) {
+		logger.debug("getting computer detail");
 		String req = "SELECT * FROM computer WHERE id = " + id + ";";
 		connection.openConnection();
 		setRes = connection.executeQuery(req);
