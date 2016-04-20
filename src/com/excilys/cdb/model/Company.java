@@ -5,7 +5,7 @@ package com.excilys.cdb.model;
  */
 public class Company implements Comparable<Company> {
 	protected String name = null;
-	protected long id = -1;
+	protected Long id = null;
 
 	public Company() {
 	};
@@ -18,7 +18,7 @@ public class Company implements Comparable<Company> {
 	 * @param name
 	 *            company name
 	 */
-	public Company(long id, String name) {
+	public Company(Long id, String name) {
 		this.name = name;
 		this.id = id;
 	}
@@ -27,7 +27,7 @@ public class Company implements Comparable<Company> {
 		return name;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -35,7 +35,7 @@ public class Company implements Comparable<Company> {
 		this.name = name;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

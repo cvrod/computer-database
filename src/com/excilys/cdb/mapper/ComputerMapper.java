@@ -46,14 +46,14 @@ public class ComputerMapper implements Mapper<Computer> {
 		ArrayList<Computer> res = new ArrayList<>();
 		ArrayList<Company> companyList = new ArrayList<>();
 		Company c = null;
-		int id;
+		Long id;
 		String name;
 		String introduced;
 		String discontinued;
 		int companyId;
 		try {
 			while (setRes.next()) {
-				id = setRes.getInt("id");
+				id = setRes.getLong("id");
 				name = setRes.getString("name");
 				introduced = setRes.getString("introduced");
 				discontinued = setRes.getString("discontinued");

@@ -7,7 +7,7 @@ import java.time.LocalDate;
  * Contain a row from computer table
  */
 public class Computer implements Comparable<Computer> {
-	private long id = 0;
+	private Long id = null;
 	private String name = null;
 	private LocalDate introduced = null;
 	private LocalDate discontinued = null;
@@ -65,7 +65,7 @@ public class Computer implements Comparable<Computer> {
 	 * @param comp
 	 *            company
 	 */
-	public Computer(long id, String name, String introduced, String discontinued, Company comp) {
+	public Computer(Long id, String name, String introduced, String discontinued, Company comp) {
 		this.id = id;
 		this.name = name;
 
@@ -82,10 +82,10 @@ public class Computer implements Comparable<Computer> {
 			discontinued = discontinued.split(" ")[0];
 			this.discontinued = LocalDate.parse(discontinued);
 		}
-		this.company = comp;
+		this.setCompany(comp);
 	}
 
-	protected Company getCompany() {
+	public Company getCompany() {
 		return company;
 	}
 
@@ -117,7 +117,7 @@ public class Computer implements Comparable<Computer> {
 		this.name = name;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -144,9 +144,9 @@ public class Computer implements Comparable<Computer> {
 			s.append(", discontinued in ");
 			s.append(this.discontinued);
 		}
-		if (company != null){
+		if (getCompany() != null){
 			s.append(", provided by ");
-			s.append(this.company.getName());
+			s.append(this.getCompany().getName());
 		}
 		return s.toString();
 	}

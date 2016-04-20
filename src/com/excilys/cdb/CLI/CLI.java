@@ -1,6 +1,8 @@
 package com.excilys.cdb.CLI;
 
 import java.sql.ResultSet;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -38,6 +40,7 @@ public class CLI {
 		System.out.println("2/ List All Companies");
 		System.out.println("3/ Get Computer Detail");
 		System.out.println("4/ Delete Computer");
+		System.out.println("5/ Create Computer");
 		System.out.println("9/ Quit");
 	}
 
@@ -100,6 +103,7 @@ public class CLI {
 		ResultSet rs = null;
 		ArrayList<Company> companyList = null;
 		ArrayList<Computer> computerList = null;
+		Computer tmpComputer = null;
 		try {
 			switch (choice) {
 			case 1: // List all Computer
@@ -128,15 +132,92 @@ public class CLI {
 				if (updateRes == 1) {
 					System.out.println("Delete Sucess !");
 				} else {
-					System.out.println("Error occur during Delete !");
+					System.out.println("Error occur during delete !");
 				}
 				break;
+			case 5: //Create a computer
+				tmpComputer = getComputerFromCLI();
+				int res = computerDAO.addingComputer(tmpComputer);
+				if(res == 1){
+					System.out.println("Insertion Success !");
+				} else {
+					System.out.println("Error occur during insertion !");
+				}
 			default:
 				break;
 			}
 		} catch (UnknowTypeException e) {
 			System.out.println("Table inconnue !");
 		}
+	}
+
+	/**
+	 * Getting a Computer Object from CLI
+	 * @return A Valid Computer Object ready to go in the database
+	 */
+	private static Computer getComputerFromCLI() {
+		Computer res = null;
+		boolean isValid = false;
+		String name = null;
+		
+		while(!isValid){
+			System.out.println("Computer Name ?");
+			sc = new Scanner(System.in);
+			name = sc.nextLine();
+			name = name.trim();
+			if(!name.equals("")){
+				isValid = true;
+			}
+		}
+		System.out.println("Introduction date ?");
+		String intro = getDateFromCLI();
+		
+		try{
+			LocalDate.parse(intro);
+		}catch(DateTimeParseException e){
+			System.out.println("Invalid or null introduction date... Skipping");
+			intro = null;
+		}
+		
+		System.out.println("Discontinued date ?");
+		String discontinued = getDateFromCLI();
+		
+		try{
+			LocalDate.parse(discontinued);
+		}catch(DateTimeParseException e){
+			System.out.println("Invalid or null discontinued date... Skipping");
+			discontinued = null;
+		}
+		
+		System.out.println("Company ?");
+		int idCompany = getValidId();
+		ResultSet resCompany = companyDAO.getCompanyById(idCompany);
+		ArrayList <Company> companyList = companyMapper.map(resCompany);
+		if(companyList.size() == 0){
+			res = new Computer(name, intro, discontinued, null);
+		}
+		else{
+			Company c = companyList.get(0);
+			res = new Computer(name, intro, discontinued, c);
+		}
+		return res;
+	}
+
+	/**
+	 * return a date from command line
+	 * @return str containing a valid or invalid date, need to check date after
+	 */
+	private static String getDateFromCLI() {
+		String year, month, day;
+		
+		System.out.println("\tYear ?");
+		year = sc.nextLine();
+		System.out.println("\tMonth ?");
+		month = sc.nextLine();
+		System.out.println("\tDay ?");
+		day = sc.nextLine();
+		
+		return year+"-"+month+"-"+day;
 	}
 
 	/**
@@ -201,7 +282,7 @@ public class CLI {
 		while (!isFinished) {
 			showMenu();
 			choice = getChoice();
-			System.out.println("Choice : " + choice);
+			System.out.println("// Choice : " + choice + " //");
 
 			if (choice == 9) {
 				System.out.println("Leaving app....");

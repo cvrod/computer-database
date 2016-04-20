@@ -42,7 +42,7 @@ public class CompanyMapper implements Mapper<Company> {
 		ArrayList<Company> res = new ArrayList<>();
 		try {
 			while (setRes.next()) {
-				Company tmp = new Company(setRes.getInt(ID), setRes.getString(NAME));
+				Company tmp = new Company(setRes.getLong(ID), setRes.getString(NAME));
 				res.add(tmp);
 			}
 		} catch (SQLException e) {
