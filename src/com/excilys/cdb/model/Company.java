@@ -69,7 +69,7 @@ public class Company implements Comparable<Company> {
 	}
 
 	public String toString() {
-		return this.name;
+		return "Company ID : " + this.id + ", Name : " + this.name;
 	}
 
 }

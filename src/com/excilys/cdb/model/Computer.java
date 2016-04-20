@@ -89,35 +89,35 @@ public class Computer implements Comparable<Computer> {
 		return company;
 	}
 
-	protected void setCompany(Company company) {
+	public void setCompany(Company company) {
 		this.company = company;
 	}
 
-	protected LocalDate getDiscontinued() {
+	public LocalDate getDiscontinued() {
 		return discontinued;
 	}
 
-	protected void setDiscontinued(LocalDate discontinued) {
+	public void setDiscontinued(LocalDate discontinued) {
 		this.discontinued = discontinued;
 	}
 
-	protected LocalDate getIntroduced() {
+	public LocalDate getIntroduced() {
 		return introduced;
 	}
 
-	protected void setIntroduced(LocalDate introduced) {
+	public void setIntroduced(LocalDate introduced) {
 		this.introduced = introduced;
 	}
 
-	protected String getName() {
+	public String getName() {
 		return name;
 	}
 
-	protected void setName(String name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	protected long getId() {
+	public long getId() {
 		return id;
 	}
 
@@ -141,15 +141,18 @@ public class Computer implements Comparable<Computer> {
 
 	public String toString() {
 		StringBuffer s = new StringBuffer(name);
-		if (introduced != null)
+		if (introduced != null){
 			s.append(", introduced in ");
-		s.append(this.introduced);
-		if (discontinued != null)
+			s.append(this.introduced);
+		}
+		if (discontinued != null){
 			s.append(", discontinued in ");
-		s.append(this.discontinued);
-		if (company != null)
+			s.append(this.discontinued);
+		}
+		if (company != null){
 			s.append(", provided by ");
-		s.append(this.company);
+			s.append(this.company.getName());
+		}
 		return s.toString();
 	}
 }

@@ -13,7 +13,7 @@ import java.sql.Statement;
 public class DBConnect {
 	protected static final String USR_LOGIN = "admincdb";
 	protected static final String PSSWD_LOGIN = "qwerty1234";
-	protected static final String BD_ADDR = "jdbc:mysql://127.0.0.1:3306/computer-database-db";
+	protected static final String BD_ADDR = "jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
 	protected static final String DB_DRIVER = "com.mysql.jdbc.Driver";
 
 	protected static Connection connection;

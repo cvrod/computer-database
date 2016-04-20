@@ -1,5 +1,7 @@
 package com.excilys.cdb.CLI;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -7,6 +9,11 @@ import com.excilys.cdb.DAO.CompanyDAO;
 import com.excilys.cdb.DAO.ComputerDAO;
 import com.excilys.cdb.DAO.GenericDAO;
 import com.excilys.cdb.exception.UnknowTypeException;
+import com.excilys.cdb.mapper.CompanyMapper;
+import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.model.Company;
+import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.persistence.DBConnect;
 
 public class CLI {
 
@@ -15,6 +22,9 @@ public class CLI {
 	static int choice = -1;
 	static ComputerDAO computerDAO = null;
 	static CompanyDAO companyDAO = null;
+	static CompanyMapper companyMapper = null;
+	static ComputerMapper computerMapper = null;
+	static DBConnect connection = null;
 
 	/**
 	 * Printing Menu
@@ -82,30 +92,40 @@ public class CLI {
 	 * @param choice
 	 */
 	public static void makeRequest(int choice) {
-		StringBuffer resultStr = null;
+		int updateRes = -1;
+		ResultSet rs = null;
+		ArrayList<Company> companyList = null;
+		ArrayList<Computer> computerList = null;
 		try {
 			switch (choice) {
 			case 1: // List all Computer
 				System.out.println("\n--> Computer List : \n");
-				resultStr = computerDAO.listAll(GenericDAO.COMPUTER_TABLE);
-				System.out.println(resultStr);
+				rs = computerDAO.listAll(GenericDAO.COMPUTER_TABLE);
+				computerList = computerMapper.map(rs);
+				printComputer(computerList);
 				break;
 			case 2: // List all Companies
 				System.out.println("\n--> Companies List : \n");
-				resultStr = companyDAO.listAll(GenericDAO.COMPANY_TABLE);
-				System.out.println(resultStr);
+				rs = companyDAO.listAll(GenericDAO.COMPANY_TABLE);
+				companyList = companyMapper.map(rs);
+				printCompany(companyList);
 				break;
 			case 3: // Getting computer detail
 				System.out.println("\n--> Getting computer detail :");
 				int id = getValidId();
-				resultStr = computerDAO.getComputerDetail(id);
-				System.out.println(resultStr);
+				rs = computerDAO.getComputerDetail(id);
+				computerList = computerMapper.map(rs);
+				printComputerDetail(computerList);
 				break;
 			case 4:
 				System.out.println("\n--> Delete Computer : ");
 				id = getValidId();
-				resultStr = computerDAO.deleteComputer(id);
-				System.out.println(resultStr);
+				updateRes = computerDAO.deleteComputer(id);
+				if (updateRes == 1) {
+					System.out.println("Delete Sucess !");
+				} else {
+					System.out.println("Error occur during Delete !");
+				}
 				break;
 			default:
 				break;
@@ -115,11 +135,31 @@ public class CLI {
 		}
 	}
 
+	private static void printComputerDetail(ArrayList<Computer> computerList) {
+		for (Computer c : computerList) {
+			System.out.println(c.toString());
+		}
+	}
+
+	private static void printComputer(ArrayList<Computer> computerList) {
+		for (Computer c : computerList) {
+			System.out.println("ID : " + c.getId() + ", Name : " + c.getName());
+		}
+	}
+
+	private static void printCompany(ArrayList<Company> companyList) {
+		for (Company c : companyList) {
+			System.out.println(c.toString());
+		}
+	}
+
 	public static void main(String[] args) {
 
 		computerDAO = new ComputerDAO();
 		companyDAO = new CompanyDAO();
-
+		companyMapper = CompanyMapper.getInstance();
+		computerMapper = ComputerMapper.getInstance();
+		connection = DBConnect.getInstance();
 		boolean isFinished = false;
 		while (!isFinished) {
 			showMenu();
