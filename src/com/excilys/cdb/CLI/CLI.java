@@ -42,6 +42,7 @@ public class CLI {
 		System.out.println("3/ Get Computer Detail");
 		System.out.println("4/ Delete Computer");
 		System.out.println("5/ Create Computer");
+		System.out.println("6/ Update Computer");
 		System.out.println("9/ Quit");
 	}
 
@@ -143,6 +144,17 @@ public class CLI {
 					System.out.println("Insertion Success !");
 				} else {
 					System.out.println("Error occur during insertion !");
+				}
+			case 6: //Update a computer
+				System.out.println("\n--> Update Computer");
+				id = getValidId();
+				tmpComputer = getComputerFromCLI();
+				updateRes = computerDAO.updateComputer(id, tmpComputer);
+				if(updateRes == 1){
+					System.out.println("Update Success !");
+				}
+				else{
+					System.out.println("Problem during update !");
 				}
 			default:
 				break;

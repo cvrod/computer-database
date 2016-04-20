@@ -91,4 +91,14 @@ public class ComputerDAO extends GenericDAO {
 		setRes = connection.executeQuery(req);
 		return setRes;
 	}
+	/**
+	 * update a computer detail in base
+	 * @param id id of the computer to update
+	 * @param tmpComputer Computer object containing fresh infos
+	 * @return 0 if Update fail, 1 if success
+	 */
+	public int updateComputer(int id, Computer tmpComputer) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
