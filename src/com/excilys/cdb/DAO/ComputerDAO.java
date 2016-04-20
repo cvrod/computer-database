@@ -68,9 +68,8 @@ public class ComputerDAO extends GenericDAO {
 			companyId = c.getCompany().getId();
 		}
 
-		String req = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES ('" + c.getName() + "', '"
-				+ introduced + "', '" + discontinued + "', " + companyId + ")";
-		System.out.println(req);
+		String req = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES ('" + c.getName()
+				+ "', '" + introduced + "', '" + discontinued + "', " + companyId + ")";
 		connection.openConnection();
 		int res = connection.executeUpdate(req);
 		connection.closeConnection();
@@ -91,14 +90,44 @@ public class ComputerDAO extends GenericDAO {
 		setRes = connection.executeQuery(req);
 		return setRes;
 	}
+
 	/**
 	 * update a computer detail in base
-	 * @param id id of the computer to update
-	 * @param tmpComputer Computer object containing fresh infos
+	 * 
+	 * @param id
+	 *            id of the computer to update
+	 * @param tmpComputer
+	 *            Computer object containing fresh infos
 	 * @return 0 if Update fail, 1 if success
 	 */
-	public int updateComputer(int id, Computer tmpComputer) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int updateComputer(int id, Computer c) {
+		logger.debug("update Computer");
+		String introduced;
+		String discontinued;
+		Long companyId;
+
+		if (c.getIntroduced() == null) {
+			introduced = NULL_TIMESTAMP;
+		} else {
+			introduced = c.getIntroduced().toString();
+		}
+		if (c.getDiscontinued() == null) {
+			discontinued = NULL_TIMESTAMP;
+		} else {
+			discontinued = c.getDiscontinued().toString();
+		}
+		if (c.getCompany() == null) {
+			companyId = null;
+		} else {
+			companyId = c.getCompany().getId();
+		}
+
+		String req = "UPDATE computer SET name='" + c.getName() + "', introduced='" + introduced + "', discontinued='"
+				+ discontinued + "', company_id='" + companyId + "' WHERE id='" + id + "';";
+		System.out.println(req);
+		connection.openConnection();
+		int res = connection.executeUpdate(req);
+		connection.closeConnection();
+		return res;
 	}
 }

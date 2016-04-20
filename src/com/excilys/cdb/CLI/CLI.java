@@ -17,7 +17,6 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.DBConnect;
 
-
 /**
  * Command Line Interface implementation Take request from user
  */
@@ -137,23 +136,22 @@ public class CLI {
 					System.out.println("Error occur during delete !");
 				}
 				break;
-			case 5: //Create a computer
+			case 5: // Create a computer
 				tmpComputer = getComputerFromCLI();
 				int res = computerDAO.addingComputer(tmpComputer);
-				if(res == 1){
+				if (res == 1) {
 					System.out.println("Insertion Success !");
 				} else {
 					System.out.println("Error occur during insertion !");
 				}
-			case 6: //Update a computer
+			case 6: // Update a computer
 				System.out.println("\n--> Update Computer");
 				id = getValidId();
 				tmpComputer = getComputerFromCLI();
 				updateRes = computerDAO.updateComputer(id, tmpComputer);
-				if(updateRes == 1){
+				if (updateRes == 1) {
 					System.out.println("Update Success !");
-				}
-				else{
+				} else {
 					System.out.println("Problem during update !");
 				}
 			default:
@@ -166,50 +164,50 @@ public class CLI {
 
 	/**
 	 * Getting a Computer Object from CLI
+	 * 
 	 * @return A Valid Computer Object ready to go in the database
 	 */
 	private static Computer getComputerFromCLI() {
 		Computer res = null;
 		boolean isValid = false;
 		String name = null;
-		
-		while(!isValid){
+
+		while (!isValid) {
 			System.out.println("Computer Name ?");
 			sc = new Scanner(System.in);
 			name = sc.nextLine();
 			name = name.trim();
-			if(!name.equals("")){
+			if (!name.equals("")) {
 				isValid = true;
 			}
 		}
 		System.out.println("Introduction date ?");
 		String intro = getDateFromCLI();
-		
-		try{
+
+		try {
 			LocalDate.parse(intro);
-		}catch(DateTimeParseException e){
+		} catch (DateTimeParseException e) {
 			System.out.println("Invalid or null introduction date... Skipping");
 			intro = null;
 		}
-		
+
 		System.out.println("Discontinued date ?");
 		String discontinued = getDateFromCLI();
-		
-		try{
+
+		try {
 			LocalDate.parse(discontinued);
-		}catch(DateTimeParseException e){
+		} catch (DateTimeParseException e) {
 			System.out.println("Invalid or null discontinued date... Skipping");
 			discontinued = null;
 		}
-		
+
 		System.out.println("Company ?");
 		int idCompany = getValidId();
 		ResultSet resCompany = companyDAO.getCompanyById(idCompany);
-		ArrayList <Company> companyList = companyMapper.map(resCompany);
-		if(companyList.size() == 0){
+		ArrayList<Company> companyList = companyMapper.map(resCompany);
+		if (companyList.size() == 0) {
 			res = new Computer(name, intro, discontinued, null);
-		}
-		else{
+		} else {
 			Company c = companyList.get(0);
 			res = new Computer(name, intro, discontinued, c);
 		}
@@ -218,19 +216,20 @@ public class CLI {
 
 	/**
 	 * return a date from command line
+	 * 
 	 * @return str containing a valid or invalid date, need to check date after
 	 */
 	private static String getDateFromCLI() {
 		String year, month, day;
-		
+
 		System.out.println("\tYear ?");
 		year = sc.nextLine();
 		System.out.println("\tMonth ?");
 		month = sc.nextLine();
 		System.out.println("\tDay ?");
 		day = sc.nextLine();
-		
-		return year+"-"+month+"-"+day;
+
+		return year + "-" + month + "-" + day;
 	}
 
 	/**
