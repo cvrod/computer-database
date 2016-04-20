@@ -123,20 +123,15 @@ public class Computer implements Comparable<Computer> {
 
 	@Override
 	public int compareTo(Computer o) {
-		if (this == o) {
+		if(this.id == o.getId()){
 			return 0;
-		} else if (o == null) {
-			return -1;
-		} else if (!name.equals(o.getName())) {
-			return -1;
-		} else if (!introduced.equals(o.getIntroduced())) {
-			return -1;
-		} else if (!discontinued.equals(o.getDiscontinued())) {
-			return -1;
-		} else if (!company.equals(o.getCompany())) {
+		}
+		else if(this.id < o.getId()){
 			return -1;
 		}
-		return 0;
+		else {
+			return 1;
+		}
 	}
 
 	public String toString() {

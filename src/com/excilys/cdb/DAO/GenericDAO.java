@@ -6,6 +6,9 @@ import com.excilys.cdb.exception.UnknowTypeException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.persistence.DBConnect;
 
+/**
+ * Main DAO class
+ */
 public abstract class GenericDAO {
 	protected DBConnect connection = null;
 	public static final String COMPUTER_TABLE = "computer";
@@ -18,6 +21,14 @@ public abstract class GenericDAO {
 		connection = DBConnect.getInstance();
 	}
 
+	/**
+	 * Ask database for all Computer or Campany
+	 * 
+	 * @param type
+	 *            GenericDAO.COMPUTER_TABLE or GenericDAO.COMPANY_TABLE
+	 * @return ResultSet containing all computer or company
+	 * @throws UnknowTypeException
+	 */
 	public ResultSet listAll(String type) throws UnknowTypeException {
 		if (type.equals(COMPUTER_TABLE) || type.equals(COMPANY_TABLE)) {
 

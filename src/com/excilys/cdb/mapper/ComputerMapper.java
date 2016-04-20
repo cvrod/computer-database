@@ -9,6 +9,10 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.DBConnect;
 
+/**
+ * Computer mapper, who convert a given ResultSet to a List of Computer
+ * @see Mapper
+ */
 public class ComputerMapper implements Mapper<Computer> {
 	public static final String ID = "id";
 	public static final String NAME = "name";
@@ -30,7 +34,13 @@ public class ComputerMapper implements Mapper<Computer> {
 		companyDAO = new CompanyDAO();
 		connection = DBConnect.getInstance();
 	}
-	
+	/**
+	 * Getting an ArrayList of Computer from a ResultSet
+	 * 
+	 * @param setRes
+	 *            resultSet to convert
+	 * @return ArrayList<Company> containing all computers informations
+	 */
 	@Override
 	public ArrayList<Computer> map(ResultSet setRes) {
 		ArrayList<Computer> res = new ArrayList<>();

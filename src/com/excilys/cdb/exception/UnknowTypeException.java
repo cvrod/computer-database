@@ -1,5 +1,9 @@
 package com.excilys.cdb.exception;
 
+/**
+ * Exception throw when the wrong table is given to DAO
+ *
+ */
 public class UnknowTypeException extends Exception {
 
 	private static final long serialVersionUID = 1L;

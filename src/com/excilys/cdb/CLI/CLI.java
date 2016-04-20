@@ -15,6 +15,9 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.DBConnect;
 
+/**
+ * Command Line Interface implementation Take request from user
+ */
 public class CLI {
 
 	public static final int MAX_CHOICE = 9;
@@ -88,6 +91,7 @@ public class CLI {
 	}
 
 	/**
+	 * Call DAO functions
 	 * 
 	 * @param choice
 	 */
@@ -117,7 +121,7 @@ public class CLI {
 				computerList = computerMapper.map(rs);
 				printComputerDetail(computerList);
 				break;
-			case 4:
+			case 4: // Delete a computer (by id)
 				System.out.println("\n--> Delete Computer : ");
 				id = getValidId();
 				updateRes = computerDAO.deleteComputer(id);
@@ -135,24 +139,57 @@ public class CLI {
 		}
 	}
 
+	/**
+	 * Print computer detail from a computer list
+	 * 
+	 * @param computerList
+	 *            list to print
+	 */
 	private static void printComputerDetail(ArrayList<Computer> computerList) {
+		if (computerList.size() == 0) {
+			System.out.println("Nothing to show !");
+		}
 		for (Computer c : computerList) {
 			System.out.println(c.toString());
 		}
 	}
 
+	/**
+	 * Print computer id & name from a computer list
+	 * 
+	 * @param computerList
+	 *            list to print
+	 */
 	private static void printComputer(ArrayList<Computer> computerList) {
+		if (computerList.size() == 0) {
+			System.out.println("Nothing to show !");
+		}
 		for (Computer c : computerList) {
 			System.out.println("ID : " + c.getId() + ", Name : " + c.getName());
 		}
 	}
 
+	/**
+	 * Print company infos from a company list
+	 * 
+	 * @param companyList
+	 *            list to print
+	 */
 	private static void printCompany(ArrayList<Company> companyList) {
+		if (companyList.size() == 0) {
+			System.out.println("Nothing to show !");
+		}
 		for (Company c : companyList) {
 			System.out.println(c.toString());
 		}
 	}
 
+	/**
+	 * Initialize DAO, Mapper, Connection and lauching menu main loop
+	 * 
+	 * @param args
+	 *            command line arguments
+	 */
 	public static void main(String[] args) {
 
 		computerDAO = new ComputerDAO();
@@ -168,6 +205,7 @@ public class CLI {
 
 			if (choice == 9) {
 				System.out.println("Leaving app....");
+				sc.close();
 				isFinished = true;
 			} else {
 				makeRequest(choice);
