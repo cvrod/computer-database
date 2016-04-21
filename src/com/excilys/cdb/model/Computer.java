@@ -193,4 +193,47 @@ public class Computer {
 		}
 		return s.toString();
 	}
+	
+	/**
+	 * Builder pattern to create computer
+	 */
+	public static class Builder {
+		private Long id = null;
+		private String name = null;
+		private String introduced = null;
+		private String discontinued = null;
+		private Company company = null;
+
+
+		public Builder() {}
+
+		public Builder id(Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder name(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Builder introduced(String intro) {
+			this.introduced = intro;
+			return this;
+		}
+
+		public Builder discontinued(String discontinued) {
+			this.discontinued = discontinued;
+			return this;
+		}
+
+		public Builder company(Company company) {
+			this.company = company;
+			return this;
+		}
+
+		public Computer build() {
+			return new Computer(id, name, introduced, discontinued, company);
+		}
+	}
 }
