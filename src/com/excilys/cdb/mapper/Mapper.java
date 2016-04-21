@@ -1,12 +1,12 @@
 package com.excilys.cdb.mapper;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Mapper interface
  * @param <T>
  */
 public interface Mapper<T> {
-	public ArrayList<T> map(ResultSet rs);
+	public List<T> map(ResultSet rs);
 }

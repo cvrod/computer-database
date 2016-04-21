@@ -3,6 +3,7 @@ package com.excilys.cdb.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.DAO.CompanyDAO;
 import com.excilys.cdb.model.Company;
@@ -42,7 +43,7 @@ public class ComputerMapper implements Mapper<Computer> {
 	 * @return ArrayList<Company> containing all computers informations
 	 */
 	@Override
-	public ArrayList<Computer> map(ResultSet setRes) {
+	public List<Computer> map(ResultSet setRes) {
 		ArrayList<Computer> res = new ArrayList<>();
 		ArrayList<Company> companyList = new ArrayList<>();
 		Company c = null;
@@ -60,7 +61,7 @@ public class ComputerMapper implements Mapper<Computer> {
 				companyId = setRes.getInt("company_id");
 				if(companyId != 0){
 					ResultSet resCompany = companyDAO.getCompanyById(companyId);
-					companyList = companyMapper.map(resCompany);
+					companyList = (ArrayList<Company>) companyMapper.map(resCompany);
 					c = companyList.get(0);
 				}
 				Computer tmp = new Computer(id, name, introduced, discontinued, c);

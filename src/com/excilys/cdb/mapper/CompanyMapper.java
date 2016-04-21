@@ -3,6 +3,7 @@ package com.excilys.cdb.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.DBConnect;
@@ -38,7 +39,7 @@ public class CompanyMapper implements Mapper<Company> {
 	 * @return ArrayList<Company> containing all companies informations
 	 */
 	@Override
-	public ArrayList<Company> map(ResultSet setRes) {
+	public List<Company> map(ResultSet setRes) {
 		ArrayList<Company> res = new ArrayList<>();
 		try {
 			while (setRes.next()) {

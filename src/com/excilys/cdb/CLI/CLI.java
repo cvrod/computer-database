@@ -112,13 +112,13 @@ public class CLI {
 			case 1: // List all Computer
 				System.out.println("\n--> Computer List : \n");
 				rs = computerDAO.listAll(GenericDAO.COMPUTER_TABLE);
-				computerList = computerMapper.map(rs);
+				computerList = (ArrayList<Computer>) computerMapper.map(rs);
 				printComputer(computerList);
 				break;
 			case 2: // List all Companies
 				System.out.println("\n--> Companies List : \n");
 				rs = companyDAO.listAll(GenericDAO.COMPANY_TABLE);
-				companyList = companyMapper.map(rs);
+				companyList = (ArrayList<Company>) companyMapper.map(rs);
 				printCompany(companyList);
 				break;
 			case 3: // Getting computer detail
@@ -126,7 +126,7 @@ public class CLI {
 				System.out.println("\tid ?");
 				int id = getValidNumber();
 				rs = computerDAO.getComputerDetail(id);
-				computerList = computerMapper.map(rs);
+				computerList = (ArrayList<Computer>) computerMapper.map(rs);
 				printComputerDetail(computerList);
 				break;
 			case 4: // Delete a computer (by id)
@@ -193,7 +193,7 @@ public class CLI {
 		while (!isFinished) {
 			rs = companyDAO.listAllByPage(type, start, offset);
 			if (type.equals(GenericDAO.COMPUTER_TABLE)) {
-				computerList = computerMapper.map(rs);
+				computerList = (ArrayList<Computer>) computerMapper.map(rs);
 				printComputer(computerList);
 				if (computerList.size() != 20) {
 					hasNext = false;
@@ -201,7 +201,7 @@ public class CLI {
 					hasNext = true;
 				}
 			} else if (type.equals(GenericDAO.COMPANY_TABLE)) {
-				companyList = companyMapper.map(rs);
+				companyList = (ArrayList<Company>) companyMapper.map(rs);
 				printCompany(companyList);
 				if (companyList.size() != 20) {
 					hasNext = false;
@@ -265,7 +265,7 @@ public class CLI {
 		System.out.println("Company ?");
 		int idCompany = getValidNumber();
 		ResultSet resCompany = companyDAO.getCompanyById(idCompany);
-		ArrayList<Company> companyList = companyMapper.map(resCompany);
+		ArrayList<Company> companyList = (ArrayList<Company>) companyMapper.map(resCompany);
 		if (companyList.size() == 0) {
 			res = new Computer(name, intro, discontinued, null);
 		} else {
