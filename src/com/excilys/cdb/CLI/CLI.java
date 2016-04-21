@@ -10,7 +10,7 @@ import java.util.Scanner;
 import com.excilys.cdb.DAO.CompanyDAO;
 import com.excilys.cdb.DAO.ComputerDAO;
 import com.excilys.cdb.DAO.GenericDAO;
-import com.excilys.cdb.exception.UnknowTypeException;
+import com.excilys.cdb.DAO.UnknowTypeException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;

@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.exception.UnknowTypeException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.persistence.DBConnect;
 
