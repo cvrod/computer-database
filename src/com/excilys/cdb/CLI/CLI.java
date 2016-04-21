@@ -23,6 +23,7 @@ import com.excilys.cdb.persistence.DBConnect;
 public class CLI {
 
 	public static final int MAX_CHOICE = 9;
+	public static final int PAGE_OFFSET = 20;
 	static Scanner sc = null;
 	static int choice = -1;
 	static ComputerDAO computerDAO = null;
@@ -42,6 +43,8 @@ public class CLI {
 		System.out.println("4/ Delete Computer");
 		System.out.println("5/ Create Computer");
 		System.out.println("6/ Update Computer");
+		System.out.println("7/ List All Computer By Page");
+		System.out.println("8/ List All Companies By Page");
 		System.out.println("9/ Quit");
 	}
 
@@ -74,19 +77,20 @@ public class CLI {
 	 * 
 	 * @return a valid id (int)
 	 */
-	public static int getValidId() {
+	public static int getValidNumber() {
 		boolean isValid = false;
 		int answer = -1;
+
 		while (!isValid) {
 			try {
-				System.out.println("\tid ?");
+				sc = new Scanner(System.in);
 				answer = sc.nextInt();
 			} catch (InputMismatchException e) {
 			}
 			if (answer > 0) {
 				isValid = true;
 			} else {
-				System.out.println("Please enter a Valid ID...");
+				System.out.println("Please enter a Valid number...");
 			}
 		}
 		return answer;
@@ -119,14 +123,16 @@ public class CLI {
 				break;
 			case 3: // Getting computer detail
 				System.out.println("\n--> Getting computer detail :");
-				int id = getValidId();
+				System.out.println("\tid ?");
+				int id = getValidNumber();
 				rs = computerDAO.getComputerDetail(id);
 				computerList = computerMapper.map(rs);
 				printComputerDetail(computerList);
 				break;
 			case 4: // Delete a computer (by id)
 				System.out.println("\n--> Delete Computer : ");
-				id = getValidId();
+				System.out.println("\tid ?");
+				id = getValidNumber();
 				updateRes = computerDAO.deleteComputer(id);
 				if (updateRes == 1) {
 					System.out.println("Delete Sucess !");
@@ -145,7 +151,8 @@ public class CLI {
 				break;
 			case 6: // Update a computer
 				System.out.println("\n--> Update Computer");
-				id = getValidId();
+				System.out.println("\tid ?");
+				id = getValidNumber();
 				tmpComputer = getComputerFromCLI();
 				updateRes = computerDAO.updateComputer(id, tmpComputer);
 				if (updateRes == 1) {
@@ -154,11 +161,65 @@ public class CLI {
 					System.out.println("Problem during update !");
 				}
 				break;
-			default:
+			case 7: // List All Computer By Page
+				System.out.println("All Computer by page TODO");
+				printListByPage(GenericDAO.COMPUTER_TABLE);
+				break;
+			default: // List All Companies By Page
+				System.out.println("All Companies by page TODO");
+				printListByPage(GenericDAO.COMPANY_TABLE);
 				break;
 			}
 		} catch (UnknowTypeException e) {
 			System.out.println("Table inconnue !");
+		}
+	}
+
+	/**
+	 * Printing List of computer or company by page
+	 * 
+	 * @param type
+	 *            GenericDAO.COMPUTER_TABLE or GenericDAO.COMPANY_TABLE
+	 * @throws UnknowTypeException
+	 */
+	private static void printListByPage(String type) throws UnknowTypeException {
+		ArrayList<Company> companyList = null;
+		ArrayList<Computer> computerList = null;
+		ResultSet rs = null;
+		int start = 0;
+		int offset = PAGE_OFFSET;
+		boolean isFinished = false;
+		boolean hasNext = true;
+		while (!isFinished) {
+			rs = companyDAO.listAllByPage(type, start, offset);
+			if (type.equals(GenericDAO.COMPUTER_TABLE)) {
+				computerList = computerMapper.map(rs);
+				printComputer(computerList);
+				if (computerList.size() != 20) {
+					hasNext = false;
+				} else {
+					hasNext = true;
+				}
+			} else if (type.equals(GenericDAO.COMPANY_TABLE)) {
+				companyList = companyMapper.map(rs);
+				printCompany(companyList);
+				if (companyList.size() != 20) {
+					hasNext = false;
+				} else {
+					hasNext = true;
+				}
+			}
+			System.out.println("\n1/Prev Page -- 2/Next Page -- 3/Quit");
+			int userChoice = getValidNumber();
+			if (start != 0 && userChoice == 1) {
+				start -= 20;
+			} else if (userChoice == 2 && hasNext) {
+				start += 20;
+			} else if (userChoice == 3) {
+				isFinished = true;
+			} else {
+				System.out.println("Wrong entry");
+			}
 		}
 	}
 
@@ -201,7 +262,7 @@ public class CLI {
 		}
 
 		System.out.println("Company ?");
-		int idCompany = getValidId();
+		int idCompany = getValidNumber();
 		ResultSet resCompany = companyDAO.getCompanyById(idCompany);
 		ArrayList<Company> companyList = companyMapper.map(resCompany);
 		if (companyList.size() == 0) {
@@ -291,7 +352,7 @@ public class CLI {
 		connection = DBConnect.getInstance();
 		sc = new Scanner(System.in);
 		sc.useDelimiter("\\n");
-		
+
 		boolean isFinished = false;
 		while (!isFinished) {
 			showMenu();
