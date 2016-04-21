@@ -56,7 +56,6 @@ public class CLI {
 
 		while (!isValid) {
 			try {
-				sc = new Scanner(System.in);
 				answer = sc.nextInt();
 			} catch (InputMismatchException e) {
 
@@ -81,7 +80,6 @@ public class CLI {
 		while (!isValid) {
 			try {
 				System.out.println("\tid ?");
-				sc = new Scanner(System.in);
 				answer = sc.nextInt();
 			} catch (InputMismatchException e) {
 			}
@@ -144,6 +142,7 @@ public class CLI {
 				} else {
 					System.out.println("Error occur during insertion !");
 				}
+				break;
 			case 6: // Update a computer
 				System.out.println("\n--> Update Computer");
 				id = getValidId();
@@ -154,6 +153,7 @@ public class CLI {
 				} else {
 					System.out.println("Problem during update !");
 				}
+				break;
 			default:
 				break;
 			}
@@ -174,7 +174,6 @@ public class CLI {
 
 		while (!isValid) {
 			System.out.println("Computer Name ?");
-			sc = new Scanner(System.in);
 			name = sc.nextLine();
 			name = name.trim();
 			if (!name.equals("")) {
@@ -290,6 +289,9 @@ public class CLI {
 		companyMapper = CompanyMapper.getInstance();
 		computerMapper = ComputerMapper.getInstance();
 		connection = DBConnect.getInstance();
+		sc = new Scanner(System.in);
+		sc.useDelimiter("\\n");
+		
 		boolean isFinished = false;
 		while (!isFinished) {
 			showMenu();
