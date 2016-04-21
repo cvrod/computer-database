@@ -17,9 +17,18 @@ public class ComputerDAO extends GenericDAO {
 	CompanyDAO companyDAO = null;
 	public static final String NULL_TIMESTAMP = "0000-00-00";
 	final static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
+	
+	private static ComputerDAO _instance = null;
 
-	public ComputerDAO() {
-		companyDAO = new CompanyDAO();
+	public static ComputerDAO getInstance() {
+		if (_instance == null) {
+			_instance = new ComputerDAO();
+		}
+		return _instance;
+	}
+	
+	private ComputerDAO() {
+		companyDAO = CompanyDAO.getInstance();
 	}
 
 	/**

@@ -14,8 +14,16 @@ import org.slf4j.LoggerFactory;
 public class CompanyDAO extends GenericDAO {
 	
 	final static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
+	private static CompanyDAO _instance = null;
 
-	public CompanyDAO() {
+	public static CompanyDAO getInstance() {
+		if (_instance == null) {
+			_instance = new CompanyDAO();
+		}
+		return _instance;
+	}
+	
+	private CompanyDAO() {
 	}
 
 	/**

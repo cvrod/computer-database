@@ -31,7 +31,7 @@ public class ComputerMapper implements Mapper<Computer> {
 	
 	private ComputerMapper(){
 		companyMapper = CompanyMapper.getInstance();
-		companyDAO = new CompanyDAO();
+		companyDAO = CompanyDAO.getInstance();
 		connection = DBConnect.getInstance();
 	}
 	/**

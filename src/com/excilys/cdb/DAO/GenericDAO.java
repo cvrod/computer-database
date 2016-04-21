@@ -20,7 +20,7 @@ public abstract class GenericDAO {
 	public ResultSet setRes = null;
 	StringBuffer res;
 	final static Logger logger = LoggerFactory.getLogger(GenericDAO.class);
-
+	
 	public GenericDAO() {
 		connection = DBConnect.getInstance();
 	}

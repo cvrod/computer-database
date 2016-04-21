@@ -234,6 +234,7 @@ public class CLI {
 		String name = null;
 
 		while (!isValid) {
+			sc = new Scanner(System.in);
 			System.out.println("Computer Name ?");
 			name = sc.nextLine();
 			name = name.trim();
@@ -345,8 +346,8 @@ public class CLI {
 	 */
 	public static void main(String[] args) {
 
-		computerDAO = new ComputerDAO();
-		companyDAO = new CompanyDAO();
+		computerDAO = ComputerDAO.getInstance();
+		companyDAO = CompanyDAO.getInstance();
 		companyMapper = CompanyMapper.getInstance();
 		computerMapper = ComputerMapper.getInstance();
 		connection = DBConnect.getInstance();
