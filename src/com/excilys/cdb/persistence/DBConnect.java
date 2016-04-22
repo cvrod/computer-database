@@ -2,9 +2,7 @@ package com.excilys.cdb.persistence;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,42 +47,6 @@ public class DBConnect {
 	
 	public Connection getConnection(){
 		return this.connection;
-	}
-
-	/**
-	 * Execute a query on Database
-	 * @param query query str
-	 * @return ResultSet from DB
-	 */
-	public ResultSet executeQuery(String query) {
-		ResultSet res = null;
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-			logger.info("Executing Query : " + query);
-			res = statement.executeQuery(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return res;
-	}
-
-	/**
-	 * Execute an update on Database
-	 * @param query query str
-	 * @return
-	 */
-	public int executeUpdate(String query) {
-		int res = 0;
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-			logger.info("Executing Update : " + query);
-			res = statement.executeUpdate(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return res;
 	}
 
 	/**
