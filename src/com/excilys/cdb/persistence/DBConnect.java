@@ -20,7 +20,7 @@ public class DBConnect {
 	protected static final String DB_DRIVER = "com.mysql.jdbc.Driver";
 	final static Logger logger = LoggerFactory.getLogger(DBConnect.class);
 
-	protected static Connection connection;
+	protected Connection connection;
 	private static DBConnect _instance = null;
 
 	/**
@@ -45,6 +45,10 @@ public class DBConnect {
 			System.out.println("Cannot load class !");
 			e.printStackTrace();
 		}
+	}
+	
+	public Connection getConnection(){
+		return this.connection;
 	}
 
 	/**

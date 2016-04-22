@@ -125,9 +125,10 @@ public class CLI {
 				System.out.println("\n--> Getting computer detail :");
 				System.out.println("\tid ?");
 				int id = getValidNumber();
-				rs = computerDAO.getComputerDetail(id);
-				computerList = (ArrayList<Computer>) computerMapper.map(rs);
-				printComputerDetail(computerList);
+				tmpComputer = computerDAO.getComputerDetail(id);
+				if(tmpComputer != null){
+					System.out.println(tmpComputer.toString());
+				}
 				break;
 			case 4: // Delete a computer (by id)
 				System.out.println("\n--> Delete Computer : ");
@@ -291,21 +292,6 @@ public class CLI {
 		day = sc.nextLine();
 
 		return year + "-" + month + "-" + day;
-	}
-
-	/**
-	 * Print computer detail from a computer list
-	 * 
-	 * @param computerList
-	 *            list to print
-	 */
-	private static void printComputerDetail(ArrayList<Computer> computerList) {
-		if (computerList.size() == 0) {
-			System.out.println("Nothing to show !");
-		}
-		for (Computer c : computerList) {
-			System.out.println(c.toString());
-		}
 	}
 
 	/**

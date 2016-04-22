@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.CompanyMapper;
+import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.persistence.DBConnect;
 
 /**
@@ -16,6 +17,7 @@ public abstract class GenericDAO {
 	public static final String COMPUTER_TABLE = "computer";
 	public static final String COMPANY_TABLE = "company";
 	CompanyMapper companyMapper = null;
+	ComputerMapper computerMapper = null;
 	public ResultSet setRes = null;
 	StringBuffer res;
 	final static Logger logger = LoggerFactory.getLogger(GenericDAO.class);
