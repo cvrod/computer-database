@@ -1,6 +1,5 @@
 package com.excilys.cdb.CLI;
 
-import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.Scanner;
 
 import com.excilys.cdb.DAO.CompanyDAO;
 import com.excilys.cdb.DAO.ComputerDAO;
-import com.excilys.cdb.DAO.GenericDAO;
 import com.excilys.cdb.DAO.UnknowTypeException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
@@ -24,6 +22,8 @@ public class CLI {
 
 	public static final int MAX_CHOICE = 9;
 	public static final int PAGE_OFFSET = 20;
+	public static final String COMPUTER_TABLE = "computer";
+	public static final String COMPANY_TABLE = "company";
 	static Scanner sc = null;
 	static int choice = -1;
 	static ComputerDAO computerDAO = null;
@@ -103,29 +103,22 @@ public class CLI {
 	 */
 	public static void makeRequest(int choice) {
 		int updateRes = -1;
-		ResultSet rs = null;
-		ArrayList<Company> companyList = null;
-		ArrayList<Computer> computerList = null;
 		Computer tmpComputer = null;
 		try {
 			switch (choice) {
 			case 1: // List all Computer
 				System.out.println("\n--> Computer List : \n");
-				rs = computerDAO.listAll(GenericDAO.COMPUTER_TABLE);
-				computerList = (ArrayList<Computer>) computerMapper.map(rs);
-				printComputer(computerList);
+				printComputer(computerDAO.listAll());
 				break;
 			case 2: // List all Companies
 				System.out.println("\n--> Companies List : \n");
-				rs = companyDAO.listAll(GenericDAO.COMPANY_TABLE);
-				companyList = (ArrayList<Company>) companyMapper.map(rs);
-				printCompany(companyList);
+				printCompany(companyDAO.listAll());
 				break;
 			case 3: // Getting computer detail
 				System.out.println("\n--> Getting computer detail :");
 				System.out.println("\tid ?");
 				int id = getValidNumber();
-				tmpComputer = computerDAO.getComputerDetail(id);
+				tmpComputer = computerDAO.get(id);
 				if(tmpComputer != null){
 					System.out.println(tmpComputer.toString());
 				}
@@ -134,7 +127,7 @@ public class CLI {
 				System.out.println("\n--> Delete Computer : ");
 				System.out.println("\tid ?");
 				id = getValidNumber();
-				updateRes = computerDAO.deleteComputer(id);
+				updateRes = computerDAO.delete(id);
 				if (updateRes == 1) {
 					System.out.println("Delete Sucess !");
 				} else {
@@ -143,7 +136,7 @@ public class CLI {
 				break;
 			case 5: // Create a computer
 				tmpComputer = getComputerFromCLI();
-				int res = computerDAO.addingComputer(tmpComputer);
+				int res = computerDAO.add(tmpComputer);
 				if (res == 1) {
 					System.out.println("Insertion Success !");
 				} else {
@@ -155,7 +148,7 @@ public class CLI {
 				System.out.println("\tid ?");
 				id = getValidNumber();
 				tmpComputer = getComputerFromCLI();
-				updateRes = computerDAO.updateComputer(id, tmpComputer);
+				updateRes = computerDAO.update(id, tmpComputer);
 				if (updateRes == 1) {
 					System.out.println("Update Success !");
 				} else {
@@ -163,12 +156,12 @@ public class CLI {
 				}
 				break;
 			case 7: // List All Computer By Page
-				System.out.println("All Computer by page TODO");
-				printListByPage(GenericDAO.COMPUTER_TABLE);
+				System.out.println("All Computer by page");
+				printListByPage(COMPUTER_TABLE);
 				break;
 			default: // List All Companies By Page
-				System.out.println("All Companies by page TODO");
-				printListByPage(GenericDAO.COMPANY_TABLE);
+				System.out.println("All Companies by page");
+				printListByPage(COMPANY_TABLE);
 				break;
 			}
 		} catch (UnknowTypeException e) {
@@ -186,23 +179,21 @@ public class CLI {
 	private static void printListByPage(String type) throws UnknowTypeException {
 		ArrayList<Company> companyList = null;
 		ArrayList<Computer> computerList = null;
-		ResultSet rs = null;
 		int start = 0;
 		int offset = PAGE_OFFSET;
 		boolean isFinished = false;
 		boolean hasNext = true;
 		while (!isFinished) {
-			rs = companyDAO.listAllByPage(type, start, offset);
-			if (type.equals(GenericDAO.COMPUTER_TABLE)) {
-				computerList = (ArrayList<Computer>) computerMapper.map(rs);
+			if (type.equals(COMPUTER_TABLE)) {
+				computerList = computerDAO.listAllByPage(start, offset);
 				printComputer(computerList);
 				if (computerList.size() != 20) {
 					hasNext = false;
 				} else {
 					hasNext = true;
 				}
-			} else if (type.equals(GenericDAO.COMPANY_TABLE)) {
-				companyList = (ArrayList<Company>) companyMapper.map(rs);
+			} else if (type.equals(COMPANY_TABLE)) {
+				companyList = companyDAO.listAllByPage(start, offset);
 				printCompany(companyList);
 				if (companyList.size() != 20) {
 					hasNext = false;
@@ -265,14 +256,10 @@ public class CLI {
 
 		System.out.println("Company ?");
 		int idCompany = getValidNumber();
-		ResultSet resCompany = companyDAO.getCompanyById(idCompany);
-		ArrayList<Company> companyList = (ArrayList<Company>) companyMapper.map(resCompany);
-		if (companyList.size() == 0) {
-			res = new Computer(name, intro, discontinued, null);
-		} else {
-			Company c = companyList.get(0);
-			res = new Computer(name, intro, discontinued, c);
-		}
+		Company c;
+		c = companyDAO.get(idCompany);
+
+		res = new Computer(name, intro, discontinued, c);
 		return res;
 	}
 

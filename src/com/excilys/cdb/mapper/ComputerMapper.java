@@ -45,7 +45,6 @@ public class ComputerMapper implements Mapper<Computer> {
 	@Override
 	public List<Computer> map(ResultSet setRes) {
 		ArrayList<Computer> res = new ArrayList<>();
-		ArrayList<Company> companyList = new ArrayList<>();
 		Company c = null;
 		Long id;
 		String name;
@@ -60,9 +59,7 @@ public class ComputerMapper implements Mapper<Computer> {
 				discontinued = setRes.getString("discontinued");
 				companyId = setRes.getInt("company_id");
 				if(companyId != 0){
-					ResultSet resCompany = companyDAO.getCompanyById(companyId);
-					companyList = (ArrayList<Company>) companyMapper.map(resCompany);
-					c = companyList.get(0);
+					c = companyDAO.get(companyId);
 				}
 				Computer tmp = new Computer(id, name, introduced, discontinued, c);
 				res.add(tmp);

@@ -18,13 +18,15 @@ import com.excilys.cdb.model.Computer;
  * 
  * @see GenericDAO
  */
-public class ComputerDAO extends GenericDAO {
+public class ComputerDAO extends GenericDAO<Computer> {
 
 	CompanyDAO companyDAO = null;
 	public static final String INSERT_REQUEST = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
 	public static final String DETAIL_REQUEST = "SELECT * FROM computer WHERE id=?";
 	public static final String DELETE_REQUEST = "DELETE FROM computer WHERE id=?";
 	public static final String UPDATE_REQUEST = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
+	public static final String LISTALL_REQUEST = "SELECT * FROM computer;";
+	public static final String LISTPAGE_REQUEST = "SELECT * FROM computer LIMIT ?,?";
 	final static Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	Connection con = null;
 
@@ -48,7 +50,7 @@ public class ComputerDAO extends GenericDAO {
 	 *            computer id to delete
 	 * @return int : number of row affected (0 or 1)
 	 */
-	public int deleteComputer(int id) {
+	public int delete(int id) {
 		logger.debug("delete Computer");
 		int res = -1;
 
@@ -72,6 +74,73 @@ public class ComputerDAO extends GenericDAO {
 		}
 		return res;
 	}
+	/**
+	 * Ask database for all Computer
+	 * @return ArrayList<Computer> all computer list
+	 */
+	@Override
+	public ArrayList<Computer> listAll(){
+		logger.debug("List all computer");
+
+		connection.openConnection();
+		con = connection.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = con.prepareStatement(LISTALL_REQUEST);
+			rs = stmt.executeQuery();
+			computerMapper = ComputerMapper.getInstance();
+			return (ArrayList<Computer>) computerMapper.map(rs);
+
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+		} finally {
+			try {
+				rs.close();
+				stmt.close();
+				connection.closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Ask database for Computer by page
+	 * @return ArrayList<Computer> computer list
+	 */
+	@Override
+	public ArrayList<Computer> listAllByPage(int start, int offset){
+		logger.debug("List computer by Page");
+
+		connection.openConnection();
+		con = connection.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = con.prepareStatement(LISTPAGE_REQUEST);
+			stmt.setInt(1, start);
+			stmt.setInt(2, offset);
+			rs = stmt.executeQuery();
+			computerMapper = ComputerMapper.getInstance();
+			return (ArrayList<Computer>) computerMapper.map(rs);
+
+		} catch (SQLException e) {
+			logger.error(e.getMessage());
+		} finally {
+			try {
+				rs.close();
+				stmt.close();
+				connection.closeConnection();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Adding Computer to database
@@ -80,7 +149,7 @@ public class ComputerDAO extends GenericDAO {
 	 *            computer to add
 	 * @return 0 if Insert fail, 1 if everything is fine
 	 */
-	public int addingComputer(Computer c) {
+	public int add(Computer c) {
 		logger.debug("adding Computer");
 
 		PreparedStatement stmt = null;
@@ -127,7 +196,7 @@ public class ComputerDAO extends GenericDAO {
 	 *            computer id to display
 	 * @return Computer 
 	 */
-	public Computer getComputerDetail(int id) {
+	public Computer get(int id) {
 		logger.debug("getting computer detail");
 
 		connection.openConnection();
@@ -173,7 +242,7 @@ public class ComputerDAO extends GenericDAO {
 	 *            Computer object containing fresh infos
 	 * @return 0 if Update fail, 1 if success
 	 */
-	public int updateComputer(int id, Computer c) {
+	public int update(int id, Computer c) {
 		logger.debug("update Computer");
 
 		PreparedStatement stmt = null;
