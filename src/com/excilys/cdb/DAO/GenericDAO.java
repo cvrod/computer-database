@@ -20,22 +20,21 @@ public abstract class GenericDAO<T> {
 	public ResultSet setRes = null;
 	StringBuffer res;
 	final static Logger logger = LoggerFactory.getLogger(GenericDAO.class);
-	
+
 	public GenericDAO() {
 		connection = DBConnect.getInstance();
 	}
-	
+
 	public abstract ArrayList<T> listAll();
-	
+
 	public abstract ArrayList<T> listAllByPage(int start, int offset);
-	
+
 	public abstract int delete(int id);
-	
+
 	public abstract T add(T c);
-	
+
 	public abstract T get(int id);
-	
+
 	public abstract int update(int id, T c);
-	
-	
+
 }

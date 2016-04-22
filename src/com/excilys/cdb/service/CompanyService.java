@@ -8,7 +8,7 @@ import com.excilys.cdb.model.Company;
 public class CompanyService {
 	private CompanyDAO companyDAO = null;
 	private static CompanyService companyService = null;
-	
+
 	private CompanyService() {
 		companyDAO = CompanyDAO.getInstance();
 	}
@@ -31,17 +31,17 @@ public class CompanyService {
 	public int delete(int id) {
 		return companyDAO.delete(id);
 	}
-	
+
 	public int update(int id, Company c) {
 		return companyDAO.update(id, c);
 	}
-	
+
 	public ArrayList<Company> listAll() {
 		return companyDAO.listAll();
 	}
-	
+
 	public ArrayList<Company> listAllByPage(int start, int offset) {
 		return companyDAO.listAllByPage(start, offset);
 	}
-	
+
 }

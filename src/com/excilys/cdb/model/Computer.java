@@ -6,8 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Computer object
- * Contain a row from computer table
+ * Computer object Contain a row from computer table
  */
 public class Computer {
 	private Long id = null;
@@ -34,7 +33,7 @@ public class Computer {
 	 */
 	public Computer(String name, String introduction, String discontinued, Company comp) {
 		logger.info("creating new Computer");
-		
+
 		this.setName(name);
 		if (introduction != null) {
 			introduction = introduction.split(" ")[0];
@@ -72,7 +71,7 @@ public class Computer {
 	 */
 	public Computer(Long id, String name, String introduced, String discontinued, Company comp) {
 		logger.info("creating new Computer");
-		
+
 		this.id = id;
 		this.name = name;
 
@@ -127,8 +126,8 @@ public class Computer {
 	public Long getId() {
 		return id;
 	}
-	
-	public void setId(Long id){
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -180,24 +179,24 @@ public class Computer {
 			return false;
 		return true;
 	}
-	
+
 	public String toString() {
 		StringBuffer s = new StringBuffer(name);
-		if (introduced != null){
+		if (introduced != null) {
 			s.append(", introduced in ");
 			s.append(this.introduced);
 		}
-		if (discontinued != null){
+		if (discontinued != null) {
 			s.append(", discontinued in ");
 			s.append(this.discontinued);
 		}
-		if (getCompany() != null){
+		if (getCompany() != null) {
 			s.append(", provided by ");
 			s.append(this.getCompany().getName());
 		}
 		return s.toString();
 	}
-	
+
 	/**
 	 * Builder pattern to create computer
 	 */
@@ -208,8 +207,8 @@ public class Computer {
 		private String discontinued = null;
 		private Company company = null;
 
-
-		public Builder() {}
+		public Builder() {
+		}
 
 		public Builder id(Long id) {
 			this.id = id;

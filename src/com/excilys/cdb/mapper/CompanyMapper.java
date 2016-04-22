@@ -47,7 +47,8 @@ public class CompanyMapper implements Mapper<Company> {
 				res.add(tmp);
 			}
 		} catch (SQLException e) {
-			System.out.println("Campany table error !");
+			e.printStackTrace();
+			System.out.println("Company table error !");
 		}
 		connection.closeConnection();
 		return res;

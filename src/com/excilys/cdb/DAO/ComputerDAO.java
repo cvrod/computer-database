@@ -33,7 +33,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
 	private static ComputerDAO _instance = null;
 
-	public static ComputerDAO getInstance() {
+	public static synchronized ComputerDAO getInstance() {
 		if (_instance == null) {
 			_instance = new ComputerDAO();
 		}
@@ -55,74 +55,56 @@ public class ComputerDAO extends GenericDAO<Computer> {
 		logger.debug("delete Computer");
 		int res = -1;
 
-		PreparedStatement stmt = null;
 		connection.openConnection();
-		con = connection.getConnection();
 
-		try {
-			stmt = con.prepareStatement(DELETE_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
 			stmt.setInt(1, id);
 			res = stmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
-		} finally {
-			try {
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return res;
 	}
+
 	/**
 	 * Ask database for all Computer
+	 * 
 	 * @return ArrayList<Computer> all computer list
 	 */
 	@Override
-	public ArrayList<Computer> listAll(){
+	public ArrayList<Computer> listAll() {
 		logger.debug("List all computer");
 
 		connection.openConnection();
-		con = connection.getConnection();
-		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try {
-			stmt = con.prepareStatement(LISTALL_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(LISTALL_REQUEST)) {
 			rs = stmt.executeQuery();
 			computerMapper = ComputerMapper.getInstance();
 			return (ArrayList<Computer>) computerMapper.map(rs);
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
-		} finally {
-			try {
-				rs.close();
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Ask database for Computer by page
+	 * 
 	 * @return ArrayList<Computer> computer list
 	 */
 	@Override
-	public ArrayList<Computer> listAllByPage(int start, int offset){
+	public ArrayList<Computer> listAllByPage(int start, int offset) {
 		logger.debug("List computer by Page");
 
 		connection.openConnection();
-		con = connection.getConnection();
-		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try {
-			stmt = con.prepareStatement(LISTPAGE_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(LISTPAGE_REQUEST)) {
 			stmt.setInt(1, start);
 			stmt.setInt(2, offset);
 			rs = stmt.executeQuery();
@@ -131,15 +113,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
-		} finally {
-			try {
-				rs.close();
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
+
 		return null;
 	}
 
@@ -153,12 +128,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
 	public Computer add(Computer c) {
 		logger.debug("adding Computer");
 
-		PreparedStatement stmt = null;
 		connection.openConnection();
-		con = connection.getConnection();
 
-		try {
-			stmt = con.prepareStatement(INSERT_REQUEST, Statement.RETURN_GENERATED_KEYS);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(INSERT_REQUEST, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, c.getName());
 			if (c.getIntroduced() == null) {
 				stmt.setNull(2, java.sql.Types.TIMESTAMP);
@@ -181,13 +154,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			c.setId(rs.getLong(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return c;
 	}
@@ -197,19 +163,17 @@ public class ComputerDAO extends GenericDAO<Computer> {
 	 * 
 	 * @param id
 	 *            computer id to display
-	 * @return Computer 
+	 * @return Computer
 	 */
 	public Computer get(int id) {
 		logger.debug("getting computer detail");
 
 		connection.openConnection();
-		con = connection.getConnection();
-		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		ArrayList<Computer> computerList = null;
 
-		try {
-			stmt = con.prepareStatement(DETAIL_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST)) {
 			stmt.setLong(1, id);
 			rs = stmt.executeQuery();
 			computerMapper = ComputerMapper.getInstance();
@@ -224,14 +188,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
-		} finally {
-			try {
-				rs.close();
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return null;
 	}
@@ -248,12 +204,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
 	public int update(int id, Computer c) {
 		logger.debug("update Computer");
 
-		PreparedStatement stmt = null;
 		connection.openConnection();
-		con = connection.getConnection();
 
-		try {
-			stmt = con.prepareStatement(UPDATE_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
 			stmt.setString(1, c.getName());
 			if (c.getIntroduced() == null) {
 				stmt.setNull(2, java.sql.Types.TIMESTAMP);
@@ -275,13 +229,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return 0;
 	}

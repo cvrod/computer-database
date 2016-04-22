@@ -20,7 +20,7 @@ import com.mysql.jdbc.Statement;
  *
  */
 public class CompanyDAO extends GenericDAO<Company> {
-	
+
 	final static Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
 	private static CompanyDAO _instance = null;
 	public static final String DETAIL_REQUEST = "SELECT * FROM company WHERE id=?";
@@ -31,13 +31,13 @@ public class CompanyDAO extends GenericDAO<Company> {
 	public static final String UPDATE_REQUEST = "UPDATE company SET name=? WHERE id=?";
 	Connection con = null;
 
-	public static CompanyDAO getInstance() {
+	public static synchronized CompanyDAO getInstance() {
 		if (_instance == null) {
 			_instance = new CompanyDAO();
 		}
 		return _instance;
 	}
-	
+
 	private CompanyDAO() {
 	}
 
@@ -52,13 +52,11 @@ public class CompanyDAO extends GenericDAO<Company> {
 	public Company get(int id) {
 		logger.debug("getting a company by id");
 		connection.openConnection();
-		con = connection.getConnection();
-		PreparedStatement stmt = null;
 		ResultSet rs = null;
 		ArrayList<Company> companyList = null;
 
-		try {
-			stmt = con.prepareStatement(DETAIL_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST)) {
 			stmt.setLong(1, id);
 			rs = stmt.executeQuery();
 			companyMapper = CompanyMapper.getInstance();
@@ -73,66 +71,48 @@ public class CompanyDAO extends GenericDAO<Company> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
-		} finally {
-			try {
-				rs.close();
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Ask database for all Company
+	 * 
 	 * @return ArrayList<Company> all computer list
 	 */
 	@Override
-	public ArrayList<Company> listAll(){
+	public ArrayList<Company> listAll() {
 		logger.debug("List all company");
 
 		connection.openConnection();
-		con = connection.getConnection();
-		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try {
-			stmt = con.prepareStatement(LISTALL_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(LISTALL_REQUEST)) {
 			rs = stmt.executeQuery();
 			companyMapper = CompanyMapper.getInstance();
 			return (ArrayList<Company>) companyMapper.map(rs);
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
-		} finally {
-			try {
-				rs.close();
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Ask database for Company by page
+	 * 
 	 * @return ArrayList<Company> company list
 	 */
 	@Override
-	public ArrayList<Company> listAllByPage(int start, int offset){
+	public ArrayList<Company> listAllByPage(int start, int offset) {
 		logger.debug("List company by Page");
 
 		connection.openConnection();
-		con = connection.getConnection();
-		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
-		try {
-			stmt = con.prepareStatement(LISTPAGE_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(LISTPAGE_REQUEST)) {
 			stmt.setInt(1, start);
 			stmt.setInt(2, offset);
 			rs = stmt.executeQuery();
@@ -141,14 +121,6 @@ public class CompanyDAO extends GenericDAO<Company> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
-		} finally {
-			try {
-				rs.close();
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return null;
 	}
@@ -165,23 +137,14 @@ public class CompanyDAO extends GenericDAO<Company> {
 		logger.debug("delete Company");
 		int res = -1;
 
-		PreparedStatement stmt = null;
 		connection.openConnection();
-		con = connection.getConnection();
 
-		try {
-			stmt = con.prepareStatement(DELETE_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
 			stmt.setInt(1, id);
 			res = stmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
-		} finally {
-			try {
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return res;
 	}
@@ -197,12 +160,10 @@ public class CompanyDAO extends GenericDAO<Company> {
 	public Company add(Company c) {
 		logger.debug("adding Company");
 
-		PreparedStatement stmt = null;
 		connection.openConnection();
-		con = connection.getConnection();
 
-		try {
-			stmt = con.prepareStatement(INSERT_REQUEST, Statement.RETURN_GENERATED_KEYS);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(INSERT_REQUEST, Statement.RETURN_GENERATED_KEYS)) {
 			stmt.setString(1, c.getName());
 			stmt.executeUpdate();
 			ResultSet rs = stmt.getGeneratedKeys();
@@ -210,13 +171,6 @@ public class CompanyDAO extends GenericDAO<Company> {
 			c.setId(rs.getLong(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return c;
 	}
@@ -234,25 +188,16 @@ public class CompanyDAO extends GenericDAO<Company> {
 	public int update(int id, Company c) {
 		logger.debug("update Computer");
 
-		PreparedStatement stmt = null;
 		connection.openConnection();
-		con = connection.getConnection();
 
-		try {
-			stmt = con.prepareStatement(UPDATE_REQUEST);
+		try (Connection con = connection.getConnection();
+				PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
 			stmt.setString(1, c.getName());
 			stmt.setInt(2, id);
 			int res = stmt.executeUpdate();
 			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			try {
-				stmt.close();
-				connection.closeConnection();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 		}
 		return 0;
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Mapper interface
+ * 
  * @param <T>
  */
 public interface Mapper<T> {
