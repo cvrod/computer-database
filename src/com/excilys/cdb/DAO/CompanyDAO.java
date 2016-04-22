@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
+import com.mysql.jdbc.Statement;
 
 /**
  * CompanyDAO : handle company request
@@ -193,7 +194,7 @@ public class CompanyDAO extends GenericDAO<Company> {
 	 * @return 0 if Insert fail, 1 if everything is fine
 	 */
 	@Override
-	public int add(Company c) {
+	public Company add(Company c) {
 		logger.debug("adding Company");
 
 		PreparedStatement stmt = null;
@@ -201,10 +202,12 @@ public class CompanyDAO extends GenericDAO<Company> {
 		con = connection.getConnection();
 
 		try {
-			stmt = con.prepareStatement(INSERT_REQUEST);
+			stmt = con.prepareStatement(INSERT_REQUEST, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, c.getName());
-			int res = stmt.executeUpdate();
-			return res;
+			stmt.executeUpdate();
+			ResultSet rs = stmt.getGeneratedKeys();
+			rs.next();
+			c.setId(rs.getLong(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -215,7 +218,7 @@ public class CompanyDAO extends GenericDAO<Company> {
 				e.printStackTrace();
 			}
 		}
-		return 0;
+		return c;
 	}
 
 	/**

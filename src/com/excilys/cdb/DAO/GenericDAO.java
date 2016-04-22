@@ -31,7 +31,7 @@ public abstract class GenericDAO<T> {
 	
 	public abstract int delete(int id);
 	
-	public abstract int add(T c);
+	public abstract T add(T c);
 	
 	public abstract T get(int id);
 	

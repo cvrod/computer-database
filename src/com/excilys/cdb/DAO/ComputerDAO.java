@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
+import com.mysql.jdbc.Statement;
 
 /**
  * Computer DAO, handle computer request
@@ -149,7 +150,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 	 *            computer to add
 	 * @return 0 if Insert fail, 1 if everything is fine
 	 */
-	public int add(Computer c) {
+	public Computer add(Computer c) {
 		logger.debug("adding Computer");
 
 		PreparedStatement stmt = null;
@@ -157,7 +158,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 		con = connection.getConnection();
 
 		try {
-			stmt = con.prepareStatement(INSERT_REQUEST);
+			stmt = con.prepareStatement(INSERT_REQUEST, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, c.getName());
 			if (c.getIntroduced() == null) {
 				stmt.setNull(2, java.sql.Types.TIMESTAMP);
@@ -174,8 +175,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			} else {
 				stmt.setLong(4, c.getCompany().getId());
 			}
-			int res = stmt.executeUpdate();
-			return res;
+			stmt.executeUpdate();
+			ResultSet rs = stmt.getGeneratedKeys();
+			rs.next();
+			c.setId(rs.getLong(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
@@ -186,7 +189,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 				e.printStackTrace();
 			}
 		}
-		return 0;
+		return c;
 	}
 
 	/**

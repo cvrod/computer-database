@@ -136,8 +136,8 @@ public class CLI {
 				break;
 			case 5: // Create a computer
 				tmpComputer = getComputerFromCLI();
-				int res = computerDAO.add(tmpComputer);
-				if (res == 1) {
+				tmpComputer = computerDAO.add(tmpComputer);
+				if (tmpComputer != null) {
 					System.out.println("Insertion Success !");
 				} else {
 					System.out.println("Error occur during insertion !");
