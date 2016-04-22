@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.excilys.cdb.DAO.CompanyDAO;
-import com.excilys.cdb.DAO.ComputerDAO;
 import com.excilys.cdb.DAO.UnknowTypeException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.DBConnect;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 /**
  * Command Line Interface implementation Take request from user
@@ -26,8 +26,8 @@ public class CLI {
 	public static final String COMPANY_TABLE = "company";
 	static Scanner sc = null;
 	static int choice = -1;
-	static ComputerDAO computerDAO = null;
-	static CompanyDAO companyDAO = null;
+	static ComputerService computerService = null;
+	static CompanyService companyService = null;
 	static CompanyMapper companyMapper = null;
 	static ComputerMapper computerMapper = null;
 	static DBConnect connection = null;
@@ -108,17 +108,17 @@ public class CLI {
 			switch (choice) {
 			case 1: // List all Computer
 				System.out.println("\n--> Computer List : \n");
-				printComputer(computerDAO.listAll());
+				printComputer(computerService.listAll());
 				break;
 			case 2: // List all Companies
 				System.out.println("\n--> Companies List : \n");
-				printCompany(companyDAO.listAll());
+				printCompany(companyService.listAll());
 				break;
 			case 3: // Getting computer detail
 				System.out.println("\n--> Getting computer detail :");
 				System.out.println("\tid ?");
 				int id = getValidNumber();
-				tmpComputer = computerDAO.get(id);
+				tmpComputer = computerService.get(id);
 				if(tmpComputer != null){
 					System.out.println(tmpComputer.toString());
 				}
@@ -127,7 +127,7 @@ public class CLI {
 				System.out.println("\n--> Delete Computer : ");
 				System.out.println("\tid ?");
 				id = getValidNumber();
-				updateRes = computerDAO.delete(id);
+				updateRes = computerService.delete(id);
 				if (updateRes == 1) {
 					System.out.println("Delete Sucess !");
 				} else {
@@ -136,7 +136,7 @@ public class CLI {
 				break;
 			case 5: // Create a computer
 				tmpComputer = getComputerFromCLI();
-				tmpComputer = computerDAO.add(tmpComputer);
+				tmpComputer = computerService.add(tmpComputer);
 				if (tmpComputer != null) {
 					System.out.println("Insertion Success !");
 				} else {
@@ -148,7 +148,7 @@ public class CLI {
 				System.out.println("\tid ?");
 				id = getValidNumber();
 				tmpComputer = getComputerFromCLI();
-				updateRes = computerDAO.update(id, tmpComputer);
+				updateRes = computerService.update(id, tmpComputer);
 				if (updateRes == 1) {
 					System.out.println("Update Success !");
 				} else {
@@ -185,7 +185,7 @@ public class CLI {
 		boolean hasNext = true;
 		while (!isFinished) {
 			if (type.equals(COMPUTER_TABLE)) {
-				computerList = computerDAO.listAllByPage(start, offset);
+				computerList = computerService.listAllByPage(start, offset);
 				printComputer(computerList);
 				if (computerList.size() != 20) {
 					hasNext = false;
@@ -193,7 +193,7 @@ public class CLI {
 					hasNext = true;
 				}
 			} else if (type.equals(COMPANY_TABLE)) {
-				companyList = companyDAO.listAllByPage(start, offset);
+				companyList = companyService.listAllByPage(start, offset);
 				printCompany(companyList);
 				if (companyList.size() != 20) {
 					hasNext = false;
@@ -257,7 +257,7 @@ public class CLI {
 		System.out.println("Company ?");
 		int idCompany = getValidNumber();
 		Company c;
-		c = companyDAO.get(idCompany);
+		c = companyService.get(idCompany);
 
 		res = new Computer(name, intro, discontinued, c);
 		return res;
@@ -319,8 +319,8 @@ public class CLI {
 	 */
 	public static void main(String[] args) {
 
-		computerDAO = ComputerDAO.getInstance();
-		companyDAO = CompanyDAO.getInstance();
+		computerService = ComputerService.getInstance();
+		companyService = CompanyService.getInstance();
 		companyMapper = CompanyMapper.getInstance();
 		computerMapper = ComputerMapper.getInstance();
 		connection = DBConnect.getInstance();
