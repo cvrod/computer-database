@@ -1,4 +1,4 @@
-package com.excilys.cdb.CLI;
+package com.excilys.cdb.ui;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.excilys.cdb.DAO.UnknowTypeException;
+import com.excilys.cdb.dao.UnknowTypeException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;

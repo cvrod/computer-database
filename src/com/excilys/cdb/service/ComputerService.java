@@ -2,7 +2,7 @@ package com.excilys.cdb.service;
 
 import java.util.ArrayList;
 
-import com.excilys.cdb.DAO.ComputerDAO;
+import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
 

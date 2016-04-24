@@ -1,4 +1,4 @@
-package com.excilys.cdb.DAO;
+package com.excilys.cdb.dao;
 
 /**
  * DAOException throw by ComputerDAO & CompanyDAO class

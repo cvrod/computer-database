@@ -1,4 +1,4 @@
-package com.excilys.cdb.DAO;
+package com.excilys.cdb.dao;
 
 /**
  * Exception throw when the wrong table is given to DAO
