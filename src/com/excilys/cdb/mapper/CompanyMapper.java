@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.persistence.DBConnect;
+import com.excilys.cdb.persistence.ConnectionFactory;
 
 /**
  * Company mapper, who convert a given ResultSet to a List of Company
@@ -16,7 +16,7 @@ import com.excilys.cdb.persistence.DBConnect;
 public class CompanyMapper implements Mapper<Company> {
 	public static final String ID = "id";
 	public static final String NAME = "name";
-	public DBConnect connection = null;
+	public ConnectionFactory connection = null;
 
 	static CompanyMapper _instance = null;
 
@@ -28,7 +28,7 @@ public class CompanyMapper implements Mapper<Company> {
 	}
 
 	private CompanyMapper() {
-		connection = DBConnect.getInstance();
+		connection = ConnectionFactory.getInstance();
 	}
 
 	/**

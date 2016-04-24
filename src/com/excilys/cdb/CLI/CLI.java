@@ -11,7 +11,7 @@ import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.DBConnect;
+import com.excilys.cdb.persistence.ConnectionFactory;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
@@ -30,7 +30,7 @@ public class CLI {
 	static CompanyService companyService = null;
 	static CompanyMapper companyMapper = null;
 	static ComputerMapper computerMapper = null;
-	static DBConnect connection = null;
+	static ConnectionFactory connection = null;
 
 	/**
 	 * Printing Menu
@@ -323,7 +323,7 @@ public class CLI {
 		companyService = CompanyService.getInstance();
 		companyMapper = CompanyMapper.getInstance();
 		computerMapper = ComputerMapper.getInstance();
-		connection = DBConnect.getInstance();
+		connection = ConnectionFactory.getInstance();
 		sc = new Scanner(System.in);
 		sc.useDelimiter("\\n");
 
