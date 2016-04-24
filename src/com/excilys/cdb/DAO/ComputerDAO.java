@@ -63,6 +63,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			res = stmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
 		return res;
 	}
@@ -87,8 +88,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -113,9 +114,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-
-		return null;
 	}
 
 	/**
@@ -154,6 +154,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			c.setId(rs.getLong(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException(e);
 		}
 		return c;
 	}
@@ -188,8 +189,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -205,7 +206,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 		logger.debug("update Computer");
 
 		connection.openConnection();
-
+		int res = 0;
 		try (Connection con = connection.getConnection();
 				PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
 			stmt.setString(1, c.getName());
@@ -225,11 +226,11 @@ public class ComputerDAO extends GenericDAO<Computer> {
 				stmt.setLong(4, c.getCompany().getId());
 			}
 			stmt.setInt(5, id);
-			int res = stmt.executeUpdate();
+			res = stmt.executeUpdate();
 			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException(e);
 		}
-		return 0;
 	}
 }

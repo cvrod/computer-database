@@ -71,8 +71,8 @@ public class CompanyDAO extends GenericDAO<Company> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -95,8 +95,8 @@ public class CompanyDAO extends GenericDAO<Company> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -121,8 +121,8 @@ public class CompanyDAO extends GenericDAO<Company> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -145,6 +145,7 @@ public class CompanyDAO extends GenericDAO<Company> {
 			res = stmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
 		return res;
 	}
@@ -171,6 +172,7 @@ public class CompanyDAO extends GenericDAO<Company> {
 			c.setId(rs.getLong(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException(e);
 		}
 		return c;
 	}
@@ -187,18 +189,18 @@ public class CompanyDAO extends GenericDAO<Company> {
 	@Override
 	public int update(int id, Company c) {
 		logger.debug("update Computer");
-
+		int res = 0;
 		connection.openConnection();
 
 		try (Connection con = connection.getConnection();
 				PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
 			stmt.setString(1, c.getName());
 			stmt.setInt(2, id);
-			int res = stmt.executeUpdate();
+			res = stmt.executeUpdate();
 			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException(e);
 		}
-		return 0;
 	}
 }
