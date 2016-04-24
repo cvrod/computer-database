@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
+import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.persistence.ConnectionFactory;
 
 /**
@@ -27,7 +28,7 @@ public abstract class GenericDAO<T> {
 
 	public abstract ArrayList<T> listAll();
 
-	public abstract ArrayList<T> listAllByPage(int start, int offset);
+	public abstract Page<T> listAllByPage(int start, int offset);
 
 	public abstract int delete(int id);
 

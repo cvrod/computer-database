@@ -185,7 +185,7 @@ public class CLI {
 		boolean hasNext = true;
 		while (!isFinished) {
 			if (type.equals(COMPUTER_TABLE)) {
-				computerList = computerService.listAllByPage(start, offset);
+				computerList = computerService.listAllByPage(start, offset).getElementList();
 				printComputer(computerList);
 				if (computerList.size() != 20) {
 					hasNext = false;
@@ -193,7 +193,7 @@ public class CLI {
 					hasNext = true;
 				}
 			} else if (type.equals(COMPANY_TABLE)) {
-				companyList = companyService.listAllByPage(start, offset);
+				companyList = companyService.listAllByPage(start, offset).getElementList();
 				printCompany(companyList);
 				if (companyList.size() != 20) {
 					hasNext = false;

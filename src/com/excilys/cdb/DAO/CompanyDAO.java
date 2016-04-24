@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.pagination.Page;
 import com.mysql.jdbc.Statement;
 
 /**
@@ -105,11 +106,12 @@ public class CompanyDAO extends GenericDAO<Company> {
 	 * @return ArrayList<Company> company list
 	 */
 	@Override
-	public ArrayList<Company> listAllByPage(int start, int offset) {
+	public Page<Company> listAllByPage(int start, int offset) {
 		logger.debug("List company by Page");
-
 		connection.openConnection();
+		
 		ResultSet rs = null;
+		ArrayList<Company> elementList = null;
 
 		try (Connection con = connection.getConnection();
 				PreparedStatement stmt = con.prepareStatement(LISTPAGE_REQUEST)) {
@@ -117,7 +119,11 @@ public class CompanyDAO extends GenericDAO<Company> {
 			stmt.setInt(2, offset);
 			rs = stmt.executeQuery();
 			companyMapper = CompanyMapper.getInstance();
-			return (ArrayList<Company>) companyMapper.map(rs);
+			elementList = (ArrayList<Company>) companyMapper.map(rs);
+			Page<Company> page = new Page<>(elementList, start, offset);
+			
+			return page;
+			//return (ArrayList<Company>) companyMapper.map(rs);
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());

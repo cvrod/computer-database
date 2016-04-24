@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.pagination.Page;
 import com.mysql.jdbc.Statement;
 
 /**
@@ -98,11 +99,12 @@ public class ComputerDAO extends GenericDAO<Computer> {
 	 * @return ArrayList<Computer> computer list
 	 */
 	@Override
-	public ArrayList<Computer> listAllByPage(int start, int offset) {
+	public Page<Computer> listAllByPage(int start, int offset) {
 		logger.debug("List computer by Page");
-
-		connection.openConnection();
+		ArrayList<Computer> elementList = null;
 		ResultSet rs = null;
+		
+		connection.openConnection();
 
 		try (Connection con = connection.getConnection();
 				PreparedStatement stmt = con.prepareStatement(LISTPAGE_REQUEST)) {
@@ -110,7 +112,12 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			stmt.setInt(2, offset);
 			rs = stmt.executeQuery();
 			computerMapper = ComputerMapper.getInstance();
-			return (ArrayList<Computer>) computerMapper.map(rs);
+			//return (ArrayList<Computer>) computerMapper.map(rs);
+			
+			elementList = (ArrayList<Computer>) computerMapper.map(rs);
+			Page<Computer> page = new Page<>(elementList, start, offset);
+			
+			return page;
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
