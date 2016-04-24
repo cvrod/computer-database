@@ -187,10 +187,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			computerMapper = ComputerMapper.getInstance();
 			computerList = (ArrayList<Computer>) computerMapper.map(rs);
 			if (computerList.size() >= 1) {
-				logger.info("Computer Found : " + id);
+				logger.info("Found computer of id : " + id);
 				return computerList.get(0);
 			} else {
-				logger.warn("Couldn't find Computer : " + id);
+				logger.warn("Couldn't find Computer of id : " + id);
 				return null;
 			}
 

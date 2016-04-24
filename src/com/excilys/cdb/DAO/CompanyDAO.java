@@ -63,10 +63,10 @@ public class CompanyDAO extends GenericDAO<Company> {
 			companyMapper = CompanyMapper.getInstance();
 			companyList = (ArrayList<Company>) companyMapper.map(rs);
 			if (companyList.size() >= 1) {
-				logger.info("Computer Found : " + id);
+				logger.info("Found company of id : " + id);
 				return companyList.get(0);
 			} else {
-				logger.warn("Couldn't find Computer : " + id);
+				logger.warn("Couldn't find Company of id : " + id);
 				return null;
 			}
 
