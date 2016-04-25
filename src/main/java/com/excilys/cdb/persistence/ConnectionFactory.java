@@ -1,6 +1,5 @@
 package com.excilys.cdb.persistence;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,7 +15,7 @@ import org.slf4j.LoggerFactory;
  * Handle Query and update
  */
 public class ConnectionFactory {
-	private static final String PROPERTIES_FILE = "ressources/mysql.properties";
+	private static final String PROPERTIES_FILE = "mysql.properties";
 	
 	protected static String usrLogin;
 	protected static String psswrdLogin;
@@ -44,7 +43,7 @@ public class ConnectionFactory {
 	private ConnectionFactory() {
 		try {
 			Properties properties = new Properties();
-			properties.load(new FileInputStream(PROPERTIES_FILE));
+			properties.load(ConnectionFactory.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE));
 			
 			usrLogin = properties.getProperty("USR_LOGIN");
 			psswrdLogin = properties.getProperty("PSSWD_LOGIN");
