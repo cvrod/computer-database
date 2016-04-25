@@ -31,6 +31,17 @@ public class Company implements Comparable<Company> {
         this.id = id;
     }
 
+    /**.
+     * Company constructor
+     *
+     * @param name
+     *            company name
+     */
+    public Company(String name) {
+        LOGGER.info("creating new Company without id");
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

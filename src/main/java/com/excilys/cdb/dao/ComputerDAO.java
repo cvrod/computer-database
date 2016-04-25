@@ -108,6 +108,9 @@ public class ComputerDAO extends GenericDAO<Computer> {
      */
     @Override
     public Page<Computer> listAllByPage(int start, int offset) {
+        if (start < 0 || offset < 0) {
+            return null;
+        }
         LOGGER.debug("List computer by Page");
         ArrayList<Computer> elementList = null;
         ResultSet rs = null;
@@ -121,7 +124,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
             stmt.setInt(2, offset);
             rs = stmt.executeQuery();
             computerMapper = ComputerMapper.getInstance();
-            // return (ArrayList<Computer>) computerMapper.map(rs);
 
             elementList = (ArrayList<Computer>) computerMapper.map(rs);
             Page<Computer> page = new Page<>(elementList, start, offset);

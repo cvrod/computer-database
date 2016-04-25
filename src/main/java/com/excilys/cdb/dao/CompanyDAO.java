@@ -115,6 +115,9 @@ public class CompanyDAO extends GenericDAO<Company> {
      */
     @Override
     public Page<Company> listAllByPage(int start, int offset) {
+        if (start < 0 || offset < 0) {
+            return null;
+        }
         LOGGER.debug("List company by Page");
         connection.openConnection();
 
@@ -132,7 +135,6 @@ public class CompanyDAO extends GenericDAO<Company> {
             Page<Company> page = new Page<>(elementList, start, offset);
 
             return page;
-            // return (ArrayList<Company>) companyMapper.map(rs);
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());
