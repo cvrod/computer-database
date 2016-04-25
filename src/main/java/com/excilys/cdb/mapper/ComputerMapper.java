@@ -10,74 +10,77 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ConnectionFactory;
 
-/**
+/**.
  * Computer mapper, who convert a given ResultSet to a List of Computer
- * 
+ *
  * @see Mapper
  */
 public class ComputerMapper implements Mapper<Computer> {
-	public static final String ID = "id";
-	public static final String NAME = "name";
-	public CompanyMapper companyMapper = null;
-	public CompanyDAO companyDAO = null;
-	public ConnectionFactory connection = null;
+    public static final String ID = "id";
+    public static final String NAME = "name";
+    public CompanyMapper companyMapper = null;
+    public CompanyDAO companyDAO = null;
+    public ConnectionFactory connection = null;
 
-	static ComputerMapper _instance = null;
+    static ComputerMapper instance = null;
 
-	public static ComputerMapper getInstance() {
-		if (_instance == null) {
-			_instance = new ComputerMapper();
-		}
-		return _instance;
-	}
+    /**.
+     * getting ComputerMapper instance
+     * @return instance of ComputerMapper
+     */
+    public static ComputerMapper getInstance() {
+        if (instance == null) {
+            instance = new ComputerMapper();
+        }
+        return instance;
+    }
 
-	private ComputerMapper() {
-		companyMapper = CompanyMapper.getInstance();
-		companyDAO = CompanyDAO.getInstance();
-		connection = ConnectionFactory.getInstance();
-	}
+    /**.
+     * ComputerMapper constructor
+     */
+    private ComputerMapper() {
+        companyMapper = CompanyMapper.getInstance();
+        companyDAO = CompanyDAO.getInstance();
+        connection = ConnectionFactory.getInstance();
+    }
 
-	/**
-	 * Getting an ArrayList of Computer from a ResultSet
-	 * 
-	 * @param setRes
-	 *            resultSet to convert
-	 * @return ArrayList<Company> containing all computers informations
-	 */
-	@Override
-	public List<Computer> map(ResultSet setRes) {
-		ArrayList<Computer> res = new ArrayList<>();
-		Company c = null;
-		Long id;
-		String name;
-		String introduced;
-		String discontinued;
-		int companyId;
-		try {
-			while (setRes.next()) {
-				id = setRes.getLong("id");
-				name = setRes.getString("name");
-				introduced = setRes.getString("introduced");
-				discontinued = setRes.getString("discontinued");
-				companyId = setRes.getInt("company_id");
-				if (companyId != 0) {
-					c = companyDAO.get(companyId);
-				}
-				// Computer tmp = new Computer(id, name, introduced,
-				// discontinued, c);
-				Computer tmp = new Computer.Builder()
-						.id(id)
-						.name(name)
-						.introduced(introduced)
-						.discontinued(discontinued)
-						.company(c)
-						.build();
-				res.add(tmp);
-			}
-		} catch (SQLException e) {
-			System.out.println("Campany table error !");
-		}
-		connection.closeConnection();
-		return res;
-	}
+    /**.
+     * Getting an ArrayList of Computer from a ResultSet
+     *
+     * @param setRes
+     *            resultSet to convert
+     * @return ArrayList<Company> containing all computers informations
+     */
+    @Override
+    public List<Computer> map(ResultSet setRes) {
+        ArrayList<Computer> res = new ArrayList<>();
+        Company c = null;
+        Long id;
+        String name;
+        String introduced;
+        String discontinued;
+        int companyId;
+        try {
+            while (setRes.next()) {
+                id = setRes.getLong("id");
+                name = setRes.getString("name");
+                introduced = setRes.getString("introduced");
+                discontinued = setRes.getString("discontinued");
+                companyId = setRes.getInt("company_id");
+                if (companyId != 0) {
+                    c = companyDAO.get(companyId);
+                }
+                // Computer tmp = new Computer(id, name, introduced,
+                // discontinued, c);
+                Computer tmp = new Computer.Builder().id(id).name(name)
+                        .introduced(introduced).discontinued(discontinued)
+                        .company(c).build();
+                res.add(tmp);
+            }
+        } catch (SQLException e) {
+            System.out.println("Campany table error !");
+        }
+        connection.closeConnection();
+        return res;
+    }
 }

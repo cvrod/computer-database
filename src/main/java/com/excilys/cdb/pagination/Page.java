@@ -5,44 +5,51 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
+/**.
  * Page Pojo
+ *
  * @param <T>
  */
 public class Page<T> {
-	ArrayList<T> elementList = null;
-	int start = -1;
-	int offset = -1;
-	final static Logger logger = LoggerFactory.getLogger(Page.class);
-	
-	public Page(ArrayList<T> elementList, int start, int offset){
-		logger.debug("Page creation");
-		this.elementList = elementList;
-		this.start = start;
-		this.offset = offset;
-	}
+    ArrayList<T> elementList = null;
+    int start = -1;
+    int offset = -1;
+    static final Logger LOGGER = LoggerFactory.getLogger(Page.class);
 
-	public ArrayList<T> getElementList() {
-		return elementList;
-	}
+    /**.
+     * Page Constructor
+     * @param elementList list of element to display
+     * @param start start index
+     * @param offset page offset
+     */
+    public Page(ArrayList<T> elementList, int start, int offset) {
+        LOGGER.debug("Page creation");
+        this.elementList = elementList;
+        this.start = start;
+        this.offset = offset;
+    }
 
-	public void setElementList(ArrayList<T> elementList) {
-		this.elementList = elementList;
-	}
+    public ArrayList<T> getElementList() {
+        return elementList;
+    }
 
-	public int getStart() {
-		return start;
-	}
+    public void setElementList(ArrayList<T> elementList) {
+        this.elementList = elementList;
+    }
 
-	public void setStart(int start) {
-		this.start = start;
-	}
+    public int getStart() {
+        return start;
+    }
 
-	public int getOffset() {
-		return offset;
-	}
+    public void setStart(int start) {
+        this.start = start;
+    }
 
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
 }

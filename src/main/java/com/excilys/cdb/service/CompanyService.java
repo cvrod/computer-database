@@ -7,42 +7,80 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.pagination.Page;
 
 public class CompanyService {
-	private CompanyDAO companyDAO = null;
-	private static CompanyService companyService = null;
+    private CompanyDAO companyDAO = null;
+    private static CompanyService companyService = null;
 
-	private CompanyService() {
-		companyDAO = CompanyDAO.getInstance();
-	}
+    /**.
+     * CompanyService constructor
+     */
+    private CompanyService() {
+        companyDAO = CompanyDAO.getInstance();
+    }
 
-	public static synchronized CompanyService getInstance() {
-		if (companyService == null) {
-			companyService = new CompanyService();
-		}
-		return companyService;
-	}
+    /**.
+     * return instance of singleton CompanyServce
+     * @return CompanyService
+     */
+    public static synchronized CompanyService getInstance() {
+        if (companyService == null) {
+            companyService = new CompanyService();
+        }
+        return companyService;
+    }
 
-	public Company get(int id) {
-		return companyDAO.get(id);
-	}
+    /**.
+     * return a company from id
+     * @param id id of company
+     * @return Company
+     */
+    public Company get(int id) {
+        return companyDAO.get(id);
+    }
 
-	public Company add(Company comp) {
-		return companyDAO.add(comp);
-	}
+    /**.
+     * add a Company to DB
+     * @param comp company to add
+     * @return Fresh Company
+     */
+    public Company add(Company comp) {
+        return companyDAO.add(comp);
+    }
 
-	public int delete(int id) {
-		return companyDAO.delete(id);
-	}
+    /**.
+     * remove a Company
+     * @param id id of company to remove
+     * @return return 0 if id not found 1 if delete success
+     */
+    public int delete(int id) {
+        return companyDAO.delete(id);
+    }
 
-	public int update(int id, Company c) {
-		return companyDAO.update(id, c);
-	}
+    /**.
+     * update a company
+     * @param id id of company to update
+     * @param c fresh company object
+     * @return 0 if company dont existe, 1 else
+     */
+    public int update(int id, Company c) {
+        return companyDAO.update(id, c);
+    }
 
-	public ArrayList<Company> listAll() {
-		return companyDAO.listAll();
-	}
+    /**.
+     * list all Company
+     * @return List of all company
+     */
+    public ArrayList<Company> listAll() {
+        return companyDAO.listAll();
+    }
 
-	public Page<Company> listAllByPage(int start, int offset) {
-		return companyDAO.listAllByPage(start, offset);
-	}
+    /**.
+     * return a page of Company
+     * @param start start index
+     * @param offset page offset
+     * @return Page object
+     */
+    public Page<Company> listAllByPage(int start, int offset) {
+        return companyDAO.listAllByPage(start, offset);
+    }
 
 }
