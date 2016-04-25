@@ -1,33 +1,39 @@
 package com.excilys.cdb.persistence;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * Database connection class
  * Handle Query and update
  */
-public class DBConnect {
-	protected static final String USR_LOGIN = "admincdb";
-	protected static final String PSSWD_LOGIN = "qwerty1234";
-	protected static final String BD_ADDR = "jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull";
-	protected static final String DB_DRIVER = "com.mysql.jdbc.Driver";
-	final static Logger logger = LoggerFactory.getLogger(DBConnect.class);
+public class ConnectionFactory {
+	private static final String PROPERTIES_FILE = "ressources/mysql.properties";
+	
+	protected static String usrLogin;
+	protected static String psswrdLogin;
+	protected static String DBAddress;
+	protected static String DBDriver;
+	final static Logger logger = LoggerFactory.getLogger(ConnectionFactory.class);
 
 	protected Connection connection;
-	private static DBConnect _instance = null;
+	private static ConnectionFactory _instance = null;
 
 	/**
 	 * get instance of DBConnect
 	 * @return DBConnect instance
 	 */
-	public static DBConnect getInstance() {
+	public static ConnectionFactory getInstance() {
 		if (_instance == null) {
-			_instance = new DBConnect();
+			_instance = new ConnectionFactory();
 		}
 		return _instance;
 	}
@@ -35,12 +41,18 @@ public class DBConnect {
 	/**
 	 * BDConnect constructor
 	 */
-	private DBConnect() {
+	private ConnectionFactory() {
 		try {
-			Class.forName(DB_DRIVER);
-		} catch (ClassNotFoundException e) {
-			logger.warn("Cannot load class !");
-			System.out.println("Cannot load class !");
+			Properties properties = new Properties();
+			properties.load(new FileInputStream(PROPERTIES_FILE));
+			
+			usrLogin = properties.getProperty("USR_LOGIN");
+			psswrdLogin = properties.getProperty("PSSWD_LOGIN");
+			DBAddress = properties.getProperty("DB_ADDR");
+			DBDriver = properties.getProperty("DB_DRIVER");
+			Class.forName(DBDriver);
+		} catch (ClassNotFoundException | IOException e) {
+			logger.warn("Cannot connect to DB !");
 			e.printStackTrace();
 		}
 	}
@@ -54,7 +66,7 @@ public class DBConnect {
 	 */
 	public void openConnection() {
 		try {
-			connection = DriverManager.getConnection(BD_ADDR, USR_LOGIN, PSSWD_LOGIN);
+			connection = DriverManager.getConnection(DBAddress, usrLogin, psswrdLogin);
 		} catch (SQLException e) {
 			System.out.println("Can't get connection from driver !");
 			e.printStackTrace();

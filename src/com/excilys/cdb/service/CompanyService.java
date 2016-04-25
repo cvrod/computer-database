@@ -2,8 +2,9 @@ package com.excilys.cdb.service;
 
 import java.util.ArrayList;
 
-import com.excilys.cdb.DAO.CompanyDAO;
+import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.pagination.Page;
 
 public class CompanyService {
 	private CompanyDAO companyDAO = null;
@@ -40,7 +41,7 @@ public class CompanyService {
 		return companyDAO.listAll();
 	}
 
-	public ArrayList<Company> listAllByPage(int start, int offset) {
+	public Page<Company> listAllByPage(int start, int offset) {
 		return companyDAO.listAllByPage(start, offset);
 	}
 

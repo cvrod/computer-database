@@ -1,4 +1,4 @@
-package com.excilys.cdb.CLI;
+package com.excilys.cdb.ui;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import com.excilys.cdb.DAO.UnknowTypeException;
+import com.excilys.cdb.dao.UnknowTypeException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.DBConnect;
+import com.excilys.cdb.persistence.ConnectionFactory;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 
@@ -30,7 +30,7 @@ public class CLI {
 	static CompanyService companyService = null;
 	static CompanyMapper companyMapper = null;
 	static ComputerMapper computerMapper = null;
-	static DBConnect connection = null;
+	static ConnectionFactory connection = null;
 
 	/**
 	 * Printing Menu
@@ -185,7 +185,7 @@ public class CLI {
 		boolean hasNext = true;
 		while (!isFinished) {
 			if (type.equals(COMPUTER_TABLE)) {
-				computerList = computerService.listAllByPage(start, offset);
+				computerList = computerService.listAllByPage(start, offset).getElementList();
 				printComputer(computerList);
 				if (computerList.size() != 20) {
 					hasNext = false;
@@ -193,7 +193,7 @@ public class CLI {
 					hasNext = true;
 				}
 			} else if (type.equals(COMPANY_TABLE)) {
-				companyList = companyService.listAllByPage(start, offset);
+				companyList = companyService.listAllByPage(start, offset).getElementList();
 				printCompany(companyList);
 				if (companyList.size() != 20) {
 					hasNext = false;
@@ -323,7 +323,7 @@ public class CLI {
 		companyService = CompanyService.getInstance();
 		companyMapper = CompanyMapper.getInstance();
 		computerMapper = ComputerMapper.getInstance();
-		connection = DBConnect.getInstance();
+		connection = ConnectionFactory.getInstance();
 		sc = new Scanner(System.in);
 		sc.useDelimiter("\\n");
 

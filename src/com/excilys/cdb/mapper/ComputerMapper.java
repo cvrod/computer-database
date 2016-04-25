@@ -5,13 +5,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.excilys.cdb.DAO.CompanyDAO;
+import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.DBConnect;
+import com.excilys.cdb.persistence.ConnectionFactory;
 
 /**
  * Computer mapper, who convert a given ResultSet to a List of Computer
+ * 
  * @see Mapper
  */
 public class ComputerMapper implements Mapper<Computer> {
@@ -19,22 +20,23 @@ public class ComputerMapper implements Mapper<Computer> {
 	public static final String NAME = "name";
 	public CompanyMapper companyMapper = null;
 	public CompanyDAO companyDAO = null;
-	public DBConnect connection = null;
-	
+	public ConnectionFactory connection = null;
+
 	static ComputerMapper _instance = null;
-	
+
 	public static ComputerMapper getInstance() {
 		if (_instance == null) {
 			_instance = new ComputerMapper();
 		}
 		return _instance;
 	}
-	
-	private ComputerMapper(){
+
+	private ComputerMapper() {
 		companyMapper = CompanyMapper.getInstance();
 		companyDAO = CompanyDAO.getInstance();
-		connection = DBConnect.getInstance();
+		connection = ConnectionFactory.getInstance();
 	}
+
 	/**
 	 * Getting an ArrayList of Computer from a ResultSet
 	 * 
@@ -58,10 +60,18 @@ public class ComputerMapper implements Mapper<Computer> {
 				introduced = setRes.getString("introduced");
 				discontinued = setRes.getString("discontinued");
 				companyId = setRes.getInt("company_id");
-				if(companyId != 0){
+				if (companyId != 0) {
 					c = companyDAO.get(companyId);
 				}
-				Computer tmp = new Computer(id, name, introduced, discontinued, c);
+				// Computer tmp = new Computer(id, name, introduced,
+				// discontinued, c);
+				Computer tmp = new Computer.Builder()
+						.id(id)
+						.name(name)
+						.introduced(introduced)
+						.discontinued(discontinued)
+						.company(c)
+						.build();
 				res.add(tmp);
 			}
 		} catch (SQLException e) {

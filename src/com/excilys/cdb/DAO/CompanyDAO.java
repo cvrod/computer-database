@@ -1,4 +1,4 @@
-package com.excilys.cdb.DAO;
+package com.excilys.cdb.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
+import com.excilys.cdb.pagination.Page;
 import com.mysql.jdbc.Statement;
 
 /**
@@ -62,17 +63,17 @@ public class CompanyDAO extends GenericDAO<Company> {
 			companyMapper = CompanyMapper.getInstance();
 			companyList = (ArrayList<Company>) companyMapper.map(rs);
 			if (companyList.size() >= 1) {
-				logger.info("Computer Found : " + id);
+				logger.info("Found company of id : " + id);
 				return companyList.get(0);
 			} else {
-				logger.warn("Couldn't find Computer : " + id);
+				logger.warn("Couldn't find Company of id : " + id);
 				return null;
 			}
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -95,8 +96,8 @@ public class CompanyDAO extends GenericDAO<Company> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -105,11 +106,12 @@ public class CompanyDAO extends GenericDAO<Company> {
 	 * @return ArrayList<Company> company list
 	 */
 	@Override
-	public ArrayList<Company> listAllByPage(int start, int offset) {
+	public Page<Company> listAllByPage(int start, int offset) {
 		logger.debug("List company by Page");
-
 		connection.openConnection();
+		
 		ResultSet rs = null;
+		ArrayList<Company> elementList = null;
 
 		try (Connection con = connection.getConnection();
 				PreparedStatement stmt = con.prepareStatement(LISTPAGE_REQUEST)) {
@@ -117,12 +119,16 @@ public class CompanyDAO extends GenericDAO<Company> {
 			stmt.setInt(2, offset);
 			rs = stmt.executeQuery();
 			companyMapper = CompanyMapper.getInstance();
-			return (ArrayList<Company>) companyMapper.map(rs);
+			elementList = (ArrayList<Company>) companyMapper.map(rs);
+			Page<Company> page = new Page<>(elementList, start, offset);
+			
+			return page;
+			//return (ArrayList<Company>) companyMapper.map(rs);
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -145,6 +151,7 @@ public class CompanyDAO extends GenericDAO<Company> {
 			res = stmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
 		return res;
 	}
@@ -171,6 +178,7 @@ public class CompanyDAO extends GenericDAO<Company> {
 			c.setId(rs.getLong(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException(e);
 		}
 		return c;
 	}
@@ -187,18 +195,18 @@ public class CompanyDAO extends GenericDAO<Company> {
 	@Override
 	public int update(int id, Company c) {
 		logger.debug("update Computer");
-
+		int res = 0;
 		connection.openConnection();
 
 		try (Connection con = connection.getConnection();
 				PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
 			stmt.setString(1, c.getName());
 			stmt.setInt(2, id);
-			int res = stmt.executeUpdate();
+			res = stmt.executeUpdate();
 			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException(e);
 		}
-		return 0;
 	}
 }

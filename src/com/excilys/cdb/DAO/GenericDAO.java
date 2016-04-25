@@ -1,4 +1,4 @@
-package com.excilys.cdb.DAO;
+package com.excilys.cdb.dao;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -8,13 +8,14 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
-import com.excilys.cdb.persistence.DBConnect;
+import com.excilys.cdb.pagination.Page;
+import com.excilys.cdb.persistence.ConnectionFactory;
 
 /**
  * Main DAO class
  */
 public abstract class GenericDAO<T> {
-	protected DBConnect connection = null;
+	protected ConnectionFactory connection = null;
 	CompanyMapper companyMapper = null;
 	ComputerMapper computerMapper = null;
 	public ResultSet setRes = null;
@@ -22,12 +23,12 @@ public abstract class GenericDAO<T> {
 	final static Logger logger = LoggerFactory.getLogger(GenericDAO.class);
 
 	public GenericDAO() {
-		connection = DBConnect.getInstance();
+		connection = ConnectionFactory.getInstance();
 	}
 
 	public abstract ArrayList<T> listAll();
 
-	public abstract ArrayList<T> listAllByPage(int start, int offset);
+	public abstract Page<T> listAllByPage(int start, int offset);
 
 	public abstract int delete(int id);
 

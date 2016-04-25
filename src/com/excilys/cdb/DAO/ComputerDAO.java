@@ -1,4 +1,4 @@
-package com.excilys.cdb.DAO;
+package com.excilys.cdb.dao;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
+import com.excilys.cdb.pagination.Page;
 import com.mysql.jdbc.Statement;
 
 /**
@@ -63,6 +64,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			res = stmt.executeUpdate();
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
 		return res;
 	}
@@ -87,8 +89,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -97,11 +99,12 @@ public class ComputerDAO extends GenericDAO<Computer> {
 	 * @return ArrayList<Computer> computer list
 	 */
 	@Override
-	public ArrayList<Computer> listAllByPage(int start, int offset) {
+	public Page<Computer> listAllByPage(int start, int offset) {
 		logger.debug("List computer by Page");
-
-		connection.openConnection();
+		ArrayList<Computer> elementList = null;
 		ResultSet rs = null;
+		
+		connection.openConnection();
 
 		try (Connection con = connection.getConnection();
 				PreparedStatement stmt = con.prepareStatement(LISTPAGE_REQUEST)) {
@@ -109,13 +112,17 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			stmt.setInt(2, offset);
 			rs = stmt.executeQuery();
 			computerMapper = ComputerMapper.getInstance();
-			return (ArrayList<Computer>) computerMapper.map(rs);
+			//return (ArrayList<Computer>) computerMapper.map(rs);
+			
+			elementList = (ArrayList<Computer>) computerMapper.map(rs);
+			Page<Computer> page = new Page<>(elementList, start, offset);
+			
+			return page;
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-
-		return null;
 	}
 
 	/**
@@ -154,6 +161,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			c.setId(rs.getLong(1));
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException(e);
 		}
 		return c;
 	}
@@ -179,17 +187,17 @@ public class ComputerDAO extends GenericDAO<Computer> {
 			computerMapper = ComputerMapper.getInstance();
 			computerList = (ArrayList<Computer>) computerMapper.map(rs);
 			if (computerList.size() >= 1) {
-				logger.info("Computer Found : " + id);
+				logger.info("Found computer of id : " + id);
 				return computerList.get(0);
 			} else {
-				logger.warn("Couldn't find Computer : " + id);
+				logger.warn("Couldn't find Computer of id : " + id);
 				return null;
 			}
 
 		} catch (SQLException e) {
 			logger.error(e.getMessage());
+			throw new DAOException(e);
 		}
-		return null;
 	}
 
 	/**
@@ -205,7 +213,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
 		logger.debug("update Computer");
 
 		connection.openConnection();
-
+		int res = 0;
 		try (Connection con = connection.getConnection();
 				PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
 			stmt.setString(1, c.getName());
@@ -225,11 +233,11 @@ public class ComputerDAO extends GenericDAO<Computer> {
 				stmt.setLong(4, c.getCompany().getId());
 			}
 			stmt.setInt(5, id);
-			int res = stmt.executeUpdate();
+			res = stmt.executeUpdate();
 			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			throw new DAOException(e);
 		}
-		return 0;
 	}
 }
