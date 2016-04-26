@@ -259,13 +259,11 @@ public class ComputerDAO extends GenericDAO<Computer> {
         LOGGER.debug("count computers");
         ResultSet rs = null;
         connection.openConnection();
-        int resInt = 0;
         try (Connection con = connection.getConnection();
                 PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
             rs = stmt.executeQuery();
             rs.next();
-            resInt = rs.getInt(1);
-            return new Long(resInt);
+            return rs.getLong(1);
         }catch (SQLException e) {
             e.printStackTrace();
             throw new DAOException(e);
