@@ -9,14 +9,17 @@ import com.excilys.cdb.pagination.Page;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.mockito.Spy;
+import org.mockito.runners.MockitoJUnitRunner;
 
-/**
- * @author excilys
- *
- */
+@RunWith(MockitoJUnitRunner.class)
 public class CompanyServiceTest {
     
     static CompanyService companyService = null;
+    
+    @Spy
     static Company companyTest = null;
 
     /**
@@ -25,7 +28,6 @@ public class CompanyServiceTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
         companyService = CompanyService.getInstance();
-        companyTest = new Company(new Long(1), "Apple Inc.");
     }
 
     /**
@@ -42,8 +44,12 @@ public class CompanyServiceTest {
      */
     @Test
     public void testGet() {
+        Mockito.when(companyTest.getId()).thenReturn(new Long(1));
+        Mockito.when(companyTest.getName()).thenReturn("Apple Inc.");
         Company c = companyService.get(1);
-        assertEquals("problem on get", companyTest, c);
+        
+        assertEquals("problem on get (Id)", companyTest.getId(), c.getId());
+        assertEquals("problem on get (name)", companyTest.getName(), c.getName());
         c = companyService.get(600);
         assertNull("Company not null", c);
     }
