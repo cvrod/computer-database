@@ -1,4 +1,4 @@
-package com.excilys.cdb.servlet;
+package com.excilys.cdb.controller.computer;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class ComputerServlet
+ * Servlet implementation class EditComputer
  */
-@WebServlet("/ComputerServlet")
-public class ComputerServlet extends HttpServlet {
+@WebServlet(name = "EditComputer", urlPatterns = {"/computer/edit"})
+public class EditComputer extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ComputerServlet() {
+    public EditComputer() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -26,7 +26,7 @@ public class ComputerServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/dashboard.html").forward(request, response);
+	    request.getRequestDispatcher("/WEB-INF/views/editComputer.html").forward(request, response);
 	}
 
 	/**
