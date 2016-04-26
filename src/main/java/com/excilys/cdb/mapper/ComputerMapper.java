@@ -70,8 +70,6 @@ public class ComputerMapper implements Mapper<Computer> {
                 if (companyId != 0) {
                     c = companyDAO.get(companyId);
                 }
-                // Computer tmp = new Computer(id, name, introduced,
-                // discontinued, c);
                 Computer tmp = new Computer.Builder().id(id).name(name)
                         .introduced(introduced).discontinued(discontinued)
                         .company(c).build();
