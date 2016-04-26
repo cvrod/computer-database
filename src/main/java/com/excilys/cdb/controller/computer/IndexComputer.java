@@ -1,7 +1,6 @@
 package com.excilys.cdb.controller.computer;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,11 +50,12 @@ public class IndexComputer extends HttpServlet {
 	        }
 	    }
 	    Page<Computer> computerPage = computerService.listAllByPage(index, PAGE_OFFSET);
-	    ArrayList<Computer> computerList = computerService.listAll();
+	    Long countComputer = computerService.count();
 	    
 	    request.setAttribute("page", computerPage);
-	    request.setAttribute("index", index+=20);
-	    request.setAttribute("countComputer", computerList.size());
+	    request.setAttribute("index", index);
+	    request.setAttribute("countComputer", countComputer);
+	    request.setAttribute("offset", PAGE_OFFSET);
 
 	    request.getRequestDispatcher("/WEB-INF/views/indexComputer.jsp").forward(request, response);
 	}

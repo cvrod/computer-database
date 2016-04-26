@@ -18,13 +18,13 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
+			<a class="navbar-brand" href="${pageContext.request.contextPath}/computer"> Application -
 				Computer Database </a>
 		</div>
 	</header>
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle"><c:out value="${ countComputer }" /> Computers found</h1>
+			<h1 id="homeTitle"><c:out value="${countComputer}" /> Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -36,7 +36,7 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer.html">Add
+					<a class="btn btn-success" id="addComputer" href="${pageContext.request.contextPath}/computer/add">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -72,117 +72,16 @@
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">MacBook Pro</a></td>
-						<td>2006-01-10</td>
-						<td></td>
-						<td>Apple Inc.</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">Connection
-								Machine</a></td>
-						<td>1987-01-01</td>
-						<td></td>
-						<td>Thinking Machines</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">PowerBook</a></td>
-						<td>1991-01-01</td>
-						<td>2006-01-01</td>
-						<td>Apple Inc.</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">Commodore 64</a></td>
-						<td>1982-08-01</td>
-						<td>1994-01-01</td>
-						<td>Commodore International</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">Altair 8800</a></td>
-						<td>1974-12-19</td>
-						<td></td>
-						<td>Micro Instrumentation and Telemetry Systems</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">Canon Cat</a></td>
-						<td>1987-01-01</td>
-						<td></td>
-						<td>Canon</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">Nokia 770</a></td>
-						<td></td>
-						<td></td>
-						<td>Nokia</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">NeXTcube</a></td>
-						<td>1988-01-01</td>
-						<td>1993-01-01</td>
-						<td>NeXT</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">IBM 650</a></td>
-						<td>1953-01-01</td>
-						<td>1962-01-01</td>
-						<td>IBM</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">PlayStation 2</a>
-						</td>
-						<td>2000-03-24</td>
-						<td></td>
-						<td>Sony</td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">Archos 101</a></td>
-						<td></td>
-						<td></td>
-						<td></td>
-
-					</tr>
-					<tr>
-						<td class="editMode"><input type="checkbox" name="cb"
-							class="cb" value="0"></td>
-						<td><a href="editComputer.html" onclick="">Nintendo 3DS</a></td>
-						<td>2010-03-23</td>
-						<td></td>
-						<td>Nintendo</td>
-
-					</tr>
-
+					<c:forEach items="${page.elementList}" var="computer">
+						<tr>
+							<td class="editMode"><input type="checkbox" name="cb"
+								class="cb" value="${computer.id}"></td>
+							<td><a href="${pageContext.request.contextPath}/computer/edit?id=${computer.id}" onclick="">${computer.name}</a></td>
+							<td>${computer.introduced}</td>
+							<td>${computer.discontinued}</td>
+							<td>${computer.company.name}</td>
+						</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 		</div>
@@ -191,15 +90,15 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
+				<li><a href="?index=${index - offset}" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<li><a href="?index=0">1</a></li>
+				<li><a href="?index=${offset}">2</a></li>
+				<li><a href="?index=${offset*2}">3</a></li>
+				<li><a href="?index=${offset*3}">4</a></li>
+				<li><a href="?index=${offset*4}">5</a></li>
+				<li><a href="?index=${index + offset}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 		</div>

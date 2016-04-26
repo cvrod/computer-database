@@ -30,6 +30,7 @@ public class CompanyDAO extends GenericDAO<Company> {
     public static final String DELETE_REQUEST = "DELETE FROM company WHERE id=?";
     public static final String INSERT_REQUEST = "INSERT INTO company (name) VALUES(?)";
     public static final String UPDATE_REQUEST = "UPDATE company SET name=? WHERE id=?";
+    public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM company";
     Connection con = null;
 
     /**.
@@ -217,6 +218,24 @@ public class CompanyDAO extends GenericDAO<Company> {
             res = stmt.executeUpdate();
             return res;
         } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException(e);
+        }
+    }
+    
+    @Override
+    public Long count() {
+        LOGGER.debug("count company");
+        ResultSet rs = null;
+        connection.openConnection();
+        int resInt = 0;
+        try (Connection con = connection.getConnection();
+                PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
+            rs = stmt.executeQuery();
+            rs.next();
+            resInt = rs.getInt(1);
+            return new Long(resInt);
+        }catch (SQLException e) {
             e.printStackTrace();
             throw new DAOException(e);
         }

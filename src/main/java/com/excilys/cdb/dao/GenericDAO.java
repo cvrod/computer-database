@@ -72,4 +72,10 @@ public abstract class GenericDAO<T> {
      */
     public abstract int update(int id, T c);
 
+    /**.
+     * count the number of entities
+     * @return number of entities
+     */
+    public abstract Long count();
+
 }

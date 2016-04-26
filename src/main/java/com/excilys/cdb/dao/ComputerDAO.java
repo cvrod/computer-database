@@ -29,6 +29,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public static final String UPDATE_REQUEST = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM computer;";
     public static final String LISTPAGE_REQUEST = "SELECT * FROM computer LIMIT ?,?";
+    public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM computer";
     static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
     Connection con = null;
 
@@ -248,6 +249,24 @@ public class ComputerDAO extends GenericDAO<Computer> {
             res = stmt.executeUpdate();
             return res;
         } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DAOException(e);
+        }
+    }
+
+    @Override
+    public Long count() {
+        LOGGER.debug("count computers");
+        ResultSet rs = null;
+        connection.openConnection();
+        int resInt = 0;
+        try (Connection con = connection.getConnection();
+                PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
+            rs = stmt.executeQuery();
+            rs.next();
+            resInt = rs.getInt(1);
+            return new Long(resInt);
+        }catch (SQLException e) {
             e.printStackTrace();
             throw new DAOException(e);
         }
