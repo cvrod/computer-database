@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.dto.model.ComputerDTO;
+
 /**
  * . Computer object Contain a row from computer table
  */
@@ -16,8 +18,8 @@ public class Computer {
     private Company company = null;
     static final Logger LOGGER = LoggerFactory.getLogger(Computer.class);
 
-    /**.
-     * Computer constructor
+    /**
+     * . Computer constructor
      */
     public Computer() {
     };
@@ -56,6 +58,26 @@ public class Computer {
             this.setCompany(comp);
         } else {
             this.setCompany(null);
+        }
+    }
+
+    /**.
+     * Computer constructor from ComputerDTO
+     * @param c source ComputerDTO
+     */
+    public Computer(ComputerDTO c) {
+        this.id = c.getId();
+        this.name = c.getName();
+
+        if (c.getIntroduced().equals("")) {
+            this.introduced = null;
+        } else {
+            this.setIntroduced(LocalDate.parse(c.getIntroduced()));
+        }
+        if (c.getDiscontinued().equals("")) {
+            this.discontinued = null;
+        } else {
+            this.setIntroduced(LocalDate.parse(c.getDiscontinued()));
         }
     }
 
@@ -232,15 +254,17 @@ public class Computer {
         private String discontinued = null;
         private Company company = null;
 
-        /**.
-         * Builder Constructor
+        /**
+         * . Builder Constructor
          */
         public Builder() {
         }
 
-        /**.
-         * add id param to Builder
-         * @param id fesh id param
+        /**
+         * . add id param to Builder
+         * 
+         * @param id
+         *            fesh id param
          * @return Computer.Builder
          */
         public Builder id(Long id) {
@@ -248,9 +272,11 @@ public class Computer {
             return this;
         }
 
-        /**.
-         * add name param to Builder
-         * @param name name fresh param
+        /**
+         * . add name param to Builder
+         * 
+         * @param name
+         *            name fresh param
          * @return Computer.Builder
          */
         public Builder name(String name) {
@@ -258,9 +284,11 @@ public class Computer {
             return this;
         }
 
-        /**.
-         * add introduced param to Builder
-         * @param intro intro fresh param
+        /**
+         * . add introduced param to Builder
+         * 
+         * @param intro
+         *            intro fresh param
          * @return Computer.Builder
          */
         public Builder introduced(String intro) {
@@ -268,9 +296,11 @@ public class Computer {
             return this;
         }
 
-        /**.
-         * add discontinued param to Builder
-         * @param discontinued discontinued fresh param
+        /**
+         * . add discontinued param to Builder
+         * 
+         * @param discontinued
+         *            discontinued fresh param
          * @return Computer.Builder
          */
         public Builder discontinued(String discontinued) {
@@ -278,9 +308,11 @@ public class Computer {
             return this;
         }
 
-        /**.
-         * add company param to Builder
-         * @param company Company to add
+        /**
+         * . add company param to Builder
+         * 
+         * @param company
+         *            Company to add
          * @return Computer.Builder
          */
         public Builder company(Company company) {
@@ -288,8 +320,9 @@ public class Computer {
             return this;
         }
 
-        /**.
-         * method to build a Computer object from Builder class
+        /**
+         * . method to build a Computer object from Builder class
+         * 
          * @return Computer object
          */
         public Computer build() {
