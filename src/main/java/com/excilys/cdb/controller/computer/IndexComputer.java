@@ -25,7 +25,7 @@ public class IndexComputer extends HttpServlet {
     static ComputerService computerService = null;
     static int index = 0;
     static int offset = 10;
-    //public static final int PAGE_OFFSET = 10;
+    // public static final int PAGE_OFFSET = 10;
     static final Logger LOGGER = LoggerFactory.getLogger(IndexComputer.class);
 
     /**

@@ -25,26 +25,26 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<h1>Add Computer</h1>
-					<form action="addComputer" method="POST">
+					<form action="add" method="POST">
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
-									placeholder="Computer name">
+									placeholder="Computer name" name="computerName">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
-									placeholder="Introduced date">
+									placeholder="Introduced date" name="introduced">
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
-									placeholder="Discontinued date">
+									placeholder="Discontinued date" name="discontinued">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId">
+									class="form-control" id="companyId" name="companyId">
 									<c:forEach items="${companies}" var="company">
 										<option value="${company.id}">${company.name}</option>
 									</c:forEach>
