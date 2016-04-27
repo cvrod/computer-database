@@ -29,6 +29,7 @@ public class AddComputer extends HttpServlet {
     ComputerService computerService = null;
     CompanyService companyService = null;
     static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
+    ArrayList<Company> companies = null;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -45,7 +46,6 @@ public class AddComputer extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Company> companies = null;
         try {
             companies = companyService.listAll();
             LOGGER.debug("Getting CompanyService.listAll()");
@@ -78,6 +78,7 @@ public class AddComputer extends HttpServlet {
             request.setAttribute("computerName", nameParam);
             request.setAttribute("introduced", introducedParam);
             request.setAttribute("discontinued", discontinuedParam);
+            request.setAttribute("companies", companies);
             request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
                     .forward(request, response);
 
