@@ -1,10 +1,11 @@
 package com.excilys.cdb.dto.model;
+
 import java.time.LocalDate;
 
 import com.excilys.cdb.model.Computer;
 
-/**.
- * ComputerDTO, use to transmit data to jsp from servlet
+/**
+ * . ComputerDTO, use to transmit data to jsp from servlet
  *
  */
 public class ComputerDTO {
@@ -14,53 +15,72 @@ public class ComputerDTO {
     protected String discontinued;
     protected long idCompany;
     protected String nameCompany;
-    
-    public ComputerDTO(Computer c){
+
+    public ComputerDTO(Computer c) {
         this.id = c.getId();
         this.name = c.getName();
         LocalDate intro = c.getIntroduced();
         LocalDate discontinued = c.getDiscontinued();
         this.introduced = (intro != null) ? (intro.toString()) : ("");
-        this.discontinued = (discontinued != null) ? (discontinued.toString()) : ("");
-        this.idCompany = c.getCompany().getId();
-        this.name = c.getCompany().getName();
+        this.discontinued = (discontinued != null) ? (discontinued.toString())
+                : ("");
+        if (c.getCompany() != null) {
+            this.idCompany = c.getCompany().getId();
+            this.nameCompany = c.getCompany().getName();
+        } else {
+            this.idCompany = 0;
+            this.nameCompany = "";
+        }
     }
+
     public long getId() {
         return id;
     }
+
     public void setId(long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getIntroduced() {
         return introduced;
     }
+
     public void setIntroduced(String introduction) {
         this.introduced = introduction;
     }
+
     public String getDiscontinued() {
         return discontinued;
     }
+
     public void setDiscontinued(String discontinued) {
         this.discontinued = discontinued;
     }
+
     public long getIdCompany() {
         return idCompany;
     }
+
     public void setIdCompany(long idCompany) {
         this.idCompany = idCompany;
     }
+
     public String getNameCompany() {
         return nameCompany;
     }
+
     public void setNameCompany(String nameCompany) {
         this.nameCompany = nameCompany;
     }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -76,6 +96,7 @@ public class ComputerDTO {
                 + ((nameCompany == null) ? 0 : nameCompany.hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -111,5 +132,4 @@ public class ComputerDTO {
             return false;
         return true;
     }
-
 }

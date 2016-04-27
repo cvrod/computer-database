@@ -1,6 +1,8 @@
 package com.excilys.cdb.controller.computer;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.dto.model.ComputerDTO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.service.ComputerService;
@@ -77,7 +80,19 @@ public class IndexComputer extends HttpServlet {
         Page<Computer> computerPage = computerService.listAllByPage(index,
                 offset);
 
-        request.setAttribute("page", computerPage);
+        ArrayList<ComputerDTO> computerDtoArray = new ArrayList<>();
+        ComputerDTO dtoTmp = null;
+        for (Computer c : computerPage.getElementList()) {
+            System.out.println(c.getName());
+            dtoTmp = new ComputerDTO(c);
+            System.out.println(dtoTmp.getName());
+            computerDtoArray.add(dtoTmp);
+        }
+
+        Page<ComputerDTO> computerDtoPage = new Page<>(computerDtoArray,
+                computerPage.getStart(), computerPage.getOffset());
+
+        request.setAttribute("page", computerDtoPage);
         request.setAttribute("index", index);
         request.setAttribute("countComputer", countComputer);
         request.setAttribute("offset", offset);

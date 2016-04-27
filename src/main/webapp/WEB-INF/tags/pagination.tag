@@ -12,8 +12,7 @@
 				<li><a href="?index=${offset*2}">3</a></li>
 				<li><a href="?index=${offset*3}">4</a></li>
 				<li><a href="?index=${offset*4}">5</a></li>
-				<li><a href="?index=${index + offset}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-				</a></li>
+				<li><a href="?index=${index + offset}" aria-label="Next"> <span aria-hidden="true">&raquo;</span></a></li>
 </ul>
 <div class="btn-group btn-group-sm pull-right" role="group">
 	<a href="?index=${index}&offset=10"><button type="button" class="btn btn-default">10</button></a>

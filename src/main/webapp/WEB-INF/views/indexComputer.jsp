@@ -80,7 +80,7 @@
 							<td><a href="${pageContext.request.contextPath}/computer/edit?id=${computer.id}" onclick="">${computer.name}</a></td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
-							<td>${computer.company.name}</td>
+							<td>${computer.nameCompany}</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -90,7 +90,7 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-			<tags:pagination index="${ index }" offset="${ offset }"/>
+			<tags:pagination index="${index}" offset="${offset}"/>
 		</div>
 	</footer>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
