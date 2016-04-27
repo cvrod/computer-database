@@ -16,6 +16,10 @@ public class ComputerDTO {
     protected long idCompany;
     protected String nameCompany;
 
+    /**.
+     * ComputerDTO main constructor
+     * @param c Computer to map
+     */
     public ComputerDTO(Computer c) {
         this.id = c.getId();
         this.name = c.getName();
@@ -99,37 +103,50 @@ public class ComputerDTO {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (!(obj instanceof ComputerDTO))
+        }
+        if (!(obj instanceof ComputerDTO)) {
             return false;
+        }
         ComputerDTO other = (ComputerDTO) obj;
         if (discontinued == null) {
-            if (other.discontinued != null)
+            if (other.discontinued != null) {
                 return false;
-        } else if (!discontinued.equals(other.discontinued))
+            }
+        } else if (!discontinued.equals(other.discontinued)) {
             return false;
-        if (id != other.id)
+        }
+        if (id != other.id) {
             return false;
-        if (idCompany != other.idCompany)
+        }
+        if (idCompany != other.idCompany) {
             return false;
+        }
         if (introduced == null) {
-            if (other.introduced != null)
+            if (other.introduced != null) {
                 return false;
-        } else if (!introduced.equals(other.introduced))
+            }
+        } else if (!introduced.equals(other.introduced)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         if (nameCompany == null) {
-            if (other.nameCompany != null)
+            if (other.nameCompany != null) {
                 return false;
-        } else if (!nameCompany.equals(other.nameCompany))
+            }
+        } else if (!nameCompany.equals(other.nameCompany)) {
             return false;
+        }
         return true;
     }
 }

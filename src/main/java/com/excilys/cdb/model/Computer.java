@@ -262,7 +262,7 @@ public class Computer {
 
         /**
          * . add id param to Builder
-         * 
+         *
          * @param id
          *            fesh id param
          * @return Computer.Builder
@@ -274,7 +274,7 @@ public class Computer {
 
         /**
          * . add name param to Builder
-         * 
+         *
          * @param name
          *            name fresh param
          * @return Computer.Builder
@@ -286,7 +286,7 @@ public class Computer {
 
         /**
          * . add introduced param to Builder
-         * 
+         *
          * @param intro
          *            intro fresh param
          * @return Computer.Builder
@@ -298,7 +298,7 @@ public class Computer {
 
         /**
          * . add discontinued param to Builder
-         * 
+         *
          * @param discontinued
          *            discontinued fresh param
          * @return Computer.Builder
@@ -310,7 +310,7 @@ public class Computer {
 
         /**
          * . add company param to Builder
-         * 
+         *
          * @param company
          *            Company to add
          * @return Computer.Builder
@@ -322,7 +322,7 @@ public class Computer {
 
         /**
          * . method to build a Computer object from Builder class
-         * 
+         *
          * @return Computer object
          */
         public Computer build() {

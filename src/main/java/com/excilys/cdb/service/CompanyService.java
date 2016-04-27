@@ -83,11 +83,11 @@ public class CompanyService {
         return companyDAO.listAllByPage(start, offset);
     }
 
-    /**
+    /**.
      * return total number of element in company table
      * @return number of elements
      */
-    public Long count(){
+    public Long count() {
         return companyDAO.count();
     }
 }

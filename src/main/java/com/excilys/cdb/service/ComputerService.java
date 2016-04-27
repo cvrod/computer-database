@@ -81,11 +81,11 @@ public class ComputerService {
         return computerDAO.listAllByPage(start, offset);
     }
 
-    /**
+    /**.
      * return total number of element in computer table
      * @return number of elements in table
      */
-    public Long count(){
+    public Long count() {
         return computerDAO.count();
     }
 }

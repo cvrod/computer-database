@@ -21,7 +21,7 @@ import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.dao.DAOException;
 
 /**
- * Servlet implementation class AddComputer
+ * . Servlet implementation class AddComputer
  */
 @WebServlet(name = "AddComputer", urlPatterns = { "/computer/add" })
 public class AddComputer extends HttpServlet {
@@ -31,8 +31,8 @@ public class AddComputer extends HttpServlet {
     static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
     ArrayList<Company> companies = null;
 
-    /**
-     * @see HttpServlet#HttpServlet()
+    /**.
+     * AddComputer Servlet constructor
      */
     public AddComputer() {
         super();
@@ -40,9 +40,13 @@ public class AddComputer extends HttpServlet {
         companyService = CompanyService.getInstance();
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
+    /**.
+     * return addcomputer form
+     * @param request request object
+     * @param response response object
+     *
+     * @throws ServletException ServletException
+     * @throws IOException IOException
      */
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -58,9 +62,13 @@ public class AddComputer extends HttpServlet {
                 .forward(request, response);
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
+    /**.
+     * add a computer to DB
+     * @param request request object
+     * @param response response object
+     *
+     * @throws ServletException Servlet Exception
+     * @throws IOException IOException
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -116,5 +124,4 @@ public class AddComputer extends HttpServlet {
             }
         }
     }
-
 }

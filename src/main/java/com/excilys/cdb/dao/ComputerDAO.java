@@ -264,7 +264,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new DAOException(e);
         }

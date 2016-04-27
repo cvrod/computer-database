@@ -17,7 +17,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.service.ComputerService;
 
-/**
+/**.
  * . Servlet implementation class IndexComputer
  */
 @WebServlet(name = "IndexComputer", urlPatterns = { "/computer" })
@@ -27,24 +27,23 @@ public class IndexComputer extends HttpServlet {
     static ComputerService computerService = null;
     static int index = 0;
     static int offset = 10;
-    // public static final int PAGE_OFFSET = 10;
     static final Logger LOGGER = LoggerFactory.getLogger(IndexComputer.class);
 
-    /**
-     * .
-     * 
-     * @see HttpServlet#HttpServlet()
+    /**.
+     * IndexComputer Servlet constructor
      */
     public IndexComputer() {
         super();
         computerService = ComputerService.getInstance();
     }
 
-    /**
-     * .
-     * 
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
+    /**.
+     * return a computer page
+     * @param request request object
+     * @param response response object
+     *
+     * @throws ServletException ServletException
+     * @throws IOException IOException
      */
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -82,9 +81,7 @@ public class IndexComputer extends HttpServlet {
         ArrayList<ComputerDTO> computerDtoArray = new ArrayList<>();
         ComputerDTO dtoTmp = null;
         for (Computer c : computerPage.getElementList()) {
-            System.out.println(c.getName());
             dtoTmp = new ComputerDTO(c);
-            System.out.println(dtoTmp.getName());
             computerDtoArray.add(dtoTmp);
         }
 
@@ -100,15 +97,16 @@ public class IndexComputer extends HttpServlet {
                 .forward(request, response);
     }
 
-    /**
-     * .
-     * 
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
+    /**.
+     * doPost
+     * @param request request object
+     * @param response response object
+     *
+     * @throws ServletException Servlet Exception
+     * @throws IOException IOException
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
     }
-
 }

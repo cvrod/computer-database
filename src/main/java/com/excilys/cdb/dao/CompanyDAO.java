@@ -222,7 +222,7 @@ public class CompanyDAO extends GenericDAO<Company> {
             throw new DAOException(e);
         }
     }
-    
+
     @Override
     public Long count() {
         LOGGER.debug("count company");
@@ -233,7 +233,7 @@ public class CompanyDAO extends GenericDAO<Company> {
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);
-        }catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             throw new DAOException(e);
         }
