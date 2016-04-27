@@ -24,7 +24,8 @@ public class IndexComputer extends HttpServlet {
 
     static ComputerService computerService = null;
     static int index = 0;
-    public static final int PAGE_OFFSET = 20;
+    static int offset = 10;
+    //public static final int PAGE_OFFSET = 10;
     static final Logger LOGGER = LoggerFactory.getLogger(IndexComputer.class);
 
     /**
@@ -46,6 +47,7 @@ public class IndexComputer extends HttpServlet {
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         String paramIndex = request.getParameter("index");
+        String paramOffset = request.getParameter("offset");
         if (paramIndex != null) {
             try {
                 index = Integer.parseInt(paramIndex);
@@ -55,21 +57,30 @@ public class IndexComputer extends HttpServlet {
                 index = 0;
             }
         }
+        if (paramOffset != null) {
+            try {
+                offset = Integer.parseInt(paramOffset);
+                LOGGER.info("getting offset : " + offset);
+            } catch (NumberFormatException e) {
+                LOGGER.debug("NumberFormatException on index param !");
+                offset = 10;
+            }
+        }
         Long countComputer = computerService.count();
 
         if (index < 0) {
             index = 0;
         } else if (index >= countComputer) {
-            index = (int) (countComputer - PAGE_OFFSET);
+            index = (int) (countComputer - offset);
         }
 
         Page<Computer> computerPage = computerService.listAllByPage(index,
-                PAGE_OFFSET);
+                offset);
 
         request.setAttribute("page", computerPage);
         request.setAttribute("index", index);
         request.setAttribute("countComputer", countComputer);
-        request.setAttribute("offset", PAGE_OFFSET);
+        request.setAttribute("offset", offset);
 
         request.getRequestDispatcher("/WEB-INF/views/indexComputer.jsp")
                 .forward(request, response);

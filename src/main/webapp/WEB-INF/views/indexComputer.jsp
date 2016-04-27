@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -9,16 +9,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="resources/css/bootstrap.min.css" rel="stylesheet"
+<link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet"
 	media="screen">
-<link href="resources/css/font-awesome.css" rel="stylesheet"
+<link href="${pageContext.request.contextPath}/resources/css/font-awesome.css" rel="stylesheet"
 	media="screen">
-<link href="resources/css/main.css" rel="stylesheet" media="screen">
+<link href="${pageContext.request.contextPath}/resources/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="${pageContext.request.contextPath}/computer"> Application -
+			<a class="navbar-brand" href="${pageContext.request.contextPath}/computer?index=0"> Application -
 				Computer Database </a>
 		</div>
 	</header>
@@ -101,17 +101,16 @@
 				<li><a href="?index=${index + offset}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
-		</div>
 		<div class="btn-group btn-group-sm pull-right" role="group">
-			<button type="button" class="btn btn-default">10</button>
-			<button type="button" class="btn btn-default">50</button>
-			<button type="button" class="btn btn-default">100</button>
+			<a href="?index=${index}&offset=10"><button type="button" class="btn btn-default">10</button></a>
+			<a href="?index=${index}&offset=50"><button type="button" class="btn btn-default">50</button></a>
+			<a href="?index=${index}&offset=100"><button type="button" class="btn btn-default">100</button></a>
 		</div>
-
+	</div>
 	</footer>
-	<script src="resources/js/jquery.min.js"></script>
-	<script src="resources/js/bootstrap.min.js"></script>
-	<script src="resources/js/dashboard.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script>
 
 </body>
 </html>
