@@ -52,7 +52,7 @@ public class IndexComputer extends HttpServlet {
         String paramIndex = request.getParameter("index");
         String paramOffset = request.getParameter("offset");
         String paramPage = request.getParameter("page");
-        
+
         if (paramIndex != null) {
             try {
                 index = Integer.parseInt(paramIndex);
@@ -72,7 +72,7 @@ public class IndexComputer extends HttpServlet {
             }
         }
         if (paramPage != null) {
-            try{
+            try {
                 currentPage = Integer.parseInt(paramPage);
                 LOGGER.info("getting current page : " + currentPage);
             } catch (NumberFormatException e) {
@@ -80,7 +80,7 @@ public class IndexComputer extends HttpServlet {
                 currentPage = 0;
             }
         }
-        
+
         Long countComputer = computerService.count();
 
         if (index < 0) {
@@ -89,7 +89,7 @@ public class IndexComputer extends HttpServlet {
             index = (int) (countComputer - offset);
         }
 
-        Page<Computer> computerPage = computerService.listAllByPage(currentPage*offset,
+        Page<Computer> computerPage = computerService.listAllByPage(currentPage * offset,
                 offset);
 
         ArrayList<ComputerDTO> computerDtoArray = new ArrayList<>();
@@ -101,8 +101,8 @@ public class IndexComputer extends HttpServlet {
 
         Page<ComputerDTO> computerDtoPage = new Page<>(computerDtoArray,
                 computerPage.getStart(), computerPage.getOffset());
-        
-        
+
+
         request.setAttribute("page", computerDtoPage);
         request.setAttribute("current", currentPage);
         request.setAttribute("index", index);
