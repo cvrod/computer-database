@@ -31,7 +31,7 @@
 	</c:choose>
 
 	<c:if test="${indexStart > 0}">
-		<li><a href="?page=0">0</a></li>
+		<li><a href="?page=0">1</a></li>
 		<li class="disabled"><a>&hellip;</a></li>
 	</c:if>
 

@@ -49,19 +49,9 @@ public class IndexComputer extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        String paramIndex = request.getParameter("index");
         String paramOffset = request.getParameter("offset");
         String paramPage = request.getParameter("page");
 
-        if (paramIndex != null) {
-            try {
-                index = Integer.parseInt(paramIndex);
-                LOGGER.info("getting index : " + index);
-            } catch (NumberFormatException e) {
-                LOGGER.debug("NumberFormatException on index param !");
-                index = 0;
-            }
-        }
         if (paramOffset != null) {
             try {
                 offset = Integer.parseInt(paramOffset);
@@ -105,7 +95,6 @@ public class IndexComputer extends HttpServlet {
 
         request.setAttribute("page", computerDtoPage);
         request.setAttribute("current", currentPage);
-        request.setAttribute("index", index);
         request.setAttribute("countComputer", countComputer);
         request.setAttribute("offset", offset);
         request.setAttribute("nbPages", (int) Math.ceil((double) countComputer / (double) offset));
