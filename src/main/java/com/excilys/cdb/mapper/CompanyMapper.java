@@ -24,7 +24,7 @@ public class CompanyMapper implements Mapper<Company> {
      * return instance of Singleton CompanyMapper
      * @return CompanyMapper
      */
-    public static CompanyMapper getInstance() {
+    public static synchronized CompanyMapper getInstance() {
         if (instance == null) {
             instance = new CompanyMapper();
         }

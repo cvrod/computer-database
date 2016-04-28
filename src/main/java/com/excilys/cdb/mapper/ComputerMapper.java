@@ -28,7 +28,7 @@ public class ComputerMapper implements Mapper<Computer> {
      * getting ComputerMapper instance
      * @return instance of ComputerMapper
      */
-    public static ComputerMapper getInstance() {
+    public static synchronized ComputerMapper getInstance() {
         if (instance == null) {
             instance = new ComputerMapper();
         }
