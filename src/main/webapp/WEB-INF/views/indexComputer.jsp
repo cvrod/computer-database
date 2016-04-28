@@ -19,7 +19,7 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="${pageContext.request.contextPath}/computer?index=0"> Application -
+			<a class="navbar-brand" href="${pageContext.request.contextPath}/computer?page=0"> Application -
 				Computer Database </a>
 		</div>
 	</header>
@@ -90,7 +90,7 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-			<tags:pagination index="${index}" offset="${offset}"/>
+			<tags:pagination offset="${offset}" current="${current}" nbPages="${nbPages}"/>
 		</div>
 	</footer>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>

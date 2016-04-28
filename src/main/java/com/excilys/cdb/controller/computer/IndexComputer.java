@@ -27,6 +27,8 @@ public class IndexComputer extends HttpServlet {
     static ComputerService computerService = null;
     static int index = 0;
     static int offset = 10;
+    static int currentPage = 0;
+    static int nbPages;
     static final Logger LOGGER = LoggerFactory.getLogger(IndexComputer.class);
 
     /**.
@@ -49,6 +51,8 @@ public class IndexComputer extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
         String paramIndex = request.getParameter("index");
         String paramOffset = request.getParameter("offset");
+        String paramPage = request.getParameter("page");
+        
         if (paramIndex != null) {
             try {
                 index = Integer.parseInt(paramIndex);
@@ -67,6 +71,16 @@ public class IndexComputer extends HttpServlet {
                 offset = 10;
             }
         }
+        if (paramPage != null) {
+            try{
+                currentPage = Integer.parseInt(paramPage);
+                LOGGER.info("getting current page : " + currentPage);
+            } catch (NumberFormatException e) {
+                LOGGER.debug("NumberFormatException on page param !");
+                currentPage = 0;
+            }
+        }
+        
         Long countComputer = computerService.count();
 
         if (index < 0) {
@@ -75,7 +89,7 @@ public class IndexComputer extends HttpServlet {
             index = (int) (countComputer - offset);
         }
 
-        Page<Computer> computerPage = computerService.listAllByPage(index,
+        Page<Computer> computerPage = computerService.listAllByPage(currentPage*offset,
                 offset);
 
         ArrayList<ComputerDTO> computerDtoArray = new ArrayList<>();
@@ -87,11 +101,14 @@ public class IndexComputer extends HttpServlet {
 
         Page<ComputerDTO> computerDtoPage = new Page<>(computerDtoArray,
                 computerPage.getStart(), computerPage.getOffset());
-
+        
+        
         request.setAttribute("page", computerDtoPage);
+        request.setAttribute("current", currentPage);
         request.setAttribute("index", index);
         request.setAttribute("countComputer", countComputer);
         request.setAttribute("offset", offset);
+        request.setAttribute("nbPages", (int) Math.ceil((double) countComputer / (double) offset));
 
         request.getRequestDispatcher("/WEB-INF/views/indexComputer.jsp")
                 .forward(request, response);
