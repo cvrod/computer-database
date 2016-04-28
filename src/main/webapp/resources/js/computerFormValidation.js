@@ -21,4 +21,17 @@ $(function() {
             return false;
         }
     });
+    
+    $('#computerName').on('input', function() {
+        var elem = $(this);
+        var parent = elem.parent().first();
+
+        if (elem.val() == "") {
+            parent.addClass('has-error');
+            parent.removeClass('has-success');
+        } else {
+            parent.addClass('has-success');
+            parent.removeClass('has-error');
+        }
+    });
 });
