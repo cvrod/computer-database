@@ -30,7 +30,7 @@ public class EditComputer extends HttpServlet {
     CompanyService companyService = null;
     static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
     ArrayList<Company> companies = null;
-    
+
     /**.
      * EditComputer Servlet constructor
      */
@@ -53,7 +53,7 @@ public class EditComputer extends HttpServlet {
 
         String paramId = request.getParameter("id");
         int id = 0;
-        LOGGER.debug("Try to retrieve Computer of id(str) : "+paramId);
+        LOGGER.debug("Try to retrieve Computer of id(str) : " + paramId);
         ComputerDTO computerDTO = null;
         Computer computer = null;
 
@@ -68,10 +68,10 @@ public class EditComputer extends HttpServlet {
         try {
             companies = companyService.listAll();
             computer = computerService.get(id);
-            LOGGER.debug("getting computer : "+computer.toString());
+            LOGGER.debug("getting computer : " + computer.toString());
             computerDTO = new ComputerDTO(computer);
             LOGGER.debug("Getting CompanyService.listAll()");
-            
+
         } catch (DAOException e) {
             LOGGER.debug("Can't get companies list ! or computer");
             companies = new ArrayList<>();
@@ -115,14 +115,14 @@ public class EditComputer extends HttpServlet {
                     .forward(request, response);
 
         } else {
-            if(ComputerValidator.validateCompanyId(companyIdParam)) {
+            if (ComputerValidator.validateCompanyId(companyIdParam)) {
                 companyID = Integer.parseInt(companyIdParam);
             }
-            if(!ComputerValidator.validateDate(introducedParam)) {
+            if (!ComputerValidator.validateDate(introducedParam)) {
                 LOGGER.debug("Invalid or null introduction date... Skipping");
                 introducedParam = null;
             }
-            if(!ComputerValidator.validateDate(discontinuedParam)) {
+            if (!ComputerValidator.validateDate(discontinuedParam)) {
                 LOGGER.debug("Invalid or null discontinued date... Skipping");
                 discontinuedParam = null;
             }

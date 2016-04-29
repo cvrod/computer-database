@@ -90,14 +90,14 @@ public class AddComputer extends HttpServlet {
                     .forward(request, response);
 
         } else {
-            if(ComputerValidator.validateCompanyId(companyIdParam)) {
+            if (ComputerValidator.validateCompanyId(companyIdParam)) {
                 companyID = Integer.parseInt(companyIdParam);
             }
-            if(!ComputerValidator.validateDate(introducedParam)) {
+            if (!ComputerValidator.validateDate(introducedParam)) {
                 LOGGER.debug("Invalid or null introduction date... Skipping");
                 introducedParam = null;
             }
-            if(!ComputerValidator.validateDate(discontinuedParam)) {
+            if (!ComputerValidator.validateDate(discontinuedParam)) {
                 LOGGER.debug("Invalid or null discontinued date... Skipping");
                 discontinuedParam = null;
             }

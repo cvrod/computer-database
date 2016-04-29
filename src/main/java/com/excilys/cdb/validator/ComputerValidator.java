@@ -6,7 +6,7 @@ import java.time.format.DateTimeParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
+/**.
  * Computer Validator use to validate Computer fields
  *
  */
@@ -14,25 +14,21 @@ public class ComputerValidator {
     static final Logger LOGGER = LoggerFactory
             .getLogger(ComputerValidator.class);
 
-    /**
+    /**.
      * validate Computer name
-     * 
+     *
      * @param name
      *            name to validate
      * @return boolean true if name OK, false else
      */
     public static boolean validateName(String name) {
         LOGGER.debug("validateName");
-        if (name == null || name.equals("")) {
-            return false;
-        } else {
-            return true;
-        }
+        return !(name == null || name.equals(""));
     }
 
-    /**
+    /**.
      * validate Computer company id
-     * 
+     *
      * @param id
      *            company id to validate
      * @return boolean true if id OK, false else
@@ -47,9 +43,9 @@ public class ComputerValidator {
         }
     }
 
-    /**
+    /**.
      * validate a date from a string
-     * 
+     *
      * @param date
      *            str date to validate
      * @return true is date OK, false else
