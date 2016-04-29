@@ -26,26 +26,26 @@
 					<h1>Edit Computer</h1>
 
 					<form id = "computerForm" action="edit" method="POST">
-						<input type="hidden" value="0" />
+						<input type="hidden" value="${id}" name = "id"/>
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
-									placeholder="Computer name" value="${computer.name}">
+									placeholder="Computer name" name="computerName" value="${computer.name}">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
-									placeholder="Introduced date" value="${computer.introduced}">
+									placeholder="Introduced date" name="introduced" value="${computer.introduced}">
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
-									placeholder="Discontinued date" value="${computer.discontinued}">
+									placeholder="Discontinued date" name="discontinued" value="${computer.discontinued}">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
-									class="form-control" id="companyId">
+									class="form-control" name="companyId" id="companyId">
 									<option value="0">--</option>
 									<c:forEach items="${companies}" var="company">
 										<option value="${company.id}" ${company.id == computer.idCompany ? 'selected' : ''}>${company.name}</option>
@@ -62,5 +62,9 @@
 			</div>
 		</div>
 	</section>
+	<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/bootstrap.min.js"></script>
+	<!-- <script src="${pageContext.request.contextPath}/resources/js/dashboard.js"></script> -->
+	<script src="${pageContext.request.contextPath}/resources/js/computerFormValidation.js"></script>
 </body>
 </html>

@@ -18,6 +18,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.validator.ComputerValidator;
 
 /**.
  * . Servlet implementation class EditComputer
@@ -94,6 +95,51 @@ public class EditComputer extends HttpServlet {
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
-        doGet(request, response);
+        String nameParam = request.getParameter("computerName");
+        LOGGER.debug("nameParam : " + nameParam);
+        String introducedParam = request.getParameter("introduced");
+        LOGGER.debug("introducedParam : " + introducedParam);
+        String discontinuedParam = request.getParameter("discontinued");
+        LOGGER.debug("discontinuedParam : " + discontinuedParam);
+        String companyIdParam = request.getParameter("companyId");
+        LOGGER.debug("companyIdParam : " + companyIdParam);
+        int id = Integer.parseInt(request.getParameter("id"));
+        int companyID = 0;
+
+        if (!ComputerValidator.validateName(nameParam)) {
+            request.setAttribute("computerName", nameParam);
+            request.setAttribute("introduced", introducedParam);
+            request.setAttribute("discontinued", discontinuedParam);
+            request.setAttribute("companies", companies);
+            request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
+                    .forward(request, response);
+
+        } else {
+            if(ComputerValidator.validateCompanyId(companyIdParam)) {
+                companyID = Integer.parseInt(companyIdParam);
+            }
+            if(!ComputerValidator.validateDate(introducedParam)) {
+                LOGGER.debug("Invalid or null introduction date... Skipping");
+                introducedParam = null;
+            }
+            if(!ComputerValidator.validateDate(discontinuedParam)) {
+                LOGGER.debug("Invalid or null discontinued date... Skipping");
+                discontinuedParam = null;
+            }
+            try {
+                Company c;
+                c = companyService.get(companyID);
+
+                Computer comp = new Computer.Builder().name(nameParam)
+                        .introduced(introducedParam)
+                        .discontinued(discontinuedParam).company(c).build();
+                computerService.update(id, comp);
+                response.sendRedirect(request.getContextPath() + "/computer");
+
+            } catch (final DAOException e) {
+                request.getRequestDispatcher("/WEB-INF/views/500.html")
+                        .forward(request, response);
+            }
+        }
     }
 }
