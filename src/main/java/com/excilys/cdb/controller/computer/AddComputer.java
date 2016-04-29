@@ -1,8 +1,6 @@
 package com.excilys.cdb.controller.computer;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -18,6 +16,7 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.dao.DAOException;
 
 /**
@@ -82,7 +81,7 @@ public class AddComputer extends HttpServlet {
         LOGGER.debug("companyIdParam : " + companyIdParam);
         int companyID = 0;
 
-        if ((nameParam == null) || nameParam.equals("")) {
+        if (!ComputerValidator.validateName(nameParam)) {
             request.setAttribute("computerName", nameParam);
             request.setAttribute("introduced", introducedParam);
             request.setAttribute("discontinued", discontinuedParam);
@@ -91,20 +90,14 @@ public class AddComputer extends HttpServlet {
                     .forward(request, response);
 
         } else {
-            try {
+            if(ComputerValidator.validateCompanyId(companyIdParam)) {
                 companyID = Integer.parseInt(companyIdParam);
-            } catch (NumberFormatException e) {
-                LOGGER.debug("Invalid Company ID... Skipping");
             }
-            try {
-                LocalDate.parse(introducedParam);
-            } catch (DateTimeParseException e) {
+            if(!ComputerValidator.validateDate(introducedParam)) {
                 LOGGER.debug("Invalid or null introduction date... Skipping");
                 introducedParam = null;
             }
-            try {
-                LocalDate.parse(discontinuedParam);
-            } catch (DateTimeParseException e) {
+            if(!ComputerValidator.validateDate(discontinuedParam)) {
                 LOGGER.debug("Invalid or null discontinued date... Skipping");
                 discontinuedParam = null;
             }
