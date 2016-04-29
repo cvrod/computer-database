@@ -78,7 +78,6 @@ public class ComputerMapper implements Mapper<Computer> {
         } catch (SQLException e) {
             System.out.println("Campany table error !");
         }
-        connection.closeConnection();
         return res;
     }
 }

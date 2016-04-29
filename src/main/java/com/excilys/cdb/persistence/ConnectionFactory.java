@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import com.excilys.cdb.dao.DAOException;
 /**.
  * Database connection class Handle Query and update
  */
@@ -23,8 +23,11 @@ public class ConnectionFactory {
     static final Logger LOGGER = LoggerFactory
             .getLogger(ConnectionFactory.class);
 
-    protected Connection connection;
     private static ConnectionFactory instance = null;
+    
+    static{
+        instance = new ConnectionFactory();
+    }
 
     /**.
      * get instance of DBConnect
@@ -59,45 +62,16 @@ public class ConnectionFactory {
         }
     }
 
-    public Connection getConnection() {
-        return this.connection;
-    }
-
     /**.
      * open database connection
      */
-    public void openConnection() {
+    public Connection openConnection() {
         try {
-            connection = DriverManager.getConnection(dbAddress, usrLogin,
+            return DriverManager.getConnection(dbAddress, usrLogin,
                     psswrdLogin);
         } catch (SQLException e) {
             System.out.println("Can't get connection from driver !");
-            e.printStackTrace();
-        }
-    }
-
-    /**.
-     * close database connection
-     */
-    public void closeConnection() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            System.out.println("Can't close connection !");
-            e.printStackTrace();
-        }
-    }
-
-    /**.
-     * finalize : call database connection if connection is still open
-     */
-    protected void finalize() {
-        try {
-            if (!connection.isClosed()) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            throw new DAOException(e);
         }
     }
 }

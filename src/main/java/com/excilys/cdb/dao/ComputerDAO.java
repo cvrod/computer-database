@@ -64,9 +64,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
         LOGGER.debug("delete Computer");
         int res = -1;
 
-        connection.openConnection();
-
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
             stmt.setInt(1, id);
             res = stmt.executeUpdate();
@@ -86,10 +84,9 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public ArrayList<Computer> listAll() {
         LOGGER.debug("List all computer");
 
-        connection.openConnection();
         ResultSet rs = null;
 
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con
                         .prepareStatement(LISTALL_REQUEST)) {
             rs = stmt.executeQuery();
@@ -116,9 +113,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
         ArrayList<Computer> elementList = null;
         ResultSet rs = null;
 
-        connection.openConnection();
-
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con
                         .prepareStatement(LISTPAGE_REQUEST)) {
             stmt.setInt(1, start);
@@ -147,9 +142,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public Computer add(Computer c) {
         LOGGER.debug("adding Computer");
 
-        connection.openConnection();
-
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(INSERT_REQUEST,
                         Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, c.getName());
@@ -189,11 +182,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public Computer get(int id) {
         LOGGER.debug("getting computer detail");
 
-        connection.openConnection();
         ResultSet rs = null;
         ArrayList<Computer> computerList = null;
 
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST)) {
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
@@ -225,9 +217,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public int update(int id, Computer c) {
         LOGGER.debug("update Computer");
 
-        connection.openConnection();
         int res = 0;
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
             stmt.setString(1, c.getName());
             if (c.getIntroduced() == null) {
@@ -258,8 +249,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public Long count() {
         LOGGER.debug("count computers");
         ResultSet rs = null;
-        connection.openConnection();
-        try (Connection con = connection.getConnection();
+
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
             rs = stmt.executeQuery();
             rs.next();

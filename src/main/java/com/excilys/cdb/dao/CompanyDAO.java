@@ -60,11 +60,10 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public Company get(int id) {
         LOGGER.debug("getting a company by id");
-        connection.openConnection();
         ResultSet rs = null;
         ArrayList<Company> companyList = null;
 
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST)) {
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
@@ -93,10 +92,9 @@ public class CompanyDAO extends GenericDAO<Company> {
     public ArrayList<Company> listAll() {
         LOGGER.debug("List all company");
 
-        connection.openConnection();
         ResultSet rs = null;
 
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con
                         .prepareStatement(LISTALL_REQUEST)) {
             rs = stmt.executeQuery();
@@ -120,12 +118,11 @@ public class CompanyDAO extends GenericDAO<Company> {
             return null;
         }
         LOGGER.debug("List company by Page");
-        connection.openConnection();
 
         ResultSet rs = null;
         ArrayList<Company> elementList = null;
 
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con
                         .prepareStatement(LISTPAGE_REQUEST)) {
             stmt.setInt(1, start);
@@ -155,9 +152,7 @@ public class CompanyDAO extends GenericDAO<Company> {
         LOGGER.debug("delete Company");
         int res = -1;
 
-        connection.openConnection();
-
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
             stmt.setInt(1, id);
             res = stmt.executeUpdate();
@@ -179,9 +174,7 @@ public class CompanyDAO extends GenericDAO<Company> {
     public Company add(Company c) {
         LOGGER.debug("adding Company");
 
-        connection.openConnection();
-
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(INSERT_REQUEST,
                         Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, c.getName());
@@ -209,9 +202,8 @@ public class CompanyDAO extends GenericDAO<Company> {
     public int update(int id, Company c) {
         LOGGER.debug("update Computer");
         int res = 0;
-        connection.openConnection();
 
-        try (Connection con = connection.getConnection();
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
             stmt.setString(1, c.getName());
             stmt.setInt(2, id);
@@ -227,8 +219,8 @@ public class CompanyDAO extends GenericDAO<Company> {
     public Long count() {
         LOGGER.debug("count company");
         ResultSet rs = null;
-        connection.openConnection();
-        try (Connection con = connection.getConnection();
+
+        try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
             rs = stmt.executeQuery();
             rs.next();

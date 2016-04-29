@@ -58,7 +58,6 @@ public class CompanyMapper implements Mapper<Company> {
             e.printStackTrace();
             System.out.println("Company table error !");
         }
-        connection.closeConnection();
         return res;
     }
 }
