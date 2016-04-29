@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.ConnectionFactory;
 
@@ -17,6 +20,8 @@ public class CompanyMapper implements Mapper<Company> {
     public static final String ID = "id";
     public static final String NAME = "name";
     public ConnectionFactory connection = null;
+    static final Logger LOGGER = LoggerFactory
+            .getLogger(CompanyMapper.class);
 
     static CompanyMapper instance = null;
 
@@ -55,8 +60,8 @@ public class CompanyMapper implements Mapper<Company> {
                 res.add(tmp);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Company table error !");
+            LOGGER.error("Company table error !");
+            throw new MapperException(e);
         }
         return res;
     }

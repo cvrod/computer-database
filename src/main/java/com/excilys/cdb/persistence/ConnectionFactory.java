@@ -1,5 +1,6 @@
 package com.excilys.cdb.persistence;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -9,7 +10,7 @@ import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.excilys.cdb.dao.DAOException;
+
 /**.
  * Database connection class Handle Query and update
  */
@@ -57,8 +58,8 @@ public class ConnectionFactory {
             dbDriver = properties.getProperty("DB_DRIVER");
             Class.forName(dbDriver);
         } catch (ClassNotFoundException | IOException e) {
-            LOGGER.warn("Cannot connect to DB !");
-            e.printStackTrace();
+            LOGGER.error("Cannot connect to DB !");
+            throw new ConnectionFactoryException(e);
         }
     }
 
@@ -70,8 +71,21 @@ public class ConnectionFactory {
             return DriverManager.getConnection(dbAddress, usrLogin,
                     psswrdLogin);
         } catch (SQLException e) {
-            System.out.println("Can't get connection from driver !");
-            throw new DAOException(e);
+            LOGGER.error("Can't get connection from driver !");
+            throw new ConnectionFactoryException(e);
+        }
+    }
+    
+    /**
+     * close object 
+     * @param object object to close
+     */
+    public void closeObject(Closeable object){
+        try {
+            object.close();
+        } catch (IOException e) {
+            LOGGER.error("Can't close object");
+            throw new ConnectionFactoryException(e);
         }
     }
 }

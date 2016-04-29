@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
@@ -21,7 +24,8 @@ public class ComputerMapper implements Mapper<Computer> {
     public CompanyMapper companyMapper = null;
     public CompanyDAO companyDAO = null;
     public ConnectionFactory connection = null;
-
+    static final Logger LOGGER = LoggerFactory
+            .getLogger(ComputerMapper.class);
     static ComputerMapper instance = null;
 
     /**.
@@ -76,7 +80,8 @@ public class ComputerMapper implements Mapper<Computer> {
                 res.add(tmp);
             }
         } catch (SQLException e) {
-            System.out.println("Campany table error !");
+            LOGGER.error("Computer table error !");
+            throw new MapperException(e);
         }
         return res;
     }
