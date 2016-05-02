@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
+import com.excilys.cdb.validator.ComputerValidator;
 
 public class ComputerService {
     private ComputerDAO computerDAO = null;
@@ -34,6 +35,7 @@ public class ComputerService {
      * @return Computer Object
      */
     public Computer get(int id) {
+        ComputerValidator.validateId(Integer.toString(id));
         return computerDAO.get(id);
     }
 
@@ -43,6 +45,7 @@ public class ComputerService {
      * @return fresh Computer Object
      */
     public Computer add(Computer comp) {
+        ComputerValidator.validate(comp);
         return computerDAO.add(comp);
     }
 
@@ -52,6 +55,7 @@ public class ComputerService {
      * @return 0 if computer not found, 1 else
      */
     public int delete(int id) {
+        ComputerValidator.validateId(Integer.toString(id));
         return computerDAO.delete(id);
     }
 
@@ -62,6 +66,8 @@ public class ComputerService {
      * @return 0 if computer not found, 1 else
      */
     public int update(int id, Computer c) {
+        ComputerValidator.validateId(Integer.toString(id));
+        ComputerValidator.validate(c);
         return computerDAO.update(id, c);
     }
     /**.

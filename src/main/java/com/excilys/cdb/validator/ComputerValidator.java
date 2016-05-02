@@ -33,12 +33,12 @@ public class ComputerValidator {
     }
 
     /**.
-     * . validate Computer company id
+     * . validate Computer id or company id
      *
      * @param id
-     *            company id to validate
+     *            id to validate
      */
-    public static void validateCompanyId(String id) {
+    public static void validateId(String id) {
         LOGGER.debug("validateCompanyId");
         if (!INT_REGEX.matcher(id).matches() && !id.equals("0")){
             throw new ValidatorException("Computer company id is invalid");
@@ -60,8 +60,12 @@ public class ComputerValidator {
     
     public static void validate(Computer c){
         validateName(c.getName());
-        validateCompanyId(c.getCompany().getId().toString());
-        validateDate(c.getIntroduced().toString());
+        validateId(c.getCompany().getId().toString());
+        if(c.getIntroduced() != null) {
+            validateDate(c.getIntroduced().toString());
+        }
+        if(c.getDiscontinued() != null) {
         validateDate(c.getDiscontinued().toString());
+        }
     }
 }

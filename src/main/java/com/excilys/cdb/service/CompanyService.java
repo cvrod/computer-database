@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.pagination.Page;
+import com.excilys.cdb.validator.CompanyValidator;
 
 public class CompanyService {
     private CompanyDAO companyDAO = null;
@@ -34,6 +35,7 @@ public class CompanyService {
      * @return Company
      */
     public Company get(int id) {
+        CompanyValidator.validateId(Integer.toString(id));
         return companyDAO.get(id);
     }
 
@@ -43,6 +45,7 @@ public class CompanyService {
      * @return Fresh Company
      */
     public Company add(Company comp) {
+        CompanyValidator.validate(comp);
         return companyDAO.add(comp);
     }
 
@@ -52,6 +55,7 @@ public class CompanyService {
      * @return return 0 if id not found 1 if delete success
      */
     public int delete(int id) {
+        CompanyValidator.validateId(Integer.toString(id));
         return companyDAO.delete(id);
     }
 
@@ -62,6 +66,8 @@ public class CompanyService {
      * @return 0 if company dont existe, 1 else
      */
     public int update(int id, Company c) {
+        CompanyValidator.validate(c);
+        CompanyValidator.validateId(Integer.toString(id));
         return companyDAO.update(id, c);
     }
 

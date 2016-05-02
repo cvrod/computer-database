@@ -110,7 +110,7 @@ public class EditComputer extends HttpServlet {
             ComputerValidator.validateName(nameParam);
             ComputerValidator.validateDate(introducedParam);
             ComputerValidator.validateDate(discontinuedParam);
-            ComputerValidator.validateCompanyId(companyIdParam);
+            ComputerValidator.validateId(companyIdParam);
             
             companyID = Integer.parseInt(companyIdParam);
             if (introducedParam.equals("")) {
