@@ -1,6 +1,6 @@
 package com.excilys.cdb.service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
@@ -75,7 +75,7 @@ public class CompanyService {
      * list all Company
      * @return List of all company
      */
-    public ArrayList<Company> listAll() {
+    public List<Company> listAll() {
         return companyDAO.listAll();
     }
 

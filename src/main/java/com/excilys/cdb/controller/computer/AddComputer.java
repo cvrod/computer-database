@@ -51,7 +51,7 @@ public class AddComputer extends HttpServlet {
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         try {
-            companies = companyService.listAll();
+            companies = (ArrayList<Company>) companyService.listAll();
             LOGGER.debug("Getting CompanyService.listAll()");
         } catch (DAOException e) {
             LOGGER.debug("Can't get companies list !");

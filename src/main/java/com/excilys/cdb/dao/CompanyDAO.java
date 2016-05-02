@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -89,7 +90,7 @@ public class CompanyDAO extends GenericDAO<Company> {
      * @return ArrayList<Company> all computer list
      */
     @Override
-    public ArrayList<Company> listAll() {
+    public List<Company> listAll() {
         LOGGER.debug("List all company");
 
         ResultSet rs = null;
@@ -99,7 +100,7 @@ public class CompanyDAO extends GenericDAO<Company> {
                         .prepareStatement(LISTALL_REQUEST)) {
             rs = stmt.executeQuery();
             companyMapper = CompanyMapper.getInstance();
-            return (ArrayList<Company>) companyMapper.map(rs);
+            return companyMapper.map(rs);
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.excilys.cdb.model.*;
 import com.excilys.cdb.pagination.Page;
+import com.excilys.cdb.validator.ValidatorException;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -71,14 +72,16 @@ public class CompanyServiceTest {
      */
     @Test
     public void testDelete() {
-        Company c = new Company("testCompany");
+        Company c = new Company("testCompany2");
         Company testAddCompany = companyService.add(c);
 
         int deleteResult = companyService.delete(testAddCompany.getId().intValue());
-
         assertEquals(deleteResult, 1);
-        deleteResult = companyService.delete(-1);
-        assertEquals(deleteResult, 0);
+    }
+    
+    @Test(expected = ValidatorException.class)
+    public void testExceptionDelete(){
+        companyService.delete(-1);
     }
 
     /**
@@ -105,7 +108,7 @@ public class CompanyServiceTest {
     public void testListAll() {
         Company c = new Company("testCompany");
         Company testAddCompany = companyService.add(c);
-        ArrayList<Company> testList = companyService.listAll();
+        ArrayList<Company> testList = (ArrayList<Company>) companyService.listAll();
         
         assertTrue(testList.contains(testAddCompany));
         

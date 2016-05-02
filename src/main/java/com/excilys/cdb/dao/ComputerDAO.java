@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +82,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
      * @return ArrayList<Computer> all computer list
      */
     @Override
-    public ArrayList<Computer> listAll() {
+    public List<Computer> listAll() {
         LOGGER.debug("List all computer");
 
         ResultSet rs = null;
@@ -91,7 +92,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
                         .prepareStatement(LISTALL_REQUEST)) {
             rs = stmt.executeQuery();
             computerMapper = ComputerMapper.getInstance();
-            return (ArrayList<Computer>) computerMapper.map(rs);
+            return computerMapper.map(rs);
 
         } catch (SQLException e) {
             LOGGER.error(e.getMessage());

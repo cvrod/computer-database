@@ -14,6 +14,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
+import com.excilys.cdb.validator.ValidatorException;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ComputerServiceTest {
@@ -75,8 +76,11 @@ public class ComputerServiceTest {
         int deleteResult = computerService.delete(testAddComputer.getId().intValue());
 
         assertEquals(deleteResult, 1);
-        deleteResult = computerService.delete(-1);
-        assertEquals(deleteResult, 0);
+    }
+    
+    @Test(expected = ValidatorException.class)
+    public void testExceptionDelete(){
+        computerService.delete(-1);
     }
 
     @Test
@@ -99,7 +103,7 @@ public class ComputerServiceTest {
         Computer c = new Computer("testComputer", (String) null,
                 (String) null, new Company(new Long(1), "Apple Inc."));
         Computer testAddComputer = computerService.add(c);
-        ArrayList<Computer> testList = computerService.listAll();
+        ArrayList<Computer> testList = (ArrayList<Computer>) computerService.listAll();
         
         assertTrue(testList.contains(testAddComputer));
         

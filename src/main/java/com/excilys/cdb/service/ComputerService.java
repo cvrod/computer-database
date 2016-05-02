@@ -1,6 +1,6 @@
 package com.excilys.cdb.service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Computer;
@@ -74,7 +74,7 @@ public class ComputerService {
      * listAll Computer
      * @return ArrayList of all computer in DB
      */
-    public ArrayList<Computer> listAll() {
+    public List<Computer> listAll() {
         return computerDAO.listAll();
     }
     /**.

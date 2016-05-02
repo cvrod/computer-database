@@ -46,6 +46,8 @@ public class CompanyValidator {
     public static void validate(Company c) {
         LOGGER.debug("validate()");
         validateName(c.getName());
-        validateId(c.getId().toString());
+        if(c.getId() != null){
+            validateId(c.getId().toString());
+        }
     }
 }

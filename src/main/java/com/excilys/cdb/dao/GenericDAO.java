@@ -1,7 +1,7 @@
 package com.excilys.cdb.dao;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,7 +33,7 @@ public abstract class GenericDAO<T> {
      * list all object from a given type
      * @return list of all object in table
      */
-    public abstract ArrayList<T> listAll();
+    public abstract List<T> listAll();
 
     /**.
      * list object by page

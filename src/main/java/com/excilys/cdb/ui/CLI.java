@@ -109,11 +109,11 @@ public class CLI {
             switch (choice) {
             case 1: // List all Computer
                 System.out.println("\n--> Computer List : \n");
-                printComputer(computerService.listAll());
+                printComputer((ArrayList<Computer>) computerService.listAll());
                 break;
             case 2: // List all Companies
                 System.out.println("\n--> Companies List : \n");
-                printCompany(companyService.listAll());
+                printCompany((ArrayList<Company>) companyService.listAll());
                 break;
             case 3: // Getting computer detail
                 System.out.println("\n--> Getting computer detail :");

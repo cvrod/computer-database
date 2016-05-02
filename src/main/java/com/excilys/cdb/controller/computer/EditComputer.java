@@ -67,7 +67,7 @@ public class EditComputer extends HttpServlet {
             }
         }
         try {
-            companies = companyService.listAll();
+            companies = (ArrayList<Company>) companyService.listAll();
             computer = computerService.get(id);
             LOGGER.debug("getting computer : " + computer.toString());
             computerDTO = new ComputerDTO(computer);
