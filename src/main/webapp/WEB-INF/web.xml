@@ -16,4 +16,29 @@
 		<servlet-name>EditComputer</servlet-name>
 		<servlet-class>com.excilys.cdb.controller.computer.EditComputer</servlet-class>
 	</servlet>
+	
+	
+	<!-- Error page for DAOException -->
+	<error-page>
+		<exception-type>com.excilys.cdb.dao.DAOException</exception-type>
+		<location>/WEB-INF/views/500.jsp</location>
+	</error-page>
+
+	<!-- Error page for ValidatorException -->
+	<error-page>
+		<exception-type>com.excilys.cdb.validator.ValidatorException</exception-type>
+		<location>/WEB-INF/views/500.jsp</location>
+	</error-page>
+	
+	<!-- Error page for MapperException -->
+	<error-page>
+		<exception-type>com.excilys.cdb.mapper.MapperException</exception-type>
+		<location>/WEB-INF/views/500.jsp</location>
+	</error-page>
+	
+	<!-- Page Not Found -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/404.jsp</location>
+	</error-page>
 </web-app>
