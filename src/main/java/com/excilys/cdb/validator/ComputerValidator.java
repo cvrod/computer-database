@@ -5,6 +5,8 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.cdb.model.Computer;
+
 /**
  * . Computer Validator use to validate Computer fields
  *
@@ -22,11 +24,12 @@ public class ComputerValidator {
      *
      * @param name
      *            name to validate
-     * @return boolean true if name OK, false else
      */
-    public static boolean validateName(String name) {
+    public static void validateName(String name) {
         LOGGER.debug("validateName");
-        return !(name == null || name.equals(""));
+        if(name == null || name.equals("")){
+            throw new ValidatorException("Computer name cant be null or \"\"");
+        }
     }
 
     /**.
@@ -34,11 +37,12 @@ public class ComputerValidator {
      *
      * @param id
      *            company id to validate
-     * @return boolean true if id OK, false else
      */
-    public static boolean validateCompanyId(String id) {
+    public static void validateCompanyId(String id) {
         LOGGER.debug("validateCompanyId");
-        return INT_REGEX.matcher(id).matches();
+        if (!INT_REGEX.matcher(id).matches() && !id.equals("0")){
+            throw new ValidatorException("Computer company id is invalid");
+        }
     }
 
     /**.
@@ -46,10 +50,18 @@ public class ComputerValidator {
      *
      * @param date
      *            str date to validate
-     * @return true is date OK, false else
      */
-    public static boolean validateDate(String date) {
+    public static void validateDate(String date) {
         LOGGER.debug("validateDate");
-        return DATE_REGEX.matcher(date).matches();
+        if (!DATE_REGEX.matcher(date).matches() && !date.equals("")){
+            throw new ValidatorException("Date is invalid");
+        }
+    }
+    
+    public static void validate(Computer c){
+        validateName(c.getName());
+        validateCompanyId(c.getCompany().getId().toString());
+        validateDate(c.getIntroduced().toString());
+        validateDate(c.getDiscontinued().toString());
     }
 }

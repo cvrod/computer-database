@@ -19,6 +19,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
+import com.excilys.cdb.validator.ValidatorException;
 
 /**.
  * . Servlet implementation class EditComputer
@@ -30,6 +31,7 @@ public class EditComputer extends HttpServlet {
     CompanyService companyService = null;
     static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
     ArrayList<Company> companies = null;
+    ComputerDTO computerDTO = null;
 
     /**.
      * EditComputer Servlet constructor
@@ -54,7 +56,6 @@ public class EditComputer extends HttpServlet {
         String paramId = request.getParameter("id");
         int id = 0;
         LOGGER.debug("Try to retrieve Computer of id(str) : " + paramId);
-        ComputerDTO computerDTO = null;
         Computer computer = null;
 
         if (paramId != null) {
@@ -91,7 +92,6 @@ public class EditComputer extends HttpServlet {
      * @param response response object
      *
      * @throws ServletException Servlet Exception
-     * @throws IOException IOException
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -106,23 +106,18 @@ public class EditComputer extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         int companyID = 0;
 
-        if (!ComputerValidator.validateName(nameParam)) {
-            request.setAttribute("computerName", nameParam);
-            request.setAttribute("introduced", introducedParam);
-            request.setAttribute("discontinued", discontinuedParam);
-            request.setAttribute("companies", companies);
-            request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
-                    .forward(request, response);
-
-        } else {
-            if (ComputerValidator.validateCompanyId(companyIdParam)) {
-                companyID = Integer.parseInt(companyIdParam);
-            }
-            if (!ComputerValidator.validateDate(introducedParam)) {
+        try{
+            ComputerValidator.validateName(nameParam);
+            ComputerValidator.validateDate(introducedParam);
+            ComputerValidator.validateDate(discontinuedParam);
+            ComputerValidator.validateCompanyId(companyIdParam);
+            
+            companyID = Integer.parseInt(companyIdParam);
+            if (introducedParam.equals("")) {
                 LOGGER.debug("Invalid or null introduction date... Skipping");
                 introducedParam = null;
             }
-            if (!ComputerValidator.validateDate(discontinuedParam)) {
+            if (discontinuedParam.equals("")) {
                 LOGGER.debug("Invalid or null discontinued date... Skipping");
                 discontinuedParam = null;
             }
@@ -136,10 +131,17 @@ public class EditComputer extends HttpServlet {
                 computerService.update(id, comp);
                 response.sendRedirect(request.getContextPath() + "/computer");
 
-            } catch (final DAOException e) {
+            } catch (DAOException e) {
                 request.getRequestDispatcher("/WEB-INF/views/500.html")
                         .forward(request, response);
             }
+            
+        }catch(ValidatorException e){
+            request.setAttribute("id", id);
+            request.setAttribute("computer", computerDTO);
+            request.setAttribute("companies", companies);
+            request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
+                    .forward(request, response);
         }
     }
 }

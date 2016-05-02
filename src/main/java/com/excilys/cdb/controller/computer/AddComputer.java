@@ -17,6 +17,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
 import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
+import com.excilys.cdb.validator.ValidatorException;
 import com.excilys.cdb.dao.DAOException;
 
 /**
@@ -80,24 +81,19 @@ public class AddComputer extends HttpServlet {
         String companyIdParam = request.getParameter("companyId");
         LOGGER.debug("companyIdParam : " + companyIdParam);
         int companyID = 0;
-
-        if (!ComputerValidator.validateName(nameParam)) {
-            request.setAttribute("computerName", nameParam);
-            request.setAttribute("introduced", introducedParam);
-            request.setAttribute("discontinued", discontinuedParam);
-            request.setAttribute("companies", companies);
-            request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
-                    .forward(request, response);
-
-        } else {
-            if (ComputerValidator.validateCompanyId(companyIdParam)) {
-                companyID = Integer.parseInt(companyIdParam);
-            }
-            if (!ComputerValidator.validateDate(introducedParam)) {
+        
+        try{
+            ComputerValidator.validateName(nameParam);
+            ComputerValidator.validateDate(introducedParam);
+            ComputerValidator.validateDate(discontinuedParam);
+            ComputerValidator.validateCompanyId(companyIdParam);
+            
+            companyID = Integer.parseInt(companyIdParam);
+            if (introducedParam.equals("")) {
                 LOGGER.debug("Invalid or null introduction date... Skipping");
                 introducedParam = null;
             }
-            if (!ComputerValidator.validateDate(discontinuedParam)) {
+            if (discontinuedParam.equals("")) {
                 LOGGER.debug("Invalid or null discontinued date... Skipping");
                 discontinuedParam = null;
             }
@@ -111,10 +107,15 @@ public class AddComputer extends HttpServlet {
                 computerService.add(comp);
                 response.sendRedirect(request.getContextPath() + "/computer");
 
-            } catch (final DAOException e) {
+            } catch (DAOException e) {
                 request.getRequestDispatcher("/WEB-INF/views/500.html")
                         .forward(request, response);
             }
+            
+        }catch(ValidatorException e){
+            request.setAttribute("companies", companies);
+            request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
+                    .forward(request, response);
         }
     }
 }
