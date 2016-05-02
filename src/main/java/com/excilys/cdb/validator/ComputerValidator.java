@@ -57,15 +57,22 @@ public class ComputerValidator {
             throw new ValidatorException("Date is invalid");
         }
     }
-    
+
     public static void validate(Computer c){
         validateName(c.getName());
         validateId(c.getCompany().getId().toString());
+        boolean introduced = false;
         if(c.getIntroduced() != null) {
             validateDate(c.getIntroduced().toString());
+            introduced = true;
         }
         if(c.getDiscontinued() != null) {
-        validateDate(c.getDiscontinued().toString());
+            validateDate(c.getDiscontinued().toString());
+            if(introduced){
+                if(!c.getDiscontinued().isAfter(c.getIntroduced())){
+                    throw new ValidatorException("Intro date is after discontinued date");
+                }
+            }
         }
     }
 }

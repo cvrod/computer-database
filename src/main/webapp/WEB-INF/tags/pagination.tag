@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 
 <%@ attribute name="offset" required="true"%>
@@ -31,17 +30,17 @@
 	</c:choose>
 
 	<c:if test="${indexStart > 0}">
-		<li><a href="?page=0">1</a></li>
+		<li><tags:link target="" page="0" offset="${offset}">1</tags:link></li>
 		<li class="disabled"><a>&hellip;</a></li>
 	</c:if>
 
 	<c:forEach var="i" begin="${indexStart}" end="${indexStop}">
-		<li ${current == i ? 'class="active"' : ''}><a href="?page=${i}">${i + 1}</a></li>
+		<li ${current == i ? 'class="active"' : ''}><tags:link target="" offset="${offset}" page="${i}">${i + 1}</tags:link></li>
 	</c:forEach>
 
 	<c:if test="${indexStop < (nbPages - 1)}">
 		<li class="disabled"><a>&hellip;</a></li>
-		<li><a href="?page=${nbPages - 1}">${nbPages}</a></li>
+		<li><tags:link target="" offset="${offset}" page="${nbPages - 1}">${nbPages}</tags:link></li>
 	</c:if>
 
 	<c:choose>
