@@ -1,15 +1,15 @@
 package com.excilys.cdb.persistence;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.zaxxer.hikari.HikariDataSource;
 
 /**.
  * Database connection class Handle Query and update
@@ -23,6 +23,8 @@ public class ConnectionFactory {
     protected static String dbDriver;
     static final Logger LOGGER = LoggerFactory
             .getLogger(ConnectionFactory.class);
+
+    protected static HikariDataSource SqlPool;
 
     private static ConnectionFactory instance = null;
     
@@ -57,6 +59,13 @@ public class ConnectionFactory {
             dbAddress = properties.getProperty("DB_ADDR");
             dbDriver = properties.getProperty("DB_DRIVER");
             Class.forName(dbDriver);
+
+            //Setting the connection pool
+            SqlPool = new HikariDataSource();
+            SqlPool.setJdbcUrl(dbAddress);
+            SqlPool.setUsername(usrLogin);
+            SqlPool.setPassword(psswrdLogin);
+            
         } catch (ClassNotFoundException | IOException e) {
             LOGGER.error("Cannot connect to DB !");
             throw new ConnectionFactoryException(e);
@@ -68,8 +77,7 @@ public class ConnectionFactory {
      */
     public Connection openConnection() {
         try {
-            return DriverManager.getConnection(dbAddress, usrLogin,
-                    psswrdLogin);
+            return SqlPool.getConnection();
         } catch (SQLException e) {
             LOGGER.error("Can't get connection from driver !");
             throw new ConnectionFactoryException(e);
@@ -80,10 +88,10 @@ public class ConnectionFactory {
      * close object 
      * @param object object to close
      */
-    public void closeObject(Closeable object){
+    public void closeObject(AutoCloseable object){
         try {
             object.close();
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.error("Can't close object");
             throw new ConnectionFactoryException(e);
         }

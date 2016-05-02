@@ -50,6 +50,9 @@
 		<!-- Maven tomcat -->
 		<tomcatplugin.version>1.1</tomcatplugin.version>
 		
+		<!-- Hikari -->
+		<hikari.version>2.4.5</hikari.version>
+		
 	</properties>
 	<dependencies>
 
@@ -114,6 +117,14 @@
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
+		</dependency>
+		
+		<!-- Connection Pool -->
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${hikari.version}</version>
+			<scope>compile</scope>
 		</dependency>
 		
 	</dependencies>
