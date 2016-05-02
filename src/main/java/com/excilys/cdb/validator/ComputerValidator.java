@@ -1,21 +1,24 @@
 package com.excilys.cdb.validator;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**.
- * Computer Validator use to validate Computer fields
+/**
+ * . Computer Validator use to validate Computer fields
  *
  */
 public class ComputerValidator {
     static final Logger LOGGER = LoggerFactory
             .getLogger(ComputerValidator.class);
+    private final static Pattern INT_REGEX = Pattern
+            .compile("[0-9]*[1-9][0-9]*");
+    private final static Pattern DATE_REGEX = Pattern.compile(
+            "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])");
 
     /**.
-     * validate Computer name
+     * . validate Computer name
      *
      * @param name
      *            name to validate
@@ -27,7 +30,7 @@ public class ComputerValidator {
     }
 
     /**.
-     * validate Computer company id
+     * . validate Computer company id
      *
      * @param id
      *            company id to validate
@@ -35,16 +38,11 @@ public class ComputerValidator {
      */
     public static boolean validateCompanyId(String id) {
         LOGGER.debug("validateCompanyId");
-        try {
-            Integer.parseInt(id);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+        return INT_REGEX.matcher(id).matches();
     }
 
     /**.
-     * validate a date from a string
+     * . validate a date from a string
      *
      * @param date
      *            str date to validate
@@ -52,11 +50,6 @@ public class ComputerValidator {
      */
     public static boolean validateDate(String date) {
         LOGGER.debug("validateDate");
-        try {
-            LocalDate.parse(date);
-            return true;
-        } catch (DateTimeParseException e) {
-            return false;
-        }
+        return DATE_REGEX.matcher(date).matches();
     }
 }
