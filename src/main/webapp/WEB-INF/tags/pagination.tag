@@ -24,23 +24,23 @@
 					aria-hidden="true">&laquo;</span></a></li>
 		</c:when>
 		<c:otherwise>
-			<li><a href="?page=${current - 1}" aria-label="Previous"> <span
+			<li><a <tags:link target="" page="${ current - 1 }" offset="${offset}"/> aria-label="Previous"> <span
 					aria-hidden="true">&laquo;</span></a></li>
 		</c:otherwise>
 	</c:choose>
 
 	<c:if test="${indexStart > 0}">
-		<li><tags:link target="" page="0" offset="${offset}">1</tags:link></li>
+		<li><a <tags:link target="" page="0" offset="${offset}"/>>1</a></li>
 		<li class="disabled"><a>&hellip;</a></li>
 	</c:if>
 
 	<c:forEach var="i" begin="${indexStart}" end="${indexStop}">
-		<li ${current == i ? 'class="active"' : ''}><tags:link target="" offset="${offset}" page="${i}">${i + 1}</tags:link></li>
+		<li ${current == i ? 'class="active"' : ''}><a <tags:link target="" offset="${offset}" page="${i}"/> >${i + 1}</a></li>
 	</c:forEach>
 
 	<c:if test="${indexStop < (nbPages - 1)}">
 		<li class="disabled"><a>&hellip;</a></li>
-		<li><tags:link target="" offset="${offset}" page="${nbPages - 1}">${nbPages}</tags:link></li>
+		<li><a <tags:link target="" offset="${offset}" page="${nbPages - 1}"/>>${nbPages}</a></li>
 	</c:if>
 
 	<c:choose>
@@ -49,7 +49,7 @@
 					aria-hidden="true">&raquo;</span></a></li>
 		</c:when>
 		<c:otherwise>
-			<li><a href="?page=${current + 1}" aria-label="Next"> <span
+			<li><a <tags:link target="" offset="${offset}" page="${current + 1}"/> aria-label="Next"> <span
 					aria-hidden="true">&raquo;</span></a></li>
 		</c:otherwise>
 	</c:choose>
