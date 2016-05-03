@@ -41,7 +41,7 @@ public abstract class GenericDAO<T> {
      * @param offset page offset
      * @return Page object who contain list of needed object
      */
-    public abstract Page<T> listAllByPage(int start, int offset);
+    public abstract Page<T> listAllByPage(String name, String order, int start, int offset);
 
     /**.
      * delete an object from table
@@ -76,6 +76,6 @@ public abstract class GenericDAO<T> {
      * count the number of entities
      * @return number of entities
      */
-    public abstract Long count();
+    public abstract Long count(String name);
 
 }

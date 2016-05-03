@@ -27,11 +27,11 @@ public class CompanyDAO extends GenericDAO<Company> {
     private static CompanyDAO instance = null;
     public static final String DETAIL_REQUEST = "SELECT * FROM company WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM company;";
-    public static final String LISTPAGE_REQUEST = "SELECT * FROM company LIMIT ?,?";
+    public static final String LISTPAGE_REQUEST = "SELECT * FROM company WHERE company.name LIKE ? ORDER BY ? LIMIT ?,?";
     public static final String DELETE_REQUEST = "DELETE FROM company WHERE id=?";
     public static final String INSERT_REQUEST = "INSERT INTO company (name) VALUES(?)";
     public static final String UPDATE_REQUEST = "UPDATE company SET name=? WHERE id=?";
-    public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM company";
+    public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM company WHERE name like ?";
     Connection con = null;
 
     /**.
@@ -114,7 +114,7 @@ public class CompanyDAO extends GenericDAO<Company> {
      * @return ArrayList<Company> company list
      */
     @Override
-    public Page<Company> listAllByPage(int start, int offset) {
+    public Page<Company> listAllByPage(String name, String order, int start, int offset) {
         if (start < 0 || offset < 0) {
             return null;
         }
@@ -126,8 +126,10 @@ public class CompanyDAO extends GenericDAO<Company> {
         try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con
                         .prepareStatement(LISTPAGE_REQUEST)) {
-            stmt.setInt(1, start);
-            stmt.setInt(2, offset);
+            stmt.setString(1, "%"+name+"%");
+            stmt.setString(2, order);
+            stmt.setInt(3, start);
+            stmt.setInt(4, offset);
             rs = stmt.executeQuery();
             companyMapper = CompanyMapper.getInstance();
             elementList = (ArrayList<Company>) companyMapper.map(rs);
@@ -217,12 +219,13 @@ public class CompanyDAO extends GenericDAO<Company> {
     }
 
     @Override
-    public Long count() {
+    public Long count(String name) {
         LOGGER.debug("count company");
         ResultSet rs = null;
 
         try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
+            stmt.setString(1, "%"+name+"%");
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);

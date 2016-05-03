@@ -81,10 +81,22 @@ public class ComputerService {
      * list computer by page
      * @param start start index
      * @param offset page offset
-     * @return instance of Page Object
+     * @return Computer Page
      */
     public Page<Computer> listAllByPage(int start, int offset) {
-        return computerDAO.listAllByPage(start, offset);
+        return computerDAO.listAllByPage("", "id", start, offset);
+    }
+    
+    /**.
+     * search computer function
+     * @param search search pattern
+     * @param order row ordering
+     * @param start start index
+     * @param offset page offset
+     * @return Computer Page
+     */
+    public Page<Computer> listByPage(String search, String order, int start, int offset){
+        return computerDAO.listAllByPage(search, order, start, offset);
     }
 
     /**.
@@ -92,6 +104,15 @@ public class ComputerService {
      * @return number of elements in table
      */
     public Long count() {
-        return computerDAO.count();
+        return computerDAO.count("");
+    }
+
+    /**.
+     * return total number of element maching name in computer table
+     * @param name name to match
+     * @return number of element in table Computer
+     */
+    public Long count(String name){
+        return computerDAO.count(name);
     }
 }

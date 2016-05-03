@@ -51,6 +51,7 @@ public class IndexComputer extends HttpServlet {
             HttpServletResponse response) throws ServletException, IOException {
         String paramOffset = request.getParameter("offset");
         String paramPage = request.getParameter("page");
+        String paramSearch = request.getParameter("search");
 
         if (paramOffset != null) {
             try {
@@ -71,16 +72,27 @@ public class IndexComputer extends HttpServlet {
             }
         }
 
-        Long countComputer = computerService.count();
+        Long countComputer = new Long(0);
+        Page<Computer> computerPage = null;
+        
+        if (paramSearch == null) {
+        computerPage = computerService.listAllByPage(currentPage * offset,
+                offset);
+        countComputer = computerService.count();
+        }
+        else {
+        computerPage = computerService.listByPage(paramSearch.trim(), "id", currentPage * offset,
+                    offset);
+        countComputer = computerService.count(paramSearch.trim());
+        }
 
         if (index < 0) {
             index = 0;
         } else if (index >= countComputer) {
             index = (int) (countComputer - offset);
         }
-
-        Page<Computer> computerPage = computerService.listAllByPage(currentPage * offset,
-                offset);
+        
+        
 
         ArrayList<ComputerDTO> computerDtoArray = new ArrayList<>();
         ComputerDTO dtoTmp = null;
@@ -97,6 +109,7 @@ public class IndexComputer extends HttpServlet {
         request.setAttribute("current", currentPage);
         request.setAttribute("countComputer", countComputer);
         request.setAttribute("offset", offset);
+        request.setAttribute("search", paramSearch);
         request.setAttribute("nbPages", (int) Math.ceil((double) countComputer / (double) offset));
 
         request.getRequestDispatcher("/WEB-INF/views/indexComputer.jsp")

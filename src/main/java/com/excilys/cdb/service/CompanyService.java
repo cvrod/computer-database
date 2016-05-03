@@ -86,7 +86,19 @@ public class CompanyService {
      * @return Page object
      */
     public Page<Company> listAllByPage(int start, int offset) {
-        return companyDAO.listAllByPage(start, offset);
+        return companyDAO.listAllByPage("", "id", start, offset);
+    }
+
+    /**.
+     * search company function
+     * @param search search pattern
+     * @param order row ordering
+     * @param start start index
+     * @param offset page offset
+     * @return Company Page
+     */
+    public Page<Company> listByPage(String search, String order, int start, int offset){
+        return companyDAO.listAllByPage(search, order, start, offset);
     }
 
     /**.
@@ -94,6 +106,15 @@ public class CompanyService {
      * @return number of elements
      */
     public Long count() {
-        return companyDAO.count();
+        return companyDAO.count("");
+    }
+
+    /**.
+     * return total number of element maching name in company table
+     * @param name name to match
+     * @return number of element in table Company
+     */
+    public Long count(String name){
+        return companyDAO.count(name);
     }
 }

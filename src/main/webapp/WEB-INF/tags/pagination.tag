@@ -4,6 +4,7 @@
 <%@ attribute name="offset" required="true"%>
 <%@ attribute name="current" required="true"%>
 <%@ attribute name="nbPages" required="true"%>
+<%@ attribute name="search" required="false"%>
 
 <ul class="pagination">
 	<c:set var="indexStart" value="0" />
@@ -11,9 +12,12 @@
 	<c:if test="${(current - 3) >= 0}">
 		<c:set var="indexStart" value="${current - 3}" />
 	</c:if>
-
+	
 	<c:set var="indexStop" value="${nbPages - 1}" />
-
+	<c:if test="${indexStop < 0}">
+		<c:set var="indexStop" value="0"/>
+	</c:if>
+	
 	<c:if test="${(current + 3) <= (nbPages - 1)}">
 		<c:set var="indexStop" value="${current + 3}" />
 	</c:if>

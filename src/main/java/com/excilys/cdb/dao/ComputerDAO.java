@@ -29,8 +29,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public static final String DELETE_REQUEST = "DELETE FROM computer WHERE id=?";
     public static final String UPDATE_REQUEST = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM computer;";
-    public static final String LISTPAGE_REQUEST = "SELECT * FROM computer LIMIT ?,?";
-    public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM computer";
+    public static final String LISTPAGE_REQUEST = "SELECT * FROM computer WHERE computer.name LIKE ? ORDER BY ? LIMIT ?,?";
+    public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM computer WHERE name LIKE ?";
     static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
     Connection con = null;
 
@@ -106,7 +106,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
      * @return ArrayList<Computer> computer list
      */
     @Override
-    public Page<Computer> listAllByPage(int start, int offset) {
+    public Page<Computer> listAllByPage(String name, String order, int start, int offset) {
         if (start < 0 || offset < 0) {
             return null;
         }
@@ -117,8 +117,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
         try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con
                         .prepareStatement(LISTPAGE_REQUEST)) {
-            stmt.setInt(1, start);
-            stmt.setInt(2, offset);
+            stmt.setString(1, "%"+name+"%");
+            stmt.setString(2, order);
+            stmt.setInt(3, start);
+            stmt.setInt(4, offset);
             rs = stmt.executeQuery();
             computerMapper = ComputerMapper.getInstance();
 
@@ -247,12 +249,13 @@ public class ComputerDAO extends GenericDAO<Computer> {
     }
 
     @Override
-    public Long count() {
+    public Long count(String name) {
         LOGGER.debug("count computers");
         ResultSet rs = null;
 
         try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
+            stmt.setString(1, "%"+name+"%");
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);

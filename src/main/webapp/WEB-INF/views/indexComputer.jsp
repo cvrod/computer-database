@@ -90,7 +90,7 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-			<tags:pagination offset="${offset}" current="${current}" nbPages="${nbPages}"/>
+			<tags:pagination offset="${offset}" current="${current}" nbPages="${nbPages}" search="${search}"/>
 		</div>
 	</footer>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
