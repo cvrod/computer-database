@@ -40,9 +40,15 @@ public class DeleteComputer extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	    final String selection = request.getParameter("selection");
-	    LOGGER.debug("doPost()");
 	    LOGGER.debug("received : " + selection);
-	    
-	}
+	    String[] selectionSplit = null;
 
+	    if(selection != null){
+	         selectionSplit = selection.split(",");
+	    }
+	    for(String s : selectionSplit){
+	        computerService.delete(Integer.parseInt(s));
+	    }
+	    response.sendRedirect(request.getContextPath() + "/computer");
+	}
 }
