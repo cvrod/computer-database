@@ -122,6 +122,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
         } else {
             request = String.format(LISTPAGE_REQUEST, "id");
         }
+
         try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(request)) {
             stmt.setString(1, "%" + name + "%");

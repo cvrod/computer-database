@@ -57,6 +57,7 @@ public class IndexComputer extends HttpServlet {
         String paramPage = request.getParameter("page");
         String paramSearch = request.getParameter("search");
         String paramOrder = request.getParameter("order");
+        String paramDirection = request.getParameter("dir");
         if (paramOffset != null) {
             try {
                 offset = Integer.parseInt(paramOffset);
@@ -78,18 +79,26 @@ public class IndexComputer extends HttpServlet {
 
         Long countComputer = new Long(0);
         Page<Computer> computerPage = null;
+        String order = null;
+
+        //TODO: REFACTOR THIS
+        if (paramDirection != null && !paramDirection.equals("")) {
+            order = paramOrder + " " + paramDirection;
+        } else {
+            order = paramOrder;
+        }
 
         if (paramSearch == null && paramOrder == null) {
             computerPage = computerService.listAllByPage(currentPage * offset,
                     offset);
             countComputer = computerService.count();
-        } else if (paramOrder == null) {
+        } else if (paramOrder == null || paramOrder.equals("")) {
             computerPage = computerService.listByPage(paramSearch.trim(), "id",
                     currentPage * offset, offset);
             countComputer = computerService.count(paramSearch.trim());
         } else {
             computerPage = computerService.listByPage(paramSearch.trim(),
-                    paramOrder, currentPage * offset, offset);
+                    order, currentPage * offset, offset);
             countComputer = computerService.count(paramSearch.trim());
         }
 
@@ -111,6 +120,7 @@ public class IndexComputer extends HttpServlet {
         request.setAttribute("nbPages",
                 (int) Math.ceil((double) countComputer / (double) offset));
         request.setAttribute("order", paramOrder);
+        request.setAttribute("dir", paramDirection);
 
         request.getRequestDispatcher("/WEB-INF/views/indexComputer.jsp")
                 .forward(request, response);
