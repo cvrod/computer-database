@@ -32,6 +32,7 @@ public class CompanyDAO extends GenericDAO<Company> {
     public static final String INSERT_REQUEST = "INSERT INTO company (name) VALUES(?)";
     public static final String UPDATE_REQUEST = "UPDATE company SET name=? WHERE id=?";
     public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM company WHERE name like ?";
+    public static final String DELETE_COMPUTER = "DELETE FROM computer WHERE company_id=?";
     Connection con = null;
 
     /**.
@@ -156,11 +157,24 @@ public class CompanyDAO extends GenericDAO<Company> {
         int res = -1;
 
         try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
+                PreparedStatement stmtComputer = con.prepareStatement(DELETE_COMPUTER)) {
+            con.setAutoCommit(false);
+            stmtComputer.setInt(1, id);
+            stmtComputer.executeUpdate();
+
+            PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST);
             stmt.setInt(1, id);
             res = stmt.executeUpdate();
-        } catch (SQLException e) {
+            con.commit();
+            con.setAutoCommit(true);
+            } catch (SQLException e) {
             LOGGER.error(e.getMessage());
+            try {
+                con.rollback();
+            } catch (SQLException e1) {
+                LOGGER.error(e.getMessage());
+                throw new DAOException(e1);
+            }
             throw new DAOException(e);
         }
         return res;

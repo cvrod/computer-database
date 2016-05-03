@@ -20,7 +20,7 @@ import com.excilys.cdb.service.ComputerService;
  */
 public class CLI {
 
-    public static final int MAX_CHOICE = 9;
+    public static final int MAX_CHOICE = 10;
     public static final int PAGE_OFFSET = 20;
     public static final String COMPUTER_TABLE = "computer";
     public static final String COMPANY_TABLE = "company";
@@ -45,7 +45,8 @@ public class CLI {
         System.out.println("6/ Update Computer");
         System.out.println("7/ List All Computer By Page");
         System.out.println("8/ List All Companies By Page");
-        System.out.println("9/ Quit");
+        System.out.println("9/ Delete Company");
+        System.out.println("10/ Quit");
     }
 
     /**.
@@ -160,9 +161,22 @@ public class CLI {
                 System.out.println("All Computer by page");
                 printListByPage(COMPUTER_TABLE);
                 break;
-            default: // List All Companies By Page
+            case 8: // List All Companies By Page
                 System.out.println("All Companies by page");
                 printListByPage(COMPANY_TABLE);
+                break;
+            case 9: // Delete Company
+                System.out.println("Delete Company");
+                System.out.println("\n--> Delete Company : ");
+                System.out.println("\tid ?");
+                id = getValidNumber();
+                updateRes = companyService.delete(id);
+                if (updateRes == 1) {
+                    System.out.println("Delete Sucess !");
+                } else {
+                    System.out.println("Error occur during delete !");
+                }
+            default:
                 break;
             }
         } catch (UnknowTypeException e) {
@@ -337,7 +351,7 @@ public class CLI {
             choice = getChoice();
             System.out.println("// Choice : " + choice + " //");
 
-            if (choice == 9) {
+            if (choice == 10) {
                 System.out.println("Leaving app....");
                 sc.close();
                 isFinished = true;
