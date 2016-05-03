@@ -24,11 +24,11 @@ public class ConnectionFactory {
     static final Logger LOGGER = LoggerFactory
             .getLogger(ConnectionFactory.class);
 
-    protected static HikariDataSource SqlPool;
+    protected static HikariDataSource sqlPool;
 
     private static ConnectionFactory instance = null;
-    
-    static{
+
+    static {
         instance = new ConnectionFactory();
     }
 
@@ -61,11 +61,11 @@ public class ConnectionFactory {
             Class.forName(dbDriver);
 
             //Setting the connection pool
-            SqlPool = new HikariDataSource();
-            SqlPool.setJdbcUrl(dbAddress);
-            SqlPool.setUsername(usrLogin);
-            SqlPool.setPassword(psswrdLogin);
-            
+            sqlPool = new HikariDataSource();
+            sqlPool.setJdbcUrl(dbAddress);
+            sqlPool.setUsername(usrLogin);
+            sqlPool.setPassword(psswrdLogin);
+
         } catch (ClassNotFoundException | IOException e) {
             LOGGER.error("Cannot connect to DB !");
             throw new ConnectionFactoryException(e);
@@ -74,21 +74,22 @@ public class ConnectionFactory {
 
     /**.
      * open database connection
+     * @return connection from the pool
      */
     public Connection openConnection() {
         try {
-            return SqlPool.getConnection();
+            return sqlPool.getConnection();
         } catch (SQLException e) {
             LOGGER.error("Can't get connection from driver !");
             throw new ConnectionFactoryException(e);
         }
     }
-    
-    /**
-     * close object 
+
+    /**.
+     * close object
      * @param object object to close
      */
-    public void closeObject(AutoCloseable object){
+    public void closeObject(AutoCloseable object) {
         try {
             object.close();
         } catch (Exception e) {

@@ -14,9 +14,9 @@ import com.excilys.cdb.model.Computer;
 public class ComputerValidator {
     static final Logger LOGGER = LoggerFactory
             .getLogger(ComputerValidator.class);
-    private final static Pattern INT_REGEX = Pattern
+    private static final Pattern INT_REGEX = Pattern
             .compile("[0-9]*[1-9][0-9]*");
-    private final static Pattern DATE_REGEX = Pattern.compile(
+    private static final Pattern DATE_REGEX = Pattern.compile(
             "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])");
 
     /**.
@@ -27,7 +27,7 @@ public class ComputerValidator {
      */
     public static void validateName(String name) {
         LOGGER.debug("validateName");
-        if(name == null || name.equals("")){
+        if (name == null || name.equals("")) {
             throw new ValidatorException("Computer name cant be null or \"\"");
         }
     }
@@ -40,7 +40,7 @@ public class ComputerValidator {
      */
     public static void validateId(String id) {
         LOGGER.debug("validateCompanyId");
-        if (!INT_REGEX.matcher(id).matches() && !id.equals("0")){
+        if (!INT_REGEX.matcher(id).matches() && !id.equals("0")) {
             throw new ValidatorException("Computer company id is invalid");
         }
     }
@@ -53,23 +53,27 @@ public class ComputerValidator {
      */
     public static void validateDate(String date) {
         LOGGER.debug("validateDate");
-        if (!DATE_REGEX.matcher(date).matches() && !date.equals("")){
+        if (!DATE_REGEX.matcher(date).matches() && !date.equals("")) {
             throw new ValidatorException("Date is invalid");
         }
     }
 
-    public static void validate(Computer c){
+    /**.
+     * Validate a Computer
+     * @param c computer to validate
+     */
+    public static void validate(Computer c) {
         validateName(c.getName());
         validateId(c.getCompany().getId().toString());
         boolean introduced = false;
-        if(c.getIntroduced() != null) {
+        if (c.getIntroduced() != null) {
             validateDate(c.getIntroduced().toString());
             introduced = true;
         }
-        if(c.getDiscontinued() != null) {
+        if (c.getDiscontinued() != null) {
             validateDate(c.getDiscontinued().toString());
-            if(introduced){
-                if(!c.getDiscontinued().isAfter(c.getIntroduced())){
+            if (introduced) {
+                if (!c.getDiscontinued().isAfter(c.getIntroduced())) {
                     throw new ValidatorException("Intro date is after discontinued date");
                 }
             }

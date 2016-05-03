@@ -127,7 +127,7 @@ public class CompanyDAO extends GenericDAO<Company> {
         try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con
                         .prepareStatement(LISTPAGE_REQUEST)) {
-            stmt.setString(1, "%"+name+"%");
+            stmt.setString(1, "%" + name + "%");
             stmt.setString(2, order);
             stmt.setInt(3, start);
             stmt.setInt(4, offset);
@@ -239,7 +239,7 @@ public class CompanyDAO extends GenericDAO<Company> {
 
         try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
-            stmt.setString(1, "%"+name+"%");
+            stmt.setString(1, "%" + name + "%");
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);

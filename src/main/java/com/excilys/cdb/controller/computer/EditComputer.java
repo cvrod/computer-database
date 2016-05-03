@@ -92,6 +92,7 @@ public class EditComputer extends HttpServlet {
      * @param response response object
      *
      * @throws ServletException Servlet Exception
+     * @throws IOException IOException
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -106,12 +107,12 @@ public class EditComputer extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         int companyID = 0;
 
-        try{
+        try {
             ComputerValidator.validateName(nameParam);
             ComputerValidator.validateDate(introducedParam);
             ComputerValidator.validateDate(discontinuedParam);
             ComputerValidator.validateId(companyIdParam);
-            
+
             companyID = Integer.parseInt(companyIdParam);
             if (introducedParam.equals("")) {
                 LOGGER.debug("Invalid or null introduction date... Skipping");
@@ -135,8 +136,8 @@ public class EditComputer extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/views/500.html")
                         .forward(request, response);
             }
-            
-        }catch(ValidatorException e){
+
+        } catch (ValidatorException e) {
             request.setAttribute("id", id);
             request.setAttribute("computer", computerDTO);
             request.setAttribute("companies", companies);

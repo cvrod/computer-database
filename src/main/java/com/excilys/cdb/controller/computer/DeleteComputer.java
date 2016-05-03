@@ -12,14 +12,15 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.service.ComputerService;
 
-/**
+/**.
  * Servlet implementation class DeleteComputer
  */
 @WebServlet(name = "DeleteComputer", urlPatterns = { "/computer/delete" })
 public class DeleteComputer extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private ComputerService computerService = null;
-	static final Logger LOGGER = LoggerFactory.getLogger(DeleteComputer.class);
+    private static final long serialVersionUID = 1L;
+    private ComputerService computerService = null;
+    static final Logger LOGGER = LoggerFactory.getLogger(DeleteComputer.class);
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -28,27 +29,42 @@ public class DeleteComputer extends HttpServlet {
         this.computerService = ComputerService.getInstance();
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+     *      response)
+     * @param request request object
+     * @param response response object
+     *
+     * @throws ServletException ServletException
+     * @throws IOException IOException
+     */
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        response.getWriter().append("Served at: ")
+                .append(request.getContextPath());
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	    final String selection = request.getParameter("selection");
-	    LOGGER.debug("received : " + selection);
-	    String[] selectionSplit = null;
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+     *      response)
+     * @param request request object
+     * @param response response object
+     *
+     * @throws ServletException ServletException
+     * @throws IOException IOException
+     */
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response) throws ServletException, IOException {
+        final String selection = request.getParameter("selection");
+        LOGGER.debug("received : " + selection);
+        String[] selectionSplit = null;
 
-	    if(selection != null){
-	         selectionSplit = selection.split(",");
-	    }
-	    for(String s : selectionSplit){
-	        computerService.delete(Integer.parseInt(s));
-	    }
-	    response.sendRedirect(request.getContextPath() + "/computer");
-	}
+        if (selection != null) {
+            selectionSplit = selection.split(",");
+        }
+        for (String s : selectionSplit) {
+            computerService.delete(Integer.parseInt(s));
+        }
+        response.sendRedirect(request.getContextPath() + "/computer");
+    }
 }

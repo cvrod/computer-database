@@ -81,13 +81,13 @@ public class AddComputer extends HttpServlet {
         String companyIdParam = request.getParameter("companyId");
         LOGGER.debug("companyIdParam : " + companyIdParam);
         int companyID = 0;
-        
-        try{
+
+        try {
             ComputerValidator.validateName(nameParam);
             ComputerValidator.validateDate(introducedParam);
             ComputerValidator.validateDate(discontinuedParam);
             ComputerValidator.validateId(companyIdParam);
-            
+
             companyID = Integer.parseInt(companyIdParam);
             if (introducedParam.equals("")) {
                 LOGGER.debug("Invalid or null introduction date... Skipping");
@@ -111,8 +111,8 @@ public class AddComputer extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/views/500.html")
                         .forward(request, response);
             }
-            
-        }catch(ValidatorException e){
+
+        } catch (ValidatorException e) {
             request.setAttribute("companies", companies);
             request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
                     .forward(request, response);

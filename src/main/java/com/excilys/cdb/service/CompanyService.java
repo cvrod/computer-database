@@ -97,7 +97,7 @@ public class CompanyService {
      * @param offset page offset
      * @return Company Page
      */
-    public Page<Company> listByPage(String search, String order, int start, int offset){
+    public Page<Company> listByPage(String search, String order, int start, int offset) {
         return companyDAO.listAllByPage(search, order, start, offset);
     }
 
@@ -114,7 +114,7 @@ public class CompanyService {
      * @param name name to match
      * @return number of element in table Company
      */
-    public Long count(String name){
+    public Long count(String name) {
         return companyDAO.count(name);
     }
 }

@@ -4,4 +4,5 @@
 <%@ attribute name="page" required="true" %> 
 <%@ attribute name="offset" required="true" %>
 <%@ attribute name="search" required="false" %>
-href="${target}?page=${page}&offset=${offset}&search=${search}"
+<%@ attribute name="order" required="false"%>
+href="${target}?page=${page}&offset=${offset}&search=${search}&order=${order}"

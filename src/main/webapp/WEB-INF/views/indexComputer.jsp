@@ -62,12 +62,12 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
+						<th><a <tags:link target="" offset="${offset}" page="${current}" search="${ search }" order="name"/>>Computer name</a></th>
+						<th><a <tags:link target="" offset="${offset}" page="${current}" search="${ search }" order="introduced"/>>Introduced date</a></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th><a <tags:link target="" offset="${offset}" page="${current}" search="${ search }" order="discontinued"/>>Discontinued date</a></th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th><a <tags:link target="" offset="${offset}" page="${current}" search="${ search }" order="company_id"/>>Company</a></th>
 
 					</tr>
 				</thead>

@@ -14,7 +14,7 @@ import com.excilys.cdb.model.Company;
 public class CompanyValidator {
     static final Logger LOGGER = LoggerFactory
             .getLogger(CompanyValidator.class);
-    private final static Pattern INT_REGEX = Pattern
+    private static final Pattern INT_REGEX = Pattern
             .compile("[0-9]*[1-9][0-9]*");
 
     /**
@@ -32,21 +32,25 @@ public class CompanyValidator {
 
     /**
      * . validate Company ID from a given String
-     * 
+     *
      * @param id
      *            id to validate
      */
     public static void validateId(String id) {
         LOGGER.debug("validateId");
-        if(!INT_REGEX.matcher(id).matches()){
+        if (!INT_REGEX.matcher(id).matches()) {
             throw new ValidatorException("Company Id is invalid");
         }
     }
-    
+
+    /**.
+     * Validate a whole company
+     * @param c company to validate
+     */
     public static void validate(Company c) {
         LOGGER.debug("validate()");
         validateName(c.getName());
-        if(c.getId() != null){
+        if (c.getId() != null) {
             validateId(c.getId().toString());
         }
     }

@@ -37,6 +37,8 @@ public abstract class GenericDAO<T> {
 
     /**.
      * list object by page
+     * @param name name to search
+     * @param order column to order
      * @param start start index
      * @param offset page offset
      * @return Page object who contain list of needed object
@@ -74,6 +76,7 @@ public abstract class GenericDAO<T> {
 
     /**.
      * count the number of entities
+     * @param name name to search
      * @return number of entities
      */
     public abstract Long count(String name);

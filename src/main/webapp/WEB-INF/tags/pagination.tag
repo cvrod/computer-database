@@ -5,6 +5,7 @@
 <%@ attribute name="current" required="true"%>
 <%@ attribute name="nbPages" required="true"%>
 <%@ attribute name="search" required="false"%>
+<%@ attribute name="order" required="false"%>
 
 <ul class="pagination">
 	<c:set var="indexStart" value="0" />
@@ -28,23 +29,23 @@
 					aria-hidden="true">&laquo;</span></a></li>
 		</c:when>
 		<c:otherwise>
-			<li><a <tags:link target="" page="${ current - 1 }" offset="${offset}"/> aria-label="Previous"> <span
+			<li><a <tags:link target="" page="${ current - 1 }" offset="${offset}" search="${ search }" order="${ order }"/> aria-label="Previous"> <span
 					aria-hidden="true">&laquo;</span></a></li>
 		</c:otherwise>
 	</c:choose>
 
 	<c:if test="${indexStart > 0}">
-		<li><a <tags:link target="" page="0" offset="${offset}"/>>1</a></li>
+		<li><a <tags:link target="" page="0" offset="${offset}" search="${ search }" order="${ order }"/>>1</a></li>
 		<li class="disabled"><a>&hellip;</a></li>
 	</c:if>
 
 	<c:forEach var="i" begin="${indexStart}" end="${indexStop}">
-		<li ${current == i ? 'class="active"' : ''}><a <tags:link target="" offset="${offset}" page="${i}"/> >${i + 1}</a></li>
+		<li ${current == i ? 'class="active"' : ''}><a <tags:link target="" offset="${offset}" page="${i}" search="${ search }" order="${ order }"/> >${i + 1}</a></li>
 	</c:forEach>
 
 	<c:if test="${indexStop < (nbPages - 1)}">
 		<li class="disabled"><a>&hellip;</a></li>
-		<li><a <tags:link target="" offset="${offset}" page="${nbPages - 1}"/>>${nbPages}</a></li>
+		<li><a <tags:link target="" offset="${offset}" page="${nbPages - 1}" search="${ search }" order="${ order }"/>>${nbPages}</a></li>
 	</c:if>
 
 	<c:choose>
@@ -53,7 +54,7 @@
 					aria-hidden="true">&raquo;</span></a></li>
 		</c:when>
 		<c:otherwise>
-			<li><a <tags:link target="" offset="${offset}" page="${current + 1}"/> aria-label="Next"> <span
+			<li><a <tags:link target="" offset="${offset}" page="${current + 1}" search="${ search }" order="${ order }"/> aria-label="Next"> <span
 					aria-hidden="true">&raquo;</span></a></li>
 		</c:otherwise>
 	</c:choose>

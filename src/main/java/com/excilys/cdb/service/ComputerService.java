@@ -86,7 +86,7 @@ public class ComputerService {
     public Page<Computer> listAllByPage(int start, int offset) {
         return computerDAO.listAllByPage("", "id", start, offset);
     }
-    
+
     /**.
      * search computer function
      * @param search search pattern
@@ -95,7 +95,7 @@ public class ComputerService {
      * @param offset page offset
      * @return Computer Page
      */
-    public Page<Computer> listByPage(String search, String order, int start, int offset){
+    public Page<Computer> listByPage(String search, String order, int start, int offset) {
         return computerDAO.listAllByPage(search, order, start, offset);
     }
 
@@ -112,7 +112,7 @@ public class ComputerService {
      * @param name name to match
      * @return number of element in table Computer
      */
-    public Long count(String name){
+    public Long count(String name) {
         return computerDAO.count(name);
     }
 }
