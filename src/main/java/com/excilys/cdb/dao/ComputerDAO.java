@@ -117,9 +117,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
         ResultSet rs = null;
         String request = null;
 
-        if (order.equals("id") || order.equals("name")
-                || order.equals("introduced") || order.equals("discontinued")
-                || order.equals("company_id")) {
+        if (!order.equals("")) {
             request = String.format(LISTPAGE_REQUEST, order);
         } else {
             request = String.format(LISTPAGE_REQUEST, "id");

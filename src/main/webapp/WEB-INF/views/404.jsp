@@ -23,6 +23,7 @@
 				<!-- stacktrace -->
 			</div>
 		</div>
+		<iframe  class=".text-center" src="//giphy.com/embed/fyevWXLoTRKlG" width="480" height="269" class="giphy-embed"></iframe><p></p>
 	</section>
 
 	<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
