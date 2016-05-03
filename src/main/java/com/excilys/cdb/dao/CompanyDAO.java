@@ -27,7 +27,7 @@ public class CompanyDAO extends GenericDAO<Company> {
     private static CompanyDAO instance = null;
     public static final String DETAIL_REQUEST = "SELECT * FROM company WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM company;";
-    public static final String LISTPAGE_REQUEST = "SELECT * FROM company WHERE company.name LIKE ? ORDER BY ? LIMIT ?,?";
+    public static final String LISTPAGE_REQUEST = "SELECT * FROM company WHERE company.name LIKE ? ORDER BY %s LIMIT ?,?";
     public static final String DELETE_REQUEST = "DELETE FROM company WHERE id=?";
     public static final String INSERT_REQUEST = "INSERT INTO company (name) VALUES(?)";
     public static final String UPDATE_REQUEST = "UPDATE company SET name=? WHERE id=?";
@@ -123,14 +123,22 @@ public class CompanyDAO extends GenericDAO<Company> {
 
         ResultSet rs = null;
         ArrayList<Company> elementList = null;
+        String request = null;
+
+        if (order.equals("id") || order.equals("name")
+                || order.equals("introduced") || order.equals("discontinued")
+                || order.equals("company_id")) {
+            request = String.format(LISTPAGE_REQUEST, order);
+        } else {
+            request = String.format(LISTPAGE_REQUEST, "id");
+        }
 
         try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con
-                        .prepareStatement(LISTPAGE_REQUEST)) {
+                        .prepareStatement(request)) {
             stmt.setString(1, "%" + name + "%");
-            stmt.setString(2, order);
-            stmt.setInt(3, start);
-            stmt.setInt(4, offset);
+            stmt.setInt(2, start);
+            stmt.setInt(3, offset);
             rs = stmt.executeQuery();
             companyMapper = CompanyMapper.getInstance();
             elementList = (ArrayList<Company>) companyMapper.map(rs);

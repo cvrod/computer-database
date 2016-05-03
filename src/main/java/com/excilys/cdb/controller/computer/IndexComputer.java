@@ -80,21 +80,17 @@ public class IndexComputer extends HttpServlet {
         Page<Computer> computerPage = null;
 
         if (paramSearch == null && paramOrder == null) {
-            System.out.println("1PARAMSEARCH & PARAMORDER : " + paramSearch + paramOrder);
             computerPage = computerService.listAllByPage(currentPage * offset,
                     offset);
             countComputer = computerService.count();
         } else if (paramOrder == null) {
-            System.out.println("2PARAMSEARCH & PARAMORDER : " + paramSearch + paramOrder);
             computerPage = computerService.listByPage(paramSearch.trim(), "id",
                     currentPage * offset, offset);
             countComputer = computerService.count(paramSearch.trim());
         } else {
-            System.out.println("3PARAMSEARCH & PARAMORDER : " + paramSearch + paramOrder);
             computerPage = computerService.listByPage(paramSearch.trim(),
                     paramOrder, currentPage * offset, offset);
             countComputer = computerService.count(paramSearch.trim());
-            System.out.println(computerPage.toString());
         }
 
         ArrayList<ComputerDTO> computerDtoArray = new ArrayList<>();
