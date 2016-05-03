@@ -40,7 +40,7 @@ public class IndexComputer extends HttpServlet {
 
     /**
      * . return a computer page
-     * 
+     *
      * @param request
      *            request object
      * @param response
@@ -122,7 +122,7 @@ public class IndexComputer extends HttpServlet {
 
     /**
      * . doPost
-     * 
+     *
      * @param request
      *            request object
      * @param response

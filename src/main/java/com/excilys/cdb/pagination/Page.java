@@ -52,7 +52,11 @@ public class Page<T> {
     public void setOffset(int offset) {
         this.offset = offset;
     }
-    
+
+    /**.
+     * return a string representation of a Page
+     * @return string representation
+     */
     public String toString() {
         return this.elementList.toString();
     }

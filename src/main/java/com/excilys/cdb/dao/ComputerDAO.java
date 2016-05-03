@@ -16,8 +16,8 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
 import com.mysql.jdbc.Statement;
 
-/**.
- * Computer DAO, handle computer request
+/**
+ * . Computer DAO, handle computer request
  *
  * @see GenericDAO
  */
@@ -36,8 +36,9 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
     private static ComputerDAO instance = null;
 
-    /**.
-     * getting instance of ComputerDAO Singleton
+    /**
+     * . getting instance of ComputerDAO Singleton
+     *
      * @return ComputerDAO Instance
      */
     public static synchronized ComputerDAO getInstance() {
@@ -47,15 +48,15 @@ public class ComputerDAO extends GenericDAO<Computer> {
         return instance;
     }
 
-    /**.
-     * default constructor
+    /**
+     * . default constructor
      */
     private ComputerDAO() {
         companyDAO = CompanyDAO.getInstance();
     }
 
-    /**.
-     * Remove a computer from base
+    /**
+     * . Remove a computer from base
      *
      * @param id
      *            computer id to delete
@@ -76,8 +77,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
         return res;
     }
 
-    /**.
-     * Ask database for all Computer
+    /**
+     * . Ask database for all Computer
      *
      * @return ArrayList<Computer> all computer list
      */
@@ -100,13 +101,14 @@ public class ComputerDAO extends GenericDAO<Computer> {
         }
     }
 
-    /**.
-     * Ask database for Computer by page
+    /**
+     * . Ask database for Computer by page
      *
      * @return ArrayList<Computer> computer list
      */
     @Override
-    public Page<Computer> listAllByPage(String name, String order, int start, int offset) {
+    public Page<Computer> listAllByPage(String name, String order, int start,
+            int offset) {
         if (start < 0 || offset < 0) {
             return null;
         }
@@ -114,15 +116,16 @@ public class ComputerDAO extends GenericDAO<Computer> {
         ArrayList<Computer> elementList = null;
         ResultSet rs = null;
         String request = null;
-        
-        if(order.equals("id") || order.equals("name") || order.equals("introduced") || order.equals("discontinued") || order.equals("company_id")){
+
+        if (order.equals("id") || order.equals("name")
+                || order.equals("introduced") || order.equals("discontinued")
+                || order.equals("company_id")) {
             request = String.format(LISTPAGE_REQUEST, order);
         } else {
             request = String.format(LISTPAGE_REQUEST, "id");
         }
         try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con
-                        .prepareStatement(request)) {
+                PreparedStatement stmt = con.prepareStatement(request)) {
             stmt.setString(1, "%" + name + "%");
             stmt.setInt(2, start);
             stmt.setInt(3, offset);
@@ -140,8 +143,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
         }
     }
 
-    /**.
-     * Adding Computer to database
+    /**
+     * . Adding Computer to database
      *
      * @param c
      *            computer to add
@@ -180,8 +183,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
         return c;
     }
 
-    /**.
-     * Getting computer detail from base
+    /**
+     * . Getting computer detail from base
      *
      * @param id
      *            computer id to display
@@ -213,8 +216,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
         }
     }
 
-    /**.
-     * update a computer detail in base
+    /**
+     * . update a computer detail in base
      *
      * @param id
      *            id of the computer to update
