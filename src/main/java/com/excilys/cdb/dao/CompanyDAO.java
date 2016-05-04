@@ -161,7 +161,7 @@ public class CompanyDAO extends GenericDAO<Company> {
      */
     @Override
     public int delete(int id) {
-        LOGGER.debug("delete Company");
+        LOGGER.debug("delete Company and Computer");
         int res = -1;
 
         try (Connection con = connection.openConnection();
@@ -183,6 +183,26 @@ public class CompanyDAO extends GenericDAO<Company> {
                 LOGGER.error(e.getMessage());
                 throw new DAOException(e1);
             }
+            throw new DAOException(e);
+        }
+        return res;
+    }
+
+    /**.
+     * Remove a company from base (using transaction)
+     *
+     * @param id
+     *            company id to delete
+     * @return int : number of row affected (0 or 1)
+     */
+    public int delete2(Connection con, int companyId) {
+        LOGGER.debug("delete a Company");
+        int res = 0;
+        try (PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
+            stmt.setInt(1, companyId);
+            res = stmt.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
             throw new DAOException(e);
         }
         return res;

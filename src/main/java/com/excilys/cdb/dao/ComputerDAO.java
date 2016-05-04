@@ -31,6 +31,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public static final String LISTALL_REQUEST = "SELECT * FROM computer;";
     public static final String LISTPAGE_REQUEST = "SELECT * FROM computer WHERE computer.name LIKE ? ORDER BY %s LIMIT ?,?";
     public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM computer WHERE name LIKE ?";
+    public static final String DELETE_ALL_REQUEST = "DELETE FROM computer WHERE company_id=?";
     static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
     Connection con = null;
 
@@ -75,6 +76,18 @@ public class ComputerDAO extends GenericDAO<Computer> {
             throw new DAOException(e);
         }
         return res;
+    }
+    
+    public void deleteAll(Connection con, int companyId) {
+        LOGGER.debug("delete All Computer from a company ID");
+
+        try (PreparedStatement stmt = con.prepareStatement(DELETE_ALL_REQUEST)) {
+            stmt.setInt(1, companyId);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage());
+            throw new DAOException(e);
+        }
     }
 
     /**
