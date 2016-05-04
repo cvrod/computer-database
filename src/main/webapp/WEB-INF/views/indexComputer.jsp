@@ -30,7 +30,7 @@
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
-				<c:out value="${countComputer}" />
+				<span id="countComputer"><c:out value="${countComputer}" /></span>
 				Computers found
 			</h1>
 			<div id="actions" class="form-horizontal">
