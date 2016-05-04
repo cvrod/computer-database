@@ -69,7 +69,7 @@ public class CompanyService {
     public int delete(int id) {
         CompanyValidator.validateId(Integer.toString(id));
         int res = 0;
-        try (Connection con = connection.openConnection()){
+        try (Connection con = connection.openConnection()) {
             con.setAutoCommit(false);
             ComputerDAO computerDAO = ComputerDAO.getInstance();
             computerDAO.deleteAll(con, id);

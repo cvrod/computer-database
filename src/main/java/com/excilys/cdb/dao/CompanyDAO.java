@@ -191,7 +191,8 @@ public class CompanyDAO extends GenericDAO<Company> {
     /**.
      * Remove a company from base (using transaction)
      *
-     * @param id
+     * @param con connection to use
+     * @param companyId id of company to delete
      *            company id to delete
      * @return int : number of row affected (0 or 1)
      */

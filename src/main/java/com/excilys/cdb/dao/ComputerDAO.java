@@ -77,7 +77,12 @@ public class ComputerDAO extends GenericDAO<Computer> {
         }
         return res;
     }
-    
+
+    /**.
+     * Delete all computer from a given companyID
+     * @param con connection to use
+     * @param companyId if of company
+     */
     public void deleteAll(Connection con, int companyId) {
         LOGGER.debug("delete All Computer from a company ID");
 
