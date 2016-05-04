@@ -58,7 +58,7 @@ public class IndexComputer extends HttpServlet {
         String paramSearch = request.getParameter("search");
         String paramOrder = request.getParameter("order");
         String paramDirection = request.getParameter("dir");
-        if (paramOffset != null) {
+        if (isPresent(paramOffset)) {
             try {
                 offset = Integer.parseInt(paramOffset);
                 LOGGER.info("getting offset : " + offset);
@@ -67,7 +67,7 @@ public class IndexComputer extends HttpServlet {
                 offset = 10;
             }
         }
-        if (paramPage != null) {
+        if (isPresent(paramPage)) {
             try {
                 currentPage = Integer.parseInt(paramPage);
                 LOGGER.info("getting current page : " + currentPage);
@@ -79,31 +79,31 @@ public class IndexComputer extends HttpServlet {
 
         Long countComputer = new Long(0);
         Page<Computer> computerPage = null;
-        String order = null;
+        String order = paramOrder;
 
-        //TODO: REFACTOR THIS
-        if (paramDirection != null && !paramDirection.equals("")) {
-            order = paramOrder + " " + paramDirection;
-        } else {
-            order = paramOrder;
+        //if a direction is given
+        if (isPresent(paramOrder) && isPresent(paramDirection)) {
+            order += " " + paramDirection;
         }
 
-        if (paramSearch == null && paramOrder == null) {
+        if (!isPresent(paramSearch) && !isPresent(paramOrder)) {
             computerPage = computerService.listAllByPage(currentPage * offset,
                     offset);
             countComputer = computerService.count();
-        } else if (paramOrder == null || paramOrder.equals("")) {
-            computerPage = computerService.listByPage(paramSearch.trim(), "id",
+        } else if (!isPresent(paramOrder)) {
+            computerPage = computerService.listByPage(paramSearch, "id",
                     currentPage * offset, offset);
-            countComputer = computerService.count(paramSearch.trim());
+            countComputer = computerService.count(paramSearch);
         } else {
-            computerPage = computerService.listByPage(paramSearch.trim(),
+            computerPage = computerService.listByPage(paramSearch,
                     order, currentPage * offset, offset);
-            countComputer = computerService.count(paramSearch.trim());
+            countComputer = computerService.count(paramSearch);
         }
 
         ArrayList<ComputerDTO> computerDtoArray = new ArrayList<>();
         ComputerDTO dtoTmp = null;
+
+        //Convert Computer list in ComputerDTO list
         for (Computer c : computerPage.getElementList()) {
             dtoTmp = new ComputerDTO(c);
             computerDtoArray.add(dtoTmp);
@@ -142,5 +142,14 @@ public class IndexComputer extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
+    }
+
+    /**.
+     * check if a given url parent is null or empty
+     * @param param parameter to verify
+     * @return boolean true if is present, false else
+     */
+    protected boolean isPresent(String param) {
+        return !(param == null || param.equals(""));
     }
 }
