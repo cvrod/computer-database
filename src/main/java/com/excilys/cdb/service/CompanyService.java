@@ -73,7 +73,7 @@ public class CompanyService {
             con.setAutoCommit(false);
             ComputerDAO computerDAO = ComputerDAO.getInstance();
             computerDAO.deleteAll(con, id);
-            res = companyDAO.delete2(con, id);
+            res = companyDAO.delete(con, id);
             con.commit();
             con.setAutoCommit(true);
         } catch (SQLException | DAOException e) {

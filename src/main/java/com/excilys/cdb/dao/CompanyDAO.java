@@ -195,7 +195,7 @@ public class CompanyDAO extends GenericDAO<Company> {
      *            company id to delete
      * @return int : number of row affected (0 or 1)
      */
-    public int delete2(Connection con, int companyId) {
+    public int delete(Connection con, int companyId) {
         LOGGER.debug("delete a Company");
         int res = 0;
         try (PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
