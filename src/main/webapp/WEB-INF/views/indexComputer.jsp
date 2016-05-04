@@ -74,24 +74,24 @@
 						</span></th>
 						<th><a
 							<tags:link target="" offset="${offset}" 
-							page="${current}" search="${ search }" 
+							page="0" search="${ search }" 
 							order="name" dir="${dir == 'asc' && order == 'name' ? 'desc' : 'asc'}"/>>Computer
 								name</a></th>
 						<th><a
 							<tags:link target="" offset="${offset}" 
-							page="${current}" search="${ search }" 
+							page="0" search="${ search }" 
 							order="introduced" dir="${dir == 'asc' && order == 'introduced' ? 'desc' : 'asc'}"/>>Introduced
 								date</a></th>
 						<!-- Table header for Discontinued Date -->
 						<th><a
 							<tags:link target="" offset="${offset}" 
-							page="${current}" search="${ search }" 
+							page="0" search="${ search }" 
 							order="discontinued" dir="${dir == 'asc' && order == 'discontinued' ? 'desc' : 'asc'}"/>>Discontinued
 								date</a></th>
 						<!-- Table header for Company -->
 						<th><a
 							<tags:link target="" offset="${offset}" 
-							page="${current}" search="${ search }" 
+							page="0" search="${ search }" 
 							order="company_id" dir="${dir == 'asc' && order == 'company_id' ? 'desc' : 'asc'}"/>>Company</a></th>
 
 					</tr>
