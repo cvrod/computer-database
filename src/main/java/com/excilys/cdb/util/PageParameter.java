@@ -23,7 +23,15 @@ public class PageParameter {
 
     private Page<ComputerDTO> computerDtoPage = null;
 
-    public PageParameter(String offsetStr, String pageStr, String search, String order, String dir){
+    /**.
+     * PageParameter constructor
+     * @param offsetStr offset parameter
+     * @param pageStr page parameter
+     * @param search search parameter
+     * @param order order parameter
+     * @param dir direction parameter
+     */
+    public PageParameter(String offsetStr, String pageStr, String search, String order, String dir) {
         if (isPresent(offsetStr)) {
             try {
                 setOffset(Integer.parseInt(offsetStr));
@@ -52,7 +60,7 @@ public class PageParameter {
     /**.
      * process url paramater and setting dtoPage and countComputer var
      */
-    public void process(){
+    public void process() {
         Page<Computer> computerPage = null;
         String order = this.getOrder();
 
@@ -87,7 +95,7 @@ public class PageParameter {
         this.setComputerDtoPage(new Page<>(computerDtoArray,
                 computerPage.getStart(), computerPage.getOffset()));
     }
-    
+
     /**.
      * check if a given url parent is null or empty
      * @param param parameter to verify
