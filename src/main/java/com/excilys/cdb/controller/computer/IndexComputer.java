@@ -1,7 +1,6 @@
 package com.excilys.cdb.controller.computer;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,10 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.dto.model.ComputerDTO;
-import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.pagination.Page;
-import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.util.PageParameter;
 
 /**
  * . . Servlet implementation class IndexComputer
@@ -24,10 +20,6 @@ import com.excilys.cdb.service.ComputerService;
 public class IndexComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    static ComputerService computerService = null;
-    static int offset = 10;
-    static int currentPage = 0;
-    static int nbPages;
     static final Logger LOGGER = LoggerFactory.getLogger(IndexComputer.class);
 
     /**
@@ -35,7 +27,6 @@ public class IndexComputer extends HttpServlet {
      */
     public IndexComputer() {
         super();
-        computerService = ComputerService.getInstance();
     }
 
     /**
@@ -53,75 +44,29 @@ public class IndexComputer extends HttpServlet {
      */
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
+        //Getting parameter from url
         String paramOffset = request.getParameter("offset");
         String paramPage = request.getParameter("page");
         String paramSearch = request.getParameter("search");
         String paramOrder = request.getParameter("order");
         String paramDirection = request.getParameter("dir");
-        if (isPresent(paramOffset)) {
-            try {
-                offset = Integer.parseInt(paramOffset);
-                LOGGER.info("getting offset : " + offset);
-            } catch (NumberFormatException e) {
-                LOGGER.debug("NumberFormatException on index param !");
-                offset = 10;
-            }
-        }
-        if (isPresent(paramPage)) {
-            try {
-                currentPage = Integer.parseInt(paramPage);
-                LOGGER.info("getting current page : " + currentPage);
-            } catch (NumberFormatException e) {
-                LOGGER.debug("NumberFormatException on page param !");
-                currentPage = 0;
-            }
-        }
 
-        Long countComputer = new Long(0);
-        Page<Computer> computerPage = null;
-        String order = paramOrder;
+        //process parameters
+        PageParameter pageParam = new PageParameter(paramOffset, paramPage, paramSearch, paramOrder, paramDirection);
+        pageParam.process();
 
-        //if a direction is given
-        if (isPresent(paramOrder) && isPresent(paramDirection)) {
-            order += " " + paramDirection;
-        }
-
-        if (!isPresent(paramSearch) && !isPresent(paramOrder)) {
-            computerPage = computerService.listAllByPage(currentPage * offset,
-                    offset);
-            countComputer = computerService.count();
-        } else if (!isPresent(paramOrder)) {
-            computerPage = computerService.listByPage(paramSearch, "id",
-                    currentPage * offset, offset);
-            countComputer = computerService.count(paramSearch);
-        } else {
-            computerPage = computerService.listByPage(paramSearch,
-                    order, currentPage * offset, offset);
-            countComputer = computerService.count(paramSearch);
-        }
-
-        ArrayList<ComputerDTO> computerDtoArray = new ArrayList<>();
-        ComputerDTO dtoTmp = null;
-
-        //Convert Computer list in ComputerDTO list
-        for (Computer c : computerPage.getElementList()) {
-            dtoTmp = new ComputerDTO(c);
-            computerDtoArray.add(dtoTmp);
-        }
-
-        Page<ComputerDTO> computerDtoPage = new Page<>(computerDtoArray,
-                computerPage.getStart(), computerPage.getOffset());
-
-        request.setAttribute("page", computerDtoPage);
-        request.setAttribute("current", currentPage);
-        request.setAttribute("countComputer", countComputer);
-        request.setAttribute("offset", offset);
-        request.setAttribute("search", paramSearch);
+        //Setting jsp attributes
+        request.setAttribute("page", pageParam.getComputerDtoPage());
+        request.setAttribute("current", pageParam.getCurrentPage());
+        request.setAttribute("countComputer", pageParam.getCountComputer());
+        request.setAttribute("offset", pageParam.getOffset());
+        request.setAttribute("search", pageParam.getSearch());
         request.setAttribute("nbPages",
-                (int) Math.ceil((double) countComputer / (double) offset));
-        request.setAttribute("order", paramOrder);
-        request.setAttribute("dir", paramDirection);
+                (int) Math.ceil((double) pageParam.getCountComputer() / (double) pageParam.getOffset()));
+        request.setAttribute("order", pageParam.getOrder());
+        request.setAttribute("dir", pageParam.getDir());
 
+        //Forward request
         request.getRequestDispatcher("/WEB-INF/views/indexComputer.jsp")
                 .forward(request, response);
     }
@@ -142,14 +87,5 @@ public class IndexComputer extends HttpServlet {
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);
-    }
-
-    /**.
-     * check if a given url parent is null or empty
-     * @param param parameter to verify
-     * @return boolean true if is present, false else
-     */
-    protected boolean isPresent(String param) {
-        return !(param == null || param.equals(""));
     }
 }
