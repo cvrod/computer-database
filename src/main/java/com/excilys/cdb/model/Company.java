@@ -26,7 +26,7 @@ public class Company implements Comparable<Company> {
      *            company name
      */
     public Company(Long id, String name) {
-        LOGGER.info("creating new Company");
+        LOGGER.debug("creating new Company Object with id : " + id);
         this.name = name;
         this.id = id;
     }

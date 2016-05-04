@@ -38,7 +38,7 @@ public class Computer {
      */
     public Computer(String name, String introduction, String discontinued,
             Company comp) {
-        LOGGER.info("creating new Computer");
+        LOGGER.debug("creating new Computer object without id");
 
         this.setName(name);
         if (introduction != null) {
@@ -97,7 +97,7 @@ public class Computer {
      */
     public Computer(Long id, String name, String introduced,
             String discontinued, Company comp) {
-        LOGGER.info("creating new Computer");
+        LOGGER.debug("creating new Computer object with id");
 
         this.id = id;
         this.name = name;
