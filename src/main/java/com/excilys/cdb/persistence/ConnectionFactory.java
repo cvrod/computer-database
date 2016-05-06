@@ -9,6 +9,7 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 /**.
@@ -59,12 +60,18 @@ public class ConnectionFactory {
             dbAddress = properties.getProperty("DB_ADDR");
             dbDriver = properties.getProperty("DB_DRIVER");
             Class.forName(dbDriver);
+            
+            HikariConfig config = new HikariConfig();
+            config.setJdbcUrl(dbAddress);
+            config.setUsername(usrLogin);
+            config.setPassword(psswrdLogin);
+            config.addDataSourceProperty("cachePrepStmts", "true");
+            config.addDataSourceProperty("prepStmtCacheSize", "250");
+            config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+            config.setMaximumPoolSize(400);
 
             //Setting the connection pool
-            sqlPool = new HikariDataSource();
-            sqlPool.setJdbcUrl(dbAddress);
-            sqlPool.setUsername(usrLogin);
-            sqlPool.setPassword(psswrdLogin);
+            sqlPool = new HikariDataSource(config);
 
         } catch (ClassNotFoundException | IOException e) {
             LOGGER.error("Cannot connect to DB !");
@@ -89,7 +96,7 @@ public class ConnectionFactory {
      * close object
      * @param object object to close
      */
-    public void closeObject(AutoCloseable object) {
+    public static void closeObject(AutoCloseable object) {
         try {
             object.close();
         } catch (Exception e) {
