@@ -128,6 +128,12 @@ Replace existing connection logic with a ThreadLocal object.
 Now is the time to start evaluating your global application performance with a stress-test campain.
 Using Gatling, you have one day to stress-test your web application (gatling test and directions present in the folder gatling-test). See the relevant README file for more explanations. For now, choose the simulation without Spring Security.
 
+| Optimization | Best number of users | Performance gain |
+| --- | --- | --- |
+| Improved Hikari & MySQL config. Changed MaximumPoolSize & max_connections from 10 to 400 | 1000 users (on default db) | --% |
+| Improved MySQL config. Changed threadConcurrency & Cache size. | 10 users (on 1M computer base) | --% |
+| Improved Tomcat config. Changed Xms & Xms parameters to 4G. | 100 users (on 1M computer base) (77% request > 1200ms...) | --% |
+
 
 ####4.3.9. Code review (t0 + 12 days)
 Important Points: What were the bottlenecks, what optimizations were done, for how much performance gain, which scores were reached.
