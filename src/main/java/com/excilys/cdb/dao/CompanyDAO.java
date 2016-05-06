@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.pagination.Page;
+import com.excilys.cdb.persistence.ConnectionManager;
 import com.mysql.jdbc.Statement;
 
 /**.
@@ -25,6 +26,7 @@ public class CompanyDAO extends GenericDAO<Company> {
 
     static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
     private static CompanyDAO instance = null;
+    private final ConnectionManager connectionManager = ConnectionManager.getInstance();
     public static final String DETAIL_REQUEST = "SELECT * FROM company WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM company;";
     public static final String LISTPAGE_REQUEST = "SELECT * FROM company WHERE company.name LIKE ? ORDER BY %s LIMIT ?,?";
@@ -153,42 +155,6 @@ public class CompanyDAO extends GenericDAO<Company> {
     }
 
     /**.
-     * Remove a company from base
-     *
-     * @param id
-     *            company id to delete
-     * @return int : number of row affected (0 or 1)
-     */
-    @Override
-    public int delete(int id) {
-        LOGGER.debug("delete Company and Computer");
-        int res = -1;
-
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmtComputer = con.prepareStatement(DELETE_COMPUTER)) {
-            con.setAutoCommit(false);
-            stmtComputer.setInt(1, id);
-            stmtComputer.executeUpdate();
-
-            PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST);
-            stmt.setInt(1, id);
-            res = stmt.executeUpdate();
-            con.commit();
-            con.setAutoCommit(true);
-            } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            try {
-                con.rollback();
-            } catch (SQLException e1) {
-                LOGGER.error(e.getMessage());
-                throw new DAOException(e1);
-            }
-            throw new DAOException(e);
-        }
-        return res;
-    }
-
-    /**.
      * Remove a company from base (using transaction)
      *
      * @param con connection to use
@@ -196,8 +162,9 @@ public class CompanyDAO extends GenericDAO<Company> {
      *            company id to delete
      * @return int : number of row affected (0 or 1)
      */
-    public int delete(Connection con, int companyId) {
+    public int delete(int companyId) {
         LOGGER.debug("delete a Company");
+        Connection con = this.connectionManager.get();
         int res = 0;
         try (PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
             stmt.setInt(1, companyId);

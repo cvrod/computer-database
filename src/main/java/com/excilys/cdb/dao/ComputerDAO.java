@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
+import com.excilys.cdb.persistence.ConnectionManager;
 import com.mysql.jdbc.Statement;
 
 /**
@@ -24,6 +25,7 @@ import com.mysql.jdbc.Statement;
 public class ComputerDAO extends GenericDAO<Computer> {
 
     CompanyDAO companyDAO = null;
+    private final ConnectionManager connectionManager = ConnectionManager.getInstance();
     public static final String INSERT_REQUEST = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
     public static final String DETAIL_REQUEST = "SELECT * FROM computer WHERE id=?";
     public static final String DELETE_REQUEST = "DELETE FROM computer WHERE id=?";
@@ -83,9 +85,9 @@ public class ComputerDAO extends GenericDAO<Computer> {
      * @param con connection to use
      * @param companyId if of company
      */
-    public void deleteAll(Connection con, int companyId) {
+    public void deleteAll(int companyId) {
         LOGGER.debug("delete All Computer from a company ID");
-
+        Connection con = this.connectionManager.get();
         try (PreparedStatement stmt = con.prepareStatement(DELETE_ALL_REQUEST)) {
             stmt.setInt(1, companyId);
             stmt.executeUpdate();

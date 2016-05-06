@@ -7,12 +7,12 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.dao.DAOException;
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.persistence.ConnectionFactory;
+import com.excilys.cdb.persistence.ConnectionManager;
 import com.excilys.cdb.validator.CompanyValidator;
 
 public class CompanyService {
@@ -68,22 +68,22 @@ public class CompanyService {
      */
     public int delete(int id) {
         CompanyValidator.validateId(Integer.toString(id));
+        ConnectionManager connectionManager = ConnectionManager.getInstance();
+        connectionManager.init();
+
         int res = 0;
-        try (Connection con = connection.openConnection()) {
-            con.setAutoCommit(false);
-            ComputerDAO computerDAO = ComputerDAO.getInstance();
-            computerDAO.deleteAll(con, id);
-            res = companyDAO.delete(con, id);
-            con.commit();
-            con.setAutoCommit(true);
-        } catch (SQLException | DAOException e) {
-            LOGGER.debug("fail in delete Company");
-            try {
-                con.rollback();
-            } catch (SQLException e1) {
-                LOGGER.debug("Fail to Rollback");
-            }
+        ComputerDAO computerDAO = ComputerDAO.getInstance();
+        computerDAO.deleteAll(id);
+        res = companyDAO.delete(id);
+
+        try {
+            connectionManager.commit();
+        } catch (SQLException e) {
+            connectionManager.rollback();
+        } finally {
+            connectionManager.close();
         }
+
         return res;
     }
 
