@@ -1,7 +1,5 @@
 package com.excilys.cdb.validator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
@@ -18,7 +16,6 @@ public class CompanyValidator {
             .getLogger(CompanyValidator.class);
     private static final Pattern INT_REGEX = Pattern
             .compile("[0-9]*[1-9][0-9]*");
-    static List<Error> errorList = new ArrayList<>();
 
     /**
      * validate Company name.
@@ -29,7 +26,7 @@ public class CompanyValidator {
     public static void validateName(String name) {
         LOGGER.debug("validateName");
         if (name == null || name.equals("")) {
-            errorList.add(new Error("name", "Company Name cant be null or \"\""));
+            throw new ValidatorException("Company Name cant be null or \"\"");
         }
     }
 
@@ -42,22 +39,19 @@ public class CompanyValidator {
     public static void validateId(String id) {
         LOGGER.debug("validateId");
         if (!INT_REGEX.matcher(id).matches()) {
-            errorList.add(new Error("id", "Company Id is invalid"));
+            throw new ValidatorException("Company Id is invalid");
         }
     }
 
     /**
      * Validate a whole company.
      * @param c company to validate
-     * @return errorList
      */
-    public static List<Error> validate(Company c) {
+    public static void validate(Company c) {
         LOGGER.debug("validate()");
-        errorList = new ArrayList<>();
         validateName(c.getName());
         if (c.getId() != null) {
             validateId(c.getId().toString());
         }
-        return errorList;
     }
 }
