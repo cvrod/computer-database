@@ -7,51 +7,51 @@ import com.excilys.cdb.pagination.Page;
 
 public interface ComputerService {
 
-    /**.
-     * getting a Computer from database
+    /**
+     * getting a Computer from database.
      * @param id if of computer to get
      * @return Computer Object
      */
     Computer get(int id);
 
-    /**.
-     * add a computer to DB
+    /**
+     * add a computer to DB.
      * @param comp computer to add
      * @return fresh Computer Object
      */
     Computer add(Computer comp);
 
-    /**.
-     * remove a Computer from DB
+    /**
+     * remove a Computer from DB.
      * @param id id of Computer to delete
      * @return 0 if computer not found, 1 else
      */
     int delete(int id);
 
-    /**.
-     * update a Computer on DB
+    /**
+     * update a Computer on DB.
      * @param id id of computer to update
      * @param c Fresh Computer object
      * @return 0 if computer not found, 1 else
      */
     int update(int id, Computer c);
 
-    /**.
-     * listAll Computer
+    /**
+     * listAll Computer.
      * @return ArrayList of all computer in DB
      */
     List<Computer> listAll();
 
-    /**.
-     * list computer by page
+    /**
+     * list computer by page.
      * @param start start index
      * @param offset page offset
      * @return Computer Page
      */
     Page<Computer> listAllByPage(int start, int offset);
 
-    /**.
-     * search computer function
+    /**
+     * search computer function.
      * @param search search pattern
      * @param order row ordering
      * @param start start index
@@ -60,14 +60,14 @@ public interface ComputerService {
      */
     Page<Computer> listByPage(String search, String order, int start, int offset);
 
-    /**.
-     * return total number of element in computer table
+    /**
+     * return total number of element in computer table.
      * @return number of elements in table
      */
     Long count();
 
-    /**.
-     * return total number of element maching name in computer table
+    /**
+     * return total number of element maching name in computer table.
      * @param name name to match
      * @return number of element in table Computer
      */

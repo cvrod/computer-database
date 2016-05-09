@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.dto.model.ComputerDTO;
 
 /**
- * . Computer object Contain a row from computer table
+ * Computer object Contain a row from computer table.
  */
 public class Computer {
     private Long id = null;
@@ -19,13 +19,13 @@ public class Computer {
     static final Logger LOGGER = LoggerFactory.getLogger(Computer.class);
 
     /**
-     * . Computer constructor
+     * Computer constructor.
      */
     public Computer() {
     };
 
     /**
-     * . Contructor without ID
+     * Contructor without ID.
      *
      * @param name
      *            computer name
@@ -61,8 +61,8 @@ public class Computer {
         }
     }
 
-    /**.
-     * Computer constructor from ComputerDTO
+    /**
+     * Computer constructor from ComputerDTO.
      * @param c source ComputerDTO
      */
     public Computer(ComputerDTO c) {
@@ -82,7 +82,7 @@ public class Computer {
     }
 
     /**
-     * . Contructor with an ID
+     * Contructor with an ID.
      *
      * @param id
      *            computer id
@@ -223,7 +223,7 @@ public class Computer {
     }
 
     /**
-     * . return a Computer under str form
+     * return a Computer under str form.
      *
      * @return Computer str
      */
@@ -245,7 +245,7 @@ public class Computer {
     }
 
     /**
-     * . Builder pattern to create computer
+     * Builder pattern to create computer.
      */
     public static class Builder {
         private Long id = null;
@@ -255,13 +255,13 @@ public class Computer {
         private Company company = null;
 
         /**
-         * . Builder Constructor
+         * Builder Constructor.
          */
         public Builder() {
         }
 
         /**
-         * . add id param to Builder
+         * add id param to Builder.
          *
          * @param id
          *            fesh id param
@@ -273,7 +273,7 @@ public class Computer {
         }
 
         /**
-         * . add name param to Builder
+         * add name param to Builder.
          *
          * @param name
          *            name fresh param
@@ -285,7 +285,7 @@ public class Computer {
         }
 
         /**
-         * . add introduced param to Builder
+         * add introduced param to Builder.
          *
          * @param intro
          *            intro fresh param
@@ -297,7 +297,7 @@ public class Computer {
         }
 
         /**
-         * . add discontinued param to Builder
+         * add discontinued param to Builder.
          *
          * @param discontinued
          *            discontinued fresh param
@@ -309,7 +309,7 @@ public class Computer {
         }
 
         /**
-         * . add company param to Builder
+         * add company param to Builder.
          *
          * @param company
          *            Company to add
@@ -321,7 +321,7 @@ public class Computer {
         }
 
         /**
-         * . method to build a Computer object from Builder class
+         * method to build a Computer object from Builder class.
          *
          * @return Computer object
          */

@@ -21,8 +21,8 @@ import com.excilys.cdb.service.ComputerServiceImpl;
 import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.validator.ValidatorException;
 
-/**.
- * . Servlet implementation class EditComputer
+/**
+ * Servlet implementation class EditComputer.
  */
 @WebServlet(name = "EditComputer", urlPatterns = { "/computer/edit" })
 public class EditComputer extends HttpServlet {
@@ -33,8 +33,8 @@ public class EditComputer extends HttpServlet {
     ArrayList<Company> companies = null;
     ComputerDTO computerDTO = null;
 
-    /**.
-     * EditComputer Servlet constructor
+    /**
+     * EditComputer Servlet constructor.
      */
     public EditComputer() {
         super();
@@ -42,8 +42,8 @@ public class EditComputer extends HttpServlet {
         companyService = CompanyServiceImpl.getInstance();
     }
 
-    /**.
-     * doGet
+    /**
+     * doGet.
      * @param request request object
      * @param response response object
      *
@@ -87,7 +87,7 @@ public class EditComputer extends HttpServlet {
     }
 
     /**.
-     * doPost
+     * doPost.
      * @param request request object
      * @param response response object
      *

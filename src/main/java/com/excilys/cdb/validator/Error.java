@@ -5,8 +5,8 @@ public class Error {
     private String field;
     private String message;
 
-    /**.
-     * Error constructor
+    /**
+     * Error constructor.
      * @param field form field concerned
      * @param message error message
      */

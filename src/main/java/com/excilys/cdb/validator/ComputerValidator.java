@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.model.Computer;
 
 /**
- * . Computer Validator use to validate Computer fields
+ * Computer Validator use to validate Computer fields.
  *
  */
 public class ComputerValidator {
@@ -19,8 +19,8 @@ public class ComputerValidator {
     private static final Pattern DATE_REGEX = Pattern.compile(
             "((19|20)\\d\\d)-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])");
 
-    /**.
-     * . validate Computer name
+    /**
+     * validate Computer name.
      *
      * @param name
      *            name to validate
@@ -32,8 +32,8 @@ public class ComputerValidator {
         }
     }
 
-    /**.
-     * . validate Computer id or company id
+    /**
+     * validate Computer id or company id.
      *
      * @param id
      *            id to validate
@@ -45,8 +45,8 @@ public class ComputerValidator {
         }
     }
 
-    /**.
-     * . validate a date from a string
+    /**
+     * validate a date from a string.
      *
      * @param date
      *            str date to validate
@@ -58,8 +58,8 @@ public class ComputerValidator {
         }
     }
 
-    /**.
-     * Validate a Computer
+    /**
+     * Validate a Computer.
      * @param c computer to validate
      */
     public static void validate(Computer c) {

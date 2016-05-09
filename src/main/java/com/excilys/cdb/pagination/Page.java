@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**.
- * Page Pojo
+/**
+ * Page Pojo.
  *
  * @param <T>
  */
@@ -16,8 +16,8 @@ public class Page<T> {
     int offset = -1;
     static final Logger LOGGER = LoggerFactory.getLogger(Page.class);
 
-    /**.
-     * Page Constructor
+    /**
+     * Page Constructor.
      * @param elementList list of element to display
      * @param start start index
      * @param offset page offset
@@ -53,8 +53,8 @@ public class Page<T> {
         this.offset = offset;
     }
 
-    /**.
-     * return a string representation of a Page
+    /**
+     * return a string representation of a Page.
      * @return string representation
      */
     public String toString() {

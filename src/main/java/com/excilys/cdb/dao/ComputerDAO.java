@@ -18,7 +18,7 @@ import com.excilys.cdb.persistence.ConnectionManager;
 import com.mysql.jdbc.Statement;
 
 /**
- * . Computer DAO, handle computer request
+ * Computer DAO, handle computer request.
  *
  * @see GenericDAO
  */
@@ -40,7 +40,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     private static ComputerDAO instance = null;
 
     /**
-     * . getting instance of ComputerDAO Singleton
+     * getting instance of ComputerDAO Singleton.
      *
      * @return ComputerDAO Instance
      */
@@ -52,14 +52,14 @@ public class ComputerDAO extends GenericDAO<Computer> {
     }
 
     /**
-     * . default constructor
+     * default constructor.
      */
     private ComputerDAO() {
         companyDAO = CompanyDAO.getInstance();
     }
 
     /**
-     * . Remove a computer from base
+     * Remove a computer from base.
      *
      * @param id
      *            computer id to delete
@@ -80,8 +80,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
         return res;
     }
 
-    /**.
-     * Delete all computer from a given companyID
+    /**
+     * Delete all computer from a given companyID.
      * @param companyId if of company
      */
     public void deleteAll(int companyId) {
@@ -97,7 +97,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     }
 
     /**
-     * . Ask database for all Computer
+     * Ask database for all Computer.
      *
      * @return ArrayList<Computer> all computer list
      */
@@ -121,7 +121,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     }
 
     /**
-     * . Ask database for Computer by page
+     * Ask database for Computer by page.
      *
      * @return ArrayList<Computer> computer list
      */
@@ -172,7 +172,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     }
 
     /**
-     * . Adding Computer to database
+     * Adding Computer to database.
      *
      * @param c
      *            computer to add
@@ -212,7 +212,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     }
 
     /**
-     * . Getting computer detail from base
+     * Getting computer detail from base.
      *
      * @param id
      *            computer id to display
@@ -245,7 +245,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     }
 
     /**
-     * . update a computer detail in base
+     * update a computer detail in base.
      *
      * @param id
      *            id of the computer to update

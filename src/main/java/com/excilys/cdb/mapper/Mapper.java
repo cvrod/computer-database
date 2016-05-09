@@ -3,14 +3,14 @@ package com.excilys.cdb.mapper;
 import java.sql.ResultSet;
 import java.util.List;
 
-/**.
- * Mapper interface
+/**
+ * Mapper interface.
  *
  * @param <T>
  */
 public interface Mapper<T> {
-    /**.
-     * mapper from ResultSet
+    /**
+     * mapper from ResultSet.
      * @param rs ResultSet to map
      * @return List of Object create by mapping
      */

@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-/**.
- * Database connection class Handle Query and update
+/**
+ * Database connection class Handle Query and update.
  */
 public class ConnectionFactory {
     private static final String PROPERTIES_FILE = "mysql.properties";
@@ -33,8 +33,8 @@ public class ConnectionFactory {
         instance = new ConnectionFactory();
     }
 
-    /**.
-     * get instance of DBConnect
+    /**
+     * get instance of DBConnect.
      *
      * @return DBConnect instance
      */
@@ -45,8 +45,8 @@ public class ConnectionFactory {
         return instance;
     }
 
-    /**.
-     * BDConnect constructor
+    /**
+     * BDConnect constructor.
      */
     private ConnectionFactory() {
         try {
@@ -79,8 +79,8 @@ public class ConnectionFactory {
         }
     }
 
-    /**.
-     * open database connection
+    /**
+     * open database connection.
      * @return connection from the pool
      */
     public Connection openConnection() {
@@ -92,8 +92,8 @@ public class ConnectionFactory {
         }
     }
 
-    /**.
-     * close object
+    /**
+     * close object.
      * @param object object to close
      */
     public static void closeObject(AutoCloseable object) {

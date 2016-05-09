@@ -9,8 +9,8 @@ public class ConnectionManager {
     private static ConnectionManager instance;
     public static final ThreadLocal<Connection> THREAD_CONNECTION = new ThreadLocal<Connection>();
 
-    /**.
-     * Getting ConnectionManager instance
+    /**
+     * Getting ConnectionManager instance.
      * @return ConnectionManager
      */
     public static synchronized ConnectionManager getInstance() {
@@ -21,14 +21,14 @@ public class ConnectionManager {
     }
 
     /**
-     * . default constructor
+     * default constructor.
      */
     private ConnectionManager() {
         connectionFactory = ConnectionFactory.getInstance();
     }
 
-    /**.
-     * Connection initialisation in ThreadLocal
+    /**
+     * Connection initialisation in ThreadLocal.
      */
     public void init() {
         if (THREAD_CONNECTION.get() != null) {
@@ -45,8 +45,8 @@ public class ConnectionManager {
         THREAD_CONNECTION.set(con);
     }
 
-    /**.
-     * Commit ThreadLocal Connection
+    /**
+     * Commit ThreadLocal Connection.
      * @throws SQLException if commit fail
      */
     public void commit() throws SQLException {
@@ -54,8 +54,8 @@ public class ConnectionManager {
         con.commit();
     }
 
-    /**.
-     * Rollback ThreadLocal Connection
+    /**
+     * Rollback ThreadLocal Connection.
      */
     public void rollback() {
         Connection con = THREAD_CONNECTION.get();
@@ -66,8 +66,8 @@ public class ConnectionManager {
         }
     }
 
-    /**.
-     * Close connection and remove it from ThreadLocal
+    /**
+     * Close connection and remove it from ThreadLocal.
      */
     public void close() {
         Connection con = THREAD_CONNECTION.get();
@@ -80,8 +80,8 @@ public class ConnectionManager {
         }
     }
 
-    /**.
-     * return connection stored in ThreadLocal
+    /**
+     * return connection stored in ThreadLocal.
      * @return Connection object
      */
     public Connection get() {

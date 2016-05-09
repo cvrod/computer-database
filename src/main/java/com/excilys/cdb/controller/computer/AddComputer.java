@@ -21,7 +21,7 @@ import com.excilys.cdb.validator.ValidatorException;
 import com.excilys.cdb.dao.DAOException;
 
 /**
- * . Servlet implementation class AddComputer
+ * Servlet implementation class AddComputer.
  */
 @WebServlet(name = "AddComputer", urlPatterns = { "/computer/add" })
 public class AddComputer extends HttpServlet {
@@ -31,8 +31,8 @@ public class AddComputer extends HttpServlet {
     static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
     ArrayList<Company> companies = null;
 
-    /**.
-     * AddComputer Servlet constructor
+    /**
+     * AddComputer Servlet constructor.
      */
     public AddComputer() {
         super();
@@ -40,8 +40,8 @@ public class AddComputer extends HttpServlet {
         companyService = CompanyServiceImpl.getInstance();
     }
 
-    /**.
-     * return addcomputer form
+    /**
+     * return addcomputer form.
      * @param request request object
      * @param response response object
      *
@@ -62,8 +62,8 @@ public class AddComputer extends HttpServlet {
                 .forward(request, response);
     }
 
-    /**.
-     * add a computer to DB
+    /**
+     * add a computer to DB.
      * @param request request object
      * @param response response object
      *

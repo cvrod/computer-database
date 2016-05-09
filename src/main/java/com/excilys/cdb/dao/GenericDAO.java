@@ -11,8 +11,8 @@ import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.persistence.ConnectionFactory;
 
-/**.
- * Main DAO class
+/**
+ * Main DAO class.
  */
 public abstract class GenericDAO<T> {
     protected ConnectionFactory connection = null;
@@ -22,21 +22,21 @@ public abstract class GenericDAO<T> {
     StringBuffer res;
     static final Logger LOGGER = LoggerFactory.getLogger(GenericDAO.class);
 
-    /**.
-     * Generic DAO constructor
+    /**
+     * Generic DAO constructor.
      */
     public GenericDAO() {
         connection = ConnectionFactory.getInstance();
     }
 
-    /**.
-     * list all object from a given type
+    /**
+     * list all object from a given type.
      * @return list of all object in table
      */
     public abstract List<T> listAll();
 
-    /**.
-     * list object by page
+    /**
+     * list object by page.
      * @param name name to search
      * @param order column to order
      * @param start start index
@@ -45,37 +45,37 @@ public abstract class GenericDAO<T> {
      */
     public abstract Page<T> listAllByPage(String name, String order, int start, int offset);
 
-    /**.
-     * delete an object from table
+    /**
+     * delete an object from table.
      * @param id id of object to delete
      * @return 1 if delete OK, 0 else
      */
     public abstract int delete(int id);
 
-    /**.
-     * add an object to DB
+    /**
+     * add an object to DB.
      * @param c object to add
      * @return fresh now object
      */
     public abstract T add(T c);
 
-    /**.
-     * return an object from a given id
+    /**
+     * return an object from a given id.
      * @param id id of object to return
      * @return Object from DB
      */
     public abstract T get(int id);
 
-    /**.
-     * update an object from DB
+    /**
+     * update an object from DB.
      * @param id id of object to update
      * @param c fresh object
      * @return 0 if update fail, 1 else
      */
     public abstract int update(int id, T c);
 
-    /**.
-     * count the number of entities
+    /**
+     * count the number of entities.
      * @param name name to search
      * @return number of entities
      */

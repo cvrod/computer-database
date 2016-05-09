@@ -15,8 +15,8 @@ import com.excilys.cdb.persistence.ConnectionFactory;
 import com.excilys.cdb.service.CompanyServiceImpl;
 import com.excilys.cdb.service.ComputerServiceImpl;
 
-/**.
- * Command Line Interface implementation Take request from user
+/**
+ * Command Line Interface implementation Take request from user.
  */
 public class CLI {
 
@@ -32,8 +32,8 @@ public class CLI {
     static ComputerMapper computerMapper = null;
     static ConnectionFactory connection = null;
 
-    /**.
-     * Printing Menu
+    /**
+     * Printing Menu.
      */
     public static void showMenu() {
         System.out.println("\n *****Main Menu*****");
@@ -49,8 +49,8 @@ public class CLI {
         System.out.println("10/ Quit");
     }
 
-    /**.
-     * getting user choice from System.in
+    /**
+     * getting user choice from System.in.
      *
      * @return a valid choice
      */
@@ -74,8 +74,8 @@ public class CLI {
         return answer;
     }
 
-    /**.
-     * getting a valid id from System.in
+    /**
+     * getting a valid id from System.in.
      *
      * @return a valid id (int)
      */
@@ -98,8 +98,8 @@ public class CLI {
         return answer;
     }
 
-    /**.
-     * Call DAO functions
+    /**
+     * Call DAO functions.
      *
      * @param choice user choice
      */
@@ -184,8 +184,8 @@ public class CLI {
         }
     }
 
-    /**.
-     * Printing List of computer or company by page
+    /**
+     * Printing List of computer or company by page.
      *
      * @param type
      *            GenericDAO.COMPUTER_TABLE or GenericDAO.COMPANY_TABLE
@@ -233,8 +233,8 @@ public class CLI {
         }
     }
 
-    /**.
-     * Getting a Computer Object from CLI
+    /**
+     * Getting a Computer Object from CLI.
      *
      * @return A Valid Computer Object ready to go in the database
      */
@@ -281,8 +281,8 @@ public class CLI {
         return res;
     }
 
-    /**.
-     * return a date from command line
+    /**
+     * return a date from command line.
      *
      * @return str containing a valid or invalid date, need to check date after
      */
@@ -299,8 +299,8 @@ public class CLI {
         return year + "-" + month + "-" + day;
     }
 
-    /**.
-     * Print computer id & name from a computer list
+    /**
+     * Print computer id & name from a computer list.
      *
      * @param computerList
      *            list to print
@@ -314,8 +314,8 @@ public class CLI {
         }
     }
 
-    /**.
-     * Print company infos from a company list
+    /**
+     * Print company infos from a company list.
      *
      * @param companyList
      *            list to print
@@ -329,8 +329,8 @@ public class CLI {
         }
     }
 
-    /**.
-     * Initialize DAO, Mapper, Connection and lauching menu main loop
+    /**
+     * Initialize DAO, Mapper, Connection and lauching menu main loop.
      *
      * @param args
      *            command line arguments

@@ -12,8 +12,8 @@ import org.slf4j.LoggerFactory;
 
 import com.excilys.cdb.service.ComputerServiceImpl;
 
-/**.
- * Servlet implementation class DeleteComputer
+/**
+ * Servlet implementation class DeleteComputer.
  */
 @WebServlet(name = "DeleteComputer", urlPatterns = { "/computer/delete" })
 public class DeleteComputer extends HttpServlet {

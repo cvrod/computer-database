@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.ConnectionFactory;
 
-/**.
- * Company mapper, who convert a given ResultSet to a List of Company
+/**
+ * Company mapper, who convert a given ResultSet to a List of Company.
  *
  * @see Mapper
  */
@@ -25,8 +25,8 @@ public class CompanyMapper implements Mapper<Company> {
 
     static CompanyMapper instance = null;
 
-    /**.
-     * return instance of Singleton CompanyMapper
+    /**
+     * return instance of Singleton CompanyMapper.
      * @return CompanyMapper
      */
     public static synchronized CompanyMapper getInstance() {
@@ -36,15 +36,15 @@ public class CompanyMapper implements Mapper<Company> {
         return instance;
     }
 
-    /**.
-     * CompanyMapper constructor
+    /**
+     * CompanyMapper constructor.
      */
     private CompanyMapper() {
         connection = ConnectionFactory.getInstance();
     }
 
-    /**.
-     * Getting an ArrayList of Company from a ResultSet
+    /**
+     * Getting an ArrayList of Company from a ResultSet.
      *
      * @param setRes
      *            resultSet to convert

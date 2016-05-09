@@ -22,16 +22,16 @@ public class CompanyServiceImpl implements CompanyService {
     Connection con = null;
     static final Logger LOGGER = LoggerFactory.getLogger(CompanyServiceImpl.class);
 
-    /**.
-     * CompanyService constructor
+    /**
+     * CompanyService constructor.
      */
     private CompanyServiceImpl() {
         companyDAO = CompanyDAO.getInstance();
         connection = ConnectionFactory.getInstance();
     }
 
-    /**.
-     * return instance of singleton CompanyServce
+    /**
+     * return instance of singleton CompanyServce.
      * @return CompanyService
      */
     public static synchronized CompanyServiceImpl getInstance() {

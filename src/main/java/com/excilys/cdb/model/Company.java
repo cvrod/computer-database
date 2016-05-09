@@ -3,22 +3,22 @@ package com.excilys.cdb.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**.
- * Object company, contain a row from company table
+/**
+ * Object company, contain a row from company table.
  */
 public class Company implements Comparable<Company> {
     protected String name = null;
     protected Long id = null;
     static final Logger LOGGER = LoggerFactory.getLogger(Company.class);
 
-    /**.
-     * Company constructor
+    /**
+     * Company constructor.
      */
     public Company() {
     };
 
-    /**.
-     * Company constructor
+    /**
+     * Company constructor.
      *
      * @param id
      *            company id
@@ -31,8 +31,8 @@ public class Company implements Comparable<Company> {
         this.id = id;
     }
 
-    /**.
-     * Company constructor
+    /**
+     * Company constructor.
      *
      * @param name
      *            company name

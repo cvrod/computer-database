@@ -1,23 +1,23 @@
 package com.excilys.cdb.validator;
 
-/**.
- * ValidatorException throw by CompanyValidator & ComputerValidator
+/**
+ * ValidatorException throw by CompanyValidator & ComputerValidator.
  *
  */
 public class ValidatorException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
 
-    /**.
-     * ValidatorException default constructor
+    /**
+     * ValidatorException default constructor.
      * @param message message to return
      */
     public ValidatorException(String message) {
         super(message);
     }
 
-    /**.
-     * ValidatorException constructor
+    /**
+     * ValidatorException constructor.
      * @param message message to return
      * @param cause cause to Throw
      */
@@ -25,8 +25,8 @@ public class ValidatorException extends RuntimeException {
         super(message, cause);
     }
 
-    /**.
-     * ValidatorException constructor
+    /**
+     * ValidatorException constructor.
      * @param cause cause to throw
      */
     public ValidatorException(Throwable cause) {

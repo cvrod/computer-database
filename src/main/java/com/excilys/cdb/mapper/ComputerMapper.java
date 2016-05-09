@@ -13,8 +13,8 @@ import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ConnectionFactory;
 
-/**.
- * Computer mapper, who convert a given ResultSet to a List of Computer
+/**
+ * Computer mapper, who convert a given ResultSet to a List of Computer.
  *
  * @see Mapper
  */
@@ -28,8 +28,8 @@ public class ComputerMapper implements Mapper<Computer> {
             .getLogger(ComputerMapper.class);
     static ComputerMapper instance = null;
 
-    /**.
-     * getting ComputerMapper instance
+    /**
+     * getting ComputerMapper instance.
      * @return instance of ComputerMapper
      */
     public static synchronized ComputerMapper getInstance() {
@@ -39,8 +39,8 @@ public class ComputerMapper implements Mapper<Computer> {
         return instance;
     }
 
-    /**.
-     * ComputerMapper constructor
+    /**
+     * ComputerMapper constructor.
      */
     private ComputerMapper() {
         companyMapper = CompanyMapper.getInstance();
@@ -48,8 +48,8 @@ public class ComputerMapper implements Mapper<Computer> {
         connection = ConnectionFactory.getInstance();
     }
 
-    /**.
-     * Getting an ArrayList of Computer from a ResultSet
+    /**
+     * Getting an ArrayList of Computer from a ResultSet.
      *
      * @param setRes
      *            resultSet to convert

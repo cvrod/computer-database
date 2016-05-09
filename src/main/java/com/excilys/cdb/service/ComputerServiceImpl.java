@@ -11,15 +11,15 @@ public class ComputerServiceImpl implements ComputerService {
     private ComputerDAO computerDAO = null;
     private static ComputerServiceImpl computerService = null;
 
-    /**.
-     * ComputerService constructor
+    /**
+     * ComputerService constructor.
      */
     private ComputerServiceImpl() {
         computerDAO = ComputerDAO.getInstance();
     }
 
-    /**.
-     * return instance of ComputerService singleton
+    /**
+     * return instance of ComputerService singleton.
      * @return instance of ComputerService
      */
     public static synchronized ComputerServiceImpl getInstance() {

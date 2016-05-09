@@ -16,8 +16,8 @@ import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.persistence.ConnectionManager;
 import com.mysql.jdbc.Statement;
 
-/**.
- * CompanyDAO : handle company request
+/**
+ * CompanyDAO : handle company request.
  *
  * @see GenericDAO
  *
@@ -37,8 +37,8 @@ public class CompanyDAO extends GenericDAO<Company> {
     public static final String DELETE_COMPUTER = "DELETE FROM computer WHERE company_id=?";
     Connection con = null;
 
-    /**.
-     * Getting instance of CompanyDAO Singleton
+    /**
+     * Getting instance of CompanyDAO Singleton.
      * @return CompanyDAO Object
      */
     public static synchronized CompanyDAO getInstance() {
@@ -48,14 +48,14 @@ public class CompanyDAO extends GenericDAO<Company> {
         return instance;
     }
 
-    /**.
-     * Default CompanyDAO Constructor
+    /**
+     * Default CompanyDAO Constructor.
      */
     private CompanyDAO() {
     }
 
-    /**.
-     * Getting a company under ResultSet form
+    /**
+     * Getting a company under ResultSet form.
      *
      * @param id
      *            Company id
@@ -87,8 +87,8 @@ public class CompanyDAO extends GenericDAO<Company> {
         }
     }
 
-    /**.
-     * Ask database for all Company
+    /**
+     * Ask database for all Company.
      *
      * @return ArrayList<Company> all computer list
      */
@@ -111,8 +111,8 @@ public class CompanyDAO extends GenericDAO<Company> {
         }
     }
 
-    /**.
-     * Ask database for Company by page
+    /**
+     * Ask database for Company by page.
      *
      * @return ArrayList<Company> company list
      */
@@ -154,8 +154,8 @@ public class CompanyDAO extends GenericDAO<Company> {
         }
     }
 
-    /**.
-     * Remove a company from base (using transaction)
+    /**
+     * Remove a company from base (using transaction).
      *
      * @param companyId id of company to delete
      *            company id to delete
@@ -175,8 +175,8 @@ public class CompanyDAO extends GenericDAO<Company> {
         return res;
     }
 
-    /**.
-     * Adding Company to database
+    /**
+     * Adding Company to database.
      *
      * @param c
      *            company to add
@@ -201,8 +201,8 @@ public class CompanyDAO extends GenericDAO<Company> {
         return c;
     }
 
-    /**.
-     * update a company detail in base
+    /**
+     * update a company detail in base.
      *
      * @param id
      *            id of the company to update

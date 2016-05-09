@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.util.PageParameter;
 
 /**
- * . . Servlet implementation class IndexComputer
+ * Servlet implementation class IndexComputer.
  */
 @WebServlet(name = "IndexComputer", urlPatterns = { "/computer" })
 public class IndexComputer extends HttpServlet {
@@ -23,14 +23,14 @@ public class IndexComputer extends HttpServlet {
     static final Logger LOGGER = LoggerFactory.getLogger(IndexComputer.class);
 
     /**
-     * . IndexComputer Servlet constructor
+     * IndexComputer Servlet constructor.
      */
     public IndexComputer() {
         super();
     }
 
     /**
-     * . return a computer page
+     * return a computer page.
      *
      * @param request
      *            request object
@@ -68,7 +68,7 @@ public class IndexComputer extends HttpServlet {
     }
 
     /**
-     * . doPost
+     * doPost.
      *
      * @param request
      *            request object

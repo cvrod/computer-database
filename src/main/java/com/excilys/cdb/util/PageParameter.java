@@ -23,8 +23,8 @@ public class PageParameter {
 
     private Page<ComputerDTO> computerDtoPage = null;
 
-    /**.
-     * PageParameter constructor
+    /**
+     * PageParameter constructor.
      * @param offsetStr offset parameter
      * @param pageStr page parameter
      * @param search search parameter
@@ -57,8 +57,8 @@ public class PageParameter {
         this.setDir(dir);
     }
 
-    /**.
-     * process url paramater and setting dtoPage and countComputer var
+    /**
+     * process url paramater and setting dtoPage and countComputer var.
      */
     public void process() {
         Page<Computer> computerPage = null;
@@ -96,8 +96,8 @@ public class PageParameter {
                 computerPage.getStart(), computerPage.getOffset()));
     }
 
-    /**.
-     * check if a given url parent is null or empty
+    /**
+     * check if a given url parent is null or empty.
      * @param param parameter to verify
      * @return boolean true if is present, false else
      */

@@ -3,16 +3,16 @@ package com.excilys.cdb.persistence;
 public class ConnectionManagerException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    /**.
-     * ConnectionManagerException default constructor
+    /**
+     * ConnectionManagerException default constructor.
      * @param message message to return
      */
     public ConnectionManagerException(String message) {
         super(message);
     }
 
-    /**.
-     * ConnectionManagerException constructor
+    /**
+     * ConnectionManagerException constructor.
      * @param message message to return
      * @param cause cause to Throw
      */
@@ -20,8 +20,8 @@ public class ConnectionManagerException extends RuntimeException {
         super(message, cause);
     }
 
-    /**.
-     * ConnectionManagerException constructor
+    /**
+     * ConnectionManagerException constructor.
      * @param cause cause to throw
      */
     public ConnectionManagerException(Throwable cause) {

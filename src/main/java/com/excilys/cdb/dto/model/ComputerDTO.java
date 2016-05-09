@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import com.excilys.cdb.model.Computer;
 
 /**
- * . ComputerDTO, use to transmit data to jsp from servlet
+ * ComputerDTO, use to transmit data to jsp from servlet.
  *
  */
 public class ComputerDTO {
@@ -16,8 +16,8 @@ public class ComputerDTO {
     protected long idCompany;
     protected String nameCompany;
 
-    /**.
-     * ComputerDTO main constructor
+    /**
+     * ComputerDTO main constructor.
      * @param c Computer to map
      */
     public ComputerDTO(Computer c) {
