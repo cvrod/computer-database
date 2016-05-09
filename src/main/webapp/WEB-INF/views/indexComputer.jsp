@@ -30,7 +30,7 @@
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
-				<span id="countComputer"><c:out value="${countComputer}" /></span>
+				<span id="countComputer"><c:out value="${pageParam.countComputer}" /></span>
 				Computers found
 			</h1>
 			<div id="actions" class="form-horizontal">
@@ -73,32 +73,32 @@
 							</a>
 						</span></th>
 						<th><a
-							<tags:link target="" offset="${offset}" 
-							page="0" search="${ search }" 
-							order="name" dir="${dir == 'asc' && order == 'name' ? 'desc' : 'asc'}"/>>Computer
+							<tags:link target="" offset="${pageParam.offset}" 
+							page="0" search="${ pageParam.search }" 
+							order="name" dir="${pageParam.dir == 'asc' && pageParam.order == 'name' ? 'desc' : 'asc'}"/>>Computer
 								name</a></th>
 						<th><a
-							<tags:link target="" offset="${offset}" 
-							page="0" search="${ search }" 
-							order="introduced" dir="${dir == 'asc' && order == 'introduced' ? 'desc' : 'asc'}"/>>Introduced
+							<tags:link target="" offset="${pageParam.offset}" 
+							page="0" search="${ pageParam.search }" 
+							order="introduced" dir="${pageParam.dir == 'asc' && pageParam.order == 'introduced' ? 'desc' : 'asc'}"/>>Introduced
 								date</a></th>
 						<!-- Table header for Discontinued Date -->
 						<th><a
-							<tags:link target="" offset="${offset}" 
-							page="0" search="${ search }" 
-							order="discontinued" dir="${dir == 'asc' && order == 'discontinued' ? 'desc' : 'asc'}"/>>Discontinued
+							<tags:link target="" offset="${pageParam.offset}" 
+							page="0" search="${ pageParam.search }" 
+							order="discontinued" dir="${pageParam.dir == 'asc' && pageParam.order == 'discontinued' ? 'desc' : 'asc'}"/>>Discontinued
 								date</a></th>
 						<!-- Table header for Company -->
 						<th><a
-							<tags:link target="" offset="${offset}" 
-							page="0" search="${ search }" 
-							order="company_id" dir="${dir == 'asc' && order == 'company_id' ? 'desc' : 'asc'}"/>>Company</a></th>
+							<tags:link target="" offset="${pageParam.offset}" 
+							page="0" search="${ pageParam.search }" 
+							order="company_id" dir="${pageParam.dir == 'asc' && pageParam.order == 'company_id' ? 'desc' : 'asc'}"/>>Company</a></th>
 
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
 				<tbody id="results">
-					<c:forEach items="${page.elementList}" var="computer">
+					<c:forEach items="${pageParam.computerDtoPage.elementList}" var="computer">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}" id="${computer.name}_id"></td>
@@ -117,8 +117,8 @@
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
-			<tags:pagination offset="${offset}" current="${current}"
-				nbPages="${nbPages}" search="${search}" />
+			<tags:pagination offset="${pageParam.offset}" current="${pageParam.currentPage}"
+				nbPages="${nbPages}" search="${pageParam.search}" />
 		</div>
 	</footer>
 	<script

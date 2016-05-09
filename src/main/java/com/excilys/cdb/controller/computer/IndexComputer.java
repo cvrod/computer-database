@@ -51,20 +51,16 @@ public class IndexComputer extends HttpServlet {
         String paramOrder = request.getParameter("order");
         String paramDirection = request.getParameter("dir");
 
-        //process parameters
+        //wrapper initialisation
         PageParameter pageParam = new PageParameter(paramOffset, paramPage, paramSearch, paramOrder, paramDirection);
+
+        //process paramater to create computerDTO page
         pageParam.process();
 
         //Setting jsp attributes
-        request.setAttribute("page", pageParam.getComputerDtoPage());
-        request.setAttribute("current", pageParam.getCurrentPage());
-        request.setAttribute("countComputer", pageParam.getCountComputer());
-        request.setAttribute("offset", pageParam.getOffset());
-        request.setAttribute("search", pageParam.getSearch());
+        request.setAttribute("pageParam", pageParam);
         request.setAttribute("nbPages",
                 (int) Math.ceil((double) pageParam.getCountComputer() / (double) pageParam.getOffset()));
-        request.setAttribute("order", pageParam.getOrder());
-        request.setAttribute("dir", pageParam.getDir());
 
         //Forward request
         request.getRequestDispatcher("/WEB-INF/views/indexComputer.jsp")
