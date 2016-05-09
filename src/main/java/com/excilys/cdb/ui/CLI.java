@@ -12,8 +12,8 @@ import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.persistence.ConnectionFactory;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.service.CompanyServiceImpl;
+import com.excilys.cdb.service.ComputerServiceImpl;
 
 /**.
  * Command Line Interface implementation Take request from user
@@ -26,8 +26,8 @@ public class CLI {
     public static final String COMPANY_TABLE = "company";
     static Scanner sc = null;
     static int choice = -1;
-    static ComputerService computerService = null;
-    static CompanyService companyService = null;
+    static ComputerServiceImpl computerService = null;
+    static CompanyServiceImpl companyService = null;
     static CompanyMapper companyMapper = null;
     static ComputerMapper computerMapper = null;
     static ConnectionFactory connection = null;
@@ -337,8 +337,8 @@ public class CLI {
      */
     public static void main(String[] args) {
 
-        computerService = ComputerService.getInstance();
-        companyService = CompanyService.getInstance();
+        computerService = ComputerServiceImpl.getInstance();
+        companyService = CompanyServiceImpl.getInstance();
         companyMapper = CompanyMapper.getInstance();
         computerMapper = ComputerMapper.getInstance();
         connection = ConnectionFactory.getInstance();

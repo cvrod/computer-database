@@ -8,12 +8,12 @@ import org.slf4j.LoggerFactory;
 import com.excilys.cdb.dto.model.ComputerDTO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
-import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.service.ComputerServiceImpl;
 
 
 public class PageParameter {
     static final Logger LOGGER = LoggerFactory.getLogger(PageParameter.class);
-    static ComputerService computerService = null;
+    static ComputerServiceImpl computerService = null;
     private int offset = 10;
     private int currentPage = 0;
     private String search;
@@ -51,7 +51,7 @@ public class PageParameter {
             }
         }
 
-        computerService = ComputerService.getInstance();
+        computerService = ComputerServiceImpl.getInstance();
         this.setSearch(search);
         this.setOrder(order);
         this.setDir(dir);

@@ -19,14 +19,14 @@ import com.excilys.cdb.validator.ValidatorException;
 @RunWith(MockitoJUnitRunner.class)
 public class ComputerServiceTest {
 
-    static ComputerService computerService = null;
+    static ComputerServiceImpl computerService = null;
     
     @Spy
     static Computer computerTest = null;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        computerService = ComputerService.getInstance();
+        computerService = ComputerServiceImpl.getInstance();
         computerTest = new Computer(new Long(1), "MacBook Pro 15.4 inch", (String) null,
                 (String) null, new Company(new Long(1), "Apple Inc."));
     }
@@ -34,7 +34,7 @@ public class ComputerServiceTest {
     @Test
     public void testGetInstance() {
         assertNotNull("Null Instance", computerService);
-        assertEquals("Wrong instance", ComputerService.getInstance(), computerService);
+        assertEquals("Wrong instance", ComputerServiceImpl.getInstance(), computerService);
     }
 
     @Test

@@ -16,8 +16,8 @@ import com.excilys.cdb.dao.DAOException;
 import com.excilys.cdb.dto.model.ComputerDTO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyService;
-import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.service.CompanyServiceImpl;
+import com.excilys.cdb.service.ComputerServiceImpl;
 import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.validator.ValidatorException;
 
@@ -27,8 +27,8 @@ import com.excilys.cdb.validator.ValidatorException;
 @WebServlet(name = "EditComputer", urlPatterns = { "/computer/edit" })
 public class EditComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    ComputerService computerService = null;
-    CompanyService companyService = null;
+    ComputerServiceImpl computerService = null;
+    CompanyServiceImpl companyService = null;
     static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
     ArrayList<Company> companies = null;
     ComputerDTO computerDTO = null;
@@ -38,8 +38,8 @@ public class EditComputer extends HttpServlet {
      */
     public EditComputer() {
         super();
-        computerService = ComputerService.getInstance();
-        companyService = CompanyService.getInstance();
+        computerService = ComputerServiceImpl.getInstance();
+        companyService = CompanyServiceImpl.getInstance();
     }
 
     /**.

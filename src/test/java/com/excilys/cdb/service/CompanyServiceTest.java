@@ -18,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 @RunWith(MockitoJUnitRunner.class)
 public class CompanyServiceTest {
     
-    static CompanyService companyService = null;
+    static CompanyServiceImpl companyService = null;
     
     @Spy
     static Company companyTest = null;
@@ -28,20 +28,20 @@ public class CompanyServiceTest {
      */
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-        companyService = CompanyService.getInstance();
+        companyService = CompanyServiceImpl.getInstance();
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyService#getInstance()}.
+     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#getInstance()}.
      */
     @Test
     public void testGetInstance() {
         assertNotNull("Null Instance", companyService);
-        assertEquals("Wrong instance", CompanyService.getInstance(), companyService);
+        assertEquals("Wrong instance", CompanyServiceImpl.getInstance(), companyService);
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyService#get(int)}.
+     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#get(int)}.
      */
     @Test
     public void testGet() {
@@ -56,7 +56,7 @@ public class CompanyServiceTest {
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyService#add(com.excilys.cdb.model.Company)}.
+     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#add(com.excilys.cdb.model.Company)}.
      */
     @Test
     public void testAdd() {
@@ -68,7 +68,7 @@ public class CompanyServiceTest {
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyService#delete(int)}.
+     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#delete(int)}.
      */
     @Test
     public void testDelete() {
@@ -85,7 +85,7 @@ public class CompanyServiceTest {
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyService#update(int, com.excilys.cdb.model.Company)}.
+     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#update(int, com.excilys.cdb.model.Company)}.
      */
     @Test
     public void testUpdate() {
@@ -102,7 +102,7 @@ public class CompanyServiceTest {
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyService#listAll()}.
+     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#listAll()}.
      */
     @Test
     public void testListAll() {
@@ -116,7 +116,7 @@ public class CompanyServiceTest {
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyService#listAllByPage(int, int)}.
+     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#listAllByPage(int, int)}.
      */
     @Test
     public void testListAllByPage() {

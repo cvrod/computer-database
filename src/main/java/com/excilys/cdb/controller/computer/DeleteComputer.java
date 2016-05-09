@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.cdb.service.ComputerService;
+import com.excilys.cdb.service.ComputerServiceImpl;
 
 /**.
  * Servlet implementation class DeleteComputer
@@ -18,7 +18,7 @@ import com.excilys.cdb.service.ComputerService;
 @WebServlet(name = "DeleteComputer", urlPatterns = { "/computer/delete" })
 public class DeleteComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    private ComputerService computerService = null;
+    private ComputerServiceImpl computerService = null;
     static final Logger LOGGER = LoggerFactory.getLogger(DeleteComputer.class);
 
     /**
@@ -26,7 +26,7 @@ public class DeleteComputer extends HttpServlet {
      */
     public DeleteComputer() {
         super();
-        this.computerService = ComputerService.getInstance();
+        this.computerService = ComputerServiceImpl.getInstance();
     }
 
     /**
