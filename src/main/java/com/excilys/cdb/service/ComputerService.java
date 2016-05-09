@@ -12,21 +12,21 @@ public interface ComputerService {
      * @param id if of computer to get
      * @return Computer Object
      */
-    public Computer get(int id);
+    Computer get(int id);
 
     /**.
      * add a computer to DB
      * @param comp computer to add
      * @return fresh Computer Object
      */
-    public Computer add(Computer comp);
+    Computer add(Computer comp);
 
     /**.
      * remove a Computer from DB
      * @param id id of Computer to delete
      * @return 0 if computer not found, 1 else
      */
-    public int delete(int id);
+    int delete(int id);
 
     /**.
      * update a Computer on DB
@@ -34,13 +34,13 @@ public interface ComputerService {
      * @param c Fresh Computer object
      * @return 0 if computer not found, 1 else
      */
-    public int update(int id, Computer c);
+    int update(int id, Computer c);
 
     /**.
      * listAll Computer
      * @return ArrayList of all computer in DB
      */
-    public List<Computer> listAll();
+    List<Computer> listAll();
 
     /**.
      * list computer by page
@@ -48,7 +48,7 @@ public interface ComputerService {
      * @param offset page offset
      * @return Computer Page
      */
-    public Page<Computer> listAllByPage(int start, int offset);
+    Page<Computer> listAllByPage(int start, int offset);
 
     /**.
      * search computer function
@@ -58,18 +58,18 @@ public interface ComputerService {
      * @param offset page offset
      * @return Computer Page
      */
-    public Page<Computer> listByPage(String search, String order, int start, int offset);
+    Page<Computer> listByPage(String search, String order, int start, int offset);
 
     /**.
      * return total number of element in computer table
      * @return number of elements in table
      */
-    public Long count();
+    Long count();
 
     /**.
      * return total number of element maching name in computer table
      * @param name name to match
      * @return number of element in table Computer
      */
-    public Long count(String name);
+    Long count(String name);
 }

@@ -7,7 +7,7 @@ import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.validator.ComputerValidator;
 
-public class ComputerServiceImpl implements ComputerService{
+public class ComputerServiceImpl implements ComputerService {
     private ComputerDAO computerDAO = null;
     private static ComputerServiceImpl computerService = null;
 
