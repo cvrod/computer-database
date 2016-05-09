@@ -1,6 +1,6 @@
 package com.excilys.cdb.persistence;
 
-public class ConnectionManagerException extends RuntimeException{
+public class ConnectionManagerException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
     /**.

@@ -60,7 +60,7 @@ public class ConnectionFactory {
             dbAddress = properties.getProperty("DB_ADDR");
             dbDriver = properties.getProperty("DB_DRIVER");
             Class.forName(dbDriver);
-            
+
             HikariConfig config = new HikariConfig();
             config.setJdbcUrl(dbAddress);
             config.setUsername(usrLogin);

@@ -31,7 +31,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public static final String DELETE_REQUEST = "DELETE FROM computer WHERE id=?";
     public static final String UPDATE_REQUEST = "UPDATE computer SET name=?, introduced=?, discontinued=?, company_id=? WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM computer;";
-    public static final String LISTPAGE_REQUEST = "SELECT * FROM computer WHERE computer.name LIKE ? ORDER BY %s LIMIT ?,?";
+    public static final String LISTPAGE_REQUEST = "SELECT * FROM computer %s WHERE computer.name LIKE ? ORDER BY %s LIMIT ?,?";
     public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM computer WHERE name LIKE ?";
     public static final String DELETE_ALL_REQUEST = "DELETE FROM computer WHERE company_id=?";
     static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
@@ -82,7 +82,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
     /**.
      * Delete all computer from a given companyID
-     * @param con connection to use
      * @param companyId if of company
      */
     public void deleteAll(int companyId) {
@@ -138,14 +137,24 @@ public class ComputerDAO extends GenericDAO<Computer> {
         String request = null;
 
         if (!order.equals("")) {
-            request = String.format(LISTPAGE_REQUEST, order);
+            if (order.equals("id")) {
+                request = String.format(LISTPAGE_REQUEST, "FORCE INDEX(primary)", order);
+            } else if (order.startsWith("name")) {
+                request = String.format(LISTPAGE_REQUEST, "FORCE INDEX(name_index)", order);
+            } else if (order.startsWith("introduced")) {
+                request = String.format(LISTPAGE_REQUEST, "FORCE INDEX(introduced_index)", order);
+            } else if (order.startsWith("discontinued")) {
+                request = String.format(LISTPAGE_REQUEST, "FORCE INDEX(discontinued_index)", order);
+            } else {
+                request = String.format(LISTPAGE_REQUEST, "", order);
+            }
         } else {
-            request = String.format(LISTPAGE_REQUEST, "id");
+            request = String.format(LISTPAGE_REQUEST, "FORCE INDEX(primary)", "id");
         }
 
         try (Connection con = connection.openConnection();
                 PreparedStatement stmt = con.prepareStatement(request)) {
-            stmt.setString(1, "%" + name + "%");
+            stmt.setString(1, name + "%");
             stmt.setInt(2, start);
             stmt.setInt(3, offset);
             rs = stmt.executeQuery();
