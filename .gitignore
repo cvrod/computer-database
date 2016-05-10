@@ -13,3 +13,6 @@
 .project
 .metadata
 /target/
+
+# Dockers
+/dockers/
