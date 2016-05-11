@@ -23,8 +23,12 @@ public class ComputerServiceImpl implements ComputerService {
      * @return instance of ComputerService
      */
     public static synchronized ComputerServiceImpl getInstance() {
-        if (computerService == null) {
-            computerService = new ComputerServiceImpl();
+        if(computerService == null) {
+            synchronized(ComputerServiceImpl.class) {
+                if (computerService == null) {
+                    computerService = new ComputerServiceImpl();
+                }
+            }
         }
         return computerService;
     }

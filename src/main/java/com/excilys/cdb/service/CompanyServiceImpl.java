@@ -34,9 +34,13 @@ public class CompanyServiceImpl implements CompanyService {
      * return instance of singleton CompanyServce.
      * @return CompanyService
      */
-    public static synchronized CompanyServiceImpl getInstance() {
-        if (companyService == null) {
-            companyService = new CompanyServiceImpl();
+    public static CompanyServiceImpl getInstance() {
+        if(companyService == null) {
+            synchronized(CompanyServiceImpl.class) {
+                if (companyService == null) {
+                    companyService = new CompanyServiceImpl();
+                }
+            }
         }
         return companyService;
     }
