@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+@Ignore
 public class TestPagination {
   private WebDriver driver;
   private String baseUrl;
