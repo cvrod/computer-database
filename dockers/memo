@@ -1,0 +1,70 @@
+// SQL //
+
+docker build -t mysql_image .
+
+docker run --name sql_container --rm sql_image
+
+// Tomcat //
+
+docker build -t tomcat_image .
+
+docker run --name tomcat_container --rm tomcat_image
+
+// Jenkins //
+
+docker build -t jenkins_image .
+
+docker run --name jenkins_container --rm -v /var/run/docker.sock:/var/run/docker.sock -v jenkins-save:/var/jenkins_home -p 8080:8080 cvrod/jenkins-cdb:latest
+
+// Maven //
+
+docker build -t maven_image .
+
+docker run --name maven-container --net cdb-network --rm maven_image
+
+// MEMO JENKINS //
+//Main Job //
+
+#containers init
+docker ps
+present=`docker ps -aq -f name=sql-test-container`
+echo $present
+if [ -z "$present" ]; then
+     echo "******************* test container not present *********************"
+    docker network create test_network;
+    docker network ls;
+    docker run -d --name sql-test-container cvrod/sql-cdb:latest;
+    docker network connect test_network sql-test-container;
+    docker run --name maven-container -dit cvrod/maven-cdb:latest /bin/bash;
+    docker network connect test_network maven-container;
+else
+     echo "******************* test container already present *********************"
+fi
+
+docker cp . maven-container:/home
+docker exec maven-container ls
+#docker exec maven-container mkdir src/test/resources
+docker exec maven-container cp mysql.properties src/test/resources/
+docker exec maven-container cp mysql-prod.properties src/main/resources/
+docker exec maven-container mv src/main/resources/mysql-prod.properties src/main/resources/mysql.properties
+docker exec maven-container mvn clean install
+
+# Post build success, Tomcat deployment
+present=`docker ps -aq -f name=tomcat-container`
+echo $present
+if [ -z "$present" ]; then
+     echo "******************* tomcat-container not present *********************"
+     docker run -d --name sql-prod-container cvrod/sql-cdb:latest;
+     docker network create prod_network;
+     docker network connect prod_network sql-prod-container;
+else
+     echo "******************* tomcat-container present *********************"
+    docker rm -f tomcat-container
+fi
+docker run -dit --name=tomcat-container -p 8084:8080 cvrod/tomcat-cdb:latest
+docker network connect prod_network tomcat-container
+docker cp maven-container:/home/target/cdb.war /
+docker cp /cdb.war tomcat-container:/usr/local/tomcat/webapps
+docker login --username=cvrod --password=azertyy
+docker commit tomcat-container cvrod/tomcat-cdb:latest
+docker push cvrod/tomcat-cdb:latest
