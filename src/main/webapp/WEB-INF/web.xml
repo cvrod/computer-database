@@ -1,36 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>computer-database</display-name>
-  <servlet>
-    <servlet-name>IndexComputer</servlet-name>
-    <servlet-class>com.excilys.cdb.controller.computer.IndexComputer</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>AddComputer</servlet-name>
-    <servlet-class>com.excilys.cdb.controller.computer.AddComputer</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>EditComputer</servlet-name>
-    <servlet-class>com.excilys.cdb.controller.computer.EditComputer</servlet-class>
-  </servlet>
-   <servlet>
-    <servlet-name>DeleteComputer</servlet-name>
-    <servlet-class>com.excilys.cdb.controller.computer.DeleteComputer</servlet-class>
-  </servlet>
-  <error-page>
-    <exception-type>com.excilys.cdb.dao.DAOException</exception-type>
-    <location>/WEB-INF/views/500.jsp</location>
-  </error-page>
-  <error-page>
-    <exception-type>com.excilys.cdb.validator.ValidatorException</exception-type>
-    <location>/WEB-INF/views/500.jsp</location>
-  </error-page>
-  <error-page>
-    <exception-type>com.excilys.cdb.mapper.MapperException</exception-type>
-    <location>/WEB-INF/views/500.jsp</location>
-  </error-page>
-  <error-page>
-    <error-code>404</error-code>
-    <location>/WEB-INF/views/404.jsp</location>
-  </error-page>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>computer-database</display-name>
+
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>WEB-INF/beans.xml</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>IndexComputer</servlet-name>
+		<servlet-class>com.excilys.cdb.controller.computer.IndexComputer</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>AddComputer</servlet-name>
+		<servlet-class>com.excilys.cdb.controller.computer.AddComputer</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>EditComputer</servlet-name>
+		<servlet-class>com.excilys.cdb.controller.computer.EditComputer</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>DeleteComputer</servlet-name>
+		<servlet-class>com.excilys.cdb.controller.computer.DeleteComputer</servlet-class>
+	</servlet>
+	<error-page>
+		<exception-type>com.excilys.cdb.dao.DAOException</exception-type>
+		<location>/WEB-INF/views/500.jsp</location>
+	</error-page>
+	<error-page>
+		<exception-type>com.excilys.cdb.validator.ValidatorException</exception-type>
+		<location>/WEB-INF/views/500.jsp</location>
+	</error-page>
+	<error-page>
+		<exception-type>com.excilys.cdb.mapper.MapperException</exception-type>
+		<location>/WEB-INF/views/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/WEB-INF/views/404.jsp</location>
+	</error-page>
 </web-app>

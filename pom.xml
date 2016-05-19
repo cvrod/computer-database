@@ -53,6 +53,9 @@
 		<!-- Hikari -->
 		<hikari.version>2.4.5</hikari.version>
 		
+		<!-- Spring -->
+		<spring.version>4.2.6.RELEASE</spring.version>
+				
 	</properties>
 	<dependencies>
 
@@ -125,6 +128,33 @@
 			<artifactId>HikariCP</artifactId>
 			<version>${hikari.version}</version>
 			<scope>compile</scope>
+		</dependency>
+		
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 		
 	</dependencies>
