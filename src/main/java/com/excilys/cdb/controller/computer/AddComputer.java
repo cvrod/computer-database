@@ -48,7 +48,7 @@ public class AddComputer extends HttpServlet {
 
     /**
      * return addcomputer form.
-     * 
+     *
      * @param request
      *            request object
      * @param response
@@ -75,7 +75,7 @@ public class AddComputer extends HttpServlet {
 
     /**
      * add a computer to DB.
-     * 
+     *
      * @param request
      *            request object
      * @param response

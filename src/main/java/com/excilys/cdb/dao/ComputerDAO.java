@@ -31,12 +31,13 @@ public class ComputerDAO extends GenericDAO<Computer> {
     @Autowired
     @Qualifier("companyDAO")
     private CompanyDAO companyDAO;
-    
+
     @Autowired
     @Qualifier("computerMapper")
     private ComputerMapper computerMapper;
 
-    private final ConnectionManager connectionManager = ConnectionManager.getInstance();
+    private final ConnectionManager connectionManager = ConnectionManager
+            .getInstance();
     public static final String INSERT_REQUEST = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
     public static final String DETAIL_REQUEST = "SELECT * FROM computer WHERE id=?";
     public static final String DELETE_REQUEST = "DELETE FROM computer WHERE id=?";
@@ -72,12 +73,15 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
     /**
      * Delete all computer from a given companyID.
-     * @param companyId if of company
+     *
+     * @param companyId
+     *            if of company
      */
     public void deleteAll(int companyId) {
         LOGGER.debug("delete All Computer from a company ID");
         Connection con = this.connectionManager.get();
-        try (PreparedStatement stmt = con.prepareStatement(DELETE_ALL_REQUEST)) {
+        try (PreparedStatement stmt = con
+                .prepareStatement(DELETE_ALL_REQUEST)) {
             stmt.setInt(1, companyId);
             stmt.executeUpdate();
         } catch (SQLException e) {

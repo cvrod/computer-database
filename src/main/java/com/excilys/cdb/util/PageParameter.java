@@ -29,13 +29,16 @@ public class PageParameter {
 
     private Page<ComputerDTO> computerDtoPage = null;
 
+    /**
+     * Default Constructor.
+     */
     public PageParameter() {
 
     }
 
     /**
      * PageParameter constructor.
-     * 
+     *
      * @param offsetStr
      *            offset parameter
      * @param pageStr
@@ -114,7 +117,7 @@ public class PageParameter {
 
     /**
      * check if a given url parent is null or empty.
-     * 
+     *
      * @param param
      *            parameter to verify
      * @return boolean true if is present, false else
@@ -131,6 +134,10 @@ public class PageParameter {
         this.offset = offset;
     }
 
+    /**
+     * offset setter from String param.
+     * @param offset offset under str form
+     */
     public void setOffset(String offset) {
         if (isPresent(offset)) {
             this.offset = Integer.parseInt(offset);
@@ -147,6 +154,10 @@ public class PageParameter {
         this.currentPage = currentPage;
     }
 
+    /**
+     * page setter from String param.
+     * @param currentPage currentPage param under str form
+     */
     public void setCurrentPage(String currentPage) {
         if (isPresent(currentPage)) {
             this.currentPage = Integer.parseInt(currentPage);

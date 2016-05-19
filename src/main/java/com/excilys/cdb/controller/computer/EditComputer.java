@@ -50,7 +50,7 @@ public class EditComputer extends HttpServlet {
 
     /**
      * doGet.
-     * 
+     *
      * @param request
      *            request object
      * @param response
@@ -99,7 +99,7 @@ public class EditComputer extends HttpServlet {
 
     /**
      * . doPost.
-     * 
+     *
      * @param request
      *            request object
      * @param response

@@ -27,13 +27,14 @@ import com.mysql.jdbc.Statement;
  */
 @Component("companyDAO")
 public class CompanyDAO extends GenericDAO<Company> {
-    
+
     @Autowired
     @Qualifier("companyMapper")
     private CompanyMapper companyMapper;
-    
+
     static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
-    private final ConnectionManager connectionManager = ConnectionManager.getInstance();
+    private final ConnectionManager connectionManager = ConnectionManager
+            .getInstance();
     public static final String DETAIL_REQUEST = "SELECT * FROM company WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM company;";
     public static final String LISTPAGE_REQUEST = "SELECT * FROM company WHERE company.name LIKE ? ORDER BY %s LIMIT ?,?";
@@ -105,7 +106,8 @@ public class CompanyDAO extends GenericDAO<Company> {
      * @return ArrayList<Company> company list
      */
     @Override
-    public Page<Company> listAllByPage(String name, String order, int start, int offset) {
+    public Page<Company> listAllByPage(String name, String order, int start,
+            int offset) {
         if (start < 0 || offset < 0) {
             return null;
         }
@@ -124,8 +126,7 @@ public class CompanyDAO extends GenericDAO<Company> {
         }
 
         try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con
-                        .prepareStatement(request)) {
+                PreparedStatement stmt = con.prepareStatement(request)) {
             stmt.setString(1, "%" + name + "%");
             stmt.setInt(2, start);
             stmt.setInt(3, offset);
@@ -144,8 +145,8 @@ public class CompanyDAO extends GenericDAO<Company> {
     /**
      * Remove a company from base (using transaction).
      *
-     * @param companyId id of company to delete
-     *            company id to delete
+     * @param companyId
+     *            id of company to delete company id to delete
      * @return int : number of row affected (0 or 1)
      */
     public int delete(int companyId) {

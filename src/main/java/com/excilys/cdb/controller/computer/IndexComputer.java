@@ -22,6 +22,7 @@ import com.excilys.cdb.util.PageParameter;
 @WebServlet(name = "IndexComputer", urlPatterns = { "/computer" })
 public class IndexComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
+
     // wrapper initialisation
     @Autowired
     PageParameter pageParam;
@@ -62,7 +63,6 @@ public class IndexComputer extends HttpServlet {
         pageParam.setSearch(paramSearch);
         pageParam.setOrder(paramOrder);
         pageParam.setDir(paramDirection);
-        
 
         // process paramater to create computerDTO page
         pageParam.process();

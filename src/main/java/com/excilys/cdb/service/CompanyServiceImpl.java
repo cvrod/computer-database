@@ -20,7 +20,7 @@ import com.excilys.cdb.validator.CompanyValidator;
 
 @Service("companyService")
 public class CompanyServiceImpl implements CompanyService {
-    
+
     @Autowired
     @Qualifier("companyDAO")
     private CompanyDAO companyDAO;

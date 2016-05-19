@@ -25,17 +25,16 @@ import com.excilys.cdb.persistence.ConnectionFactory;
 public class ComputerMapper implements Mapper<Computer> {
     public static final String ID = "id";
     public static final String NAME = "name";
-    
+
     @Autowired
     @Qualifier("companyMapper")
     private CompanyMapper companyMapper;
-    
+
     @Autowired
     @Qualifier("companyDAO")
     public CompanyDAO companyDAO;
     public ConnectionFactory connection = null;
-    static final Logger LOGGER = LoggerFactory
-            .getLogger(ComputerMapper.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapper.class);
 
     /**
      * ComputerMapper constructor.
