@@ -17,9 +17,16 @@
 		<target>System.out</target>
 	</appender>
 
+	<logger name="org.springframework" level="DEBUG" additivity="false">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+    <appender name="consoleAppender" class="ch.qos.logback.ext.spring.DelegatingLogbackAppender"/>
+
 	<root level="DEBUG">
 		<appender-ref ref="FILE" />
 		<appender-ref ref="STDOUT" />
+		<appender-ref ref="consoleAppender"/>
 	</root>
 
 </configuration>

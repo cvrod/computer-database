@@ -2,36 +2,20 @@ package com.excilys.cdb.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.excilys.cdb.dao.ComputerDAO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.validator.ComputerValidator;
 
+@Service("computerService")
 public class ComputerServiceImpl implements ComputerService {
-    private ComputerDAO computerDAO = null;
-    private static ComputerServiceImpl computerService = null;
-
-    /**
-     * ComputerService constructor.
-     */
-    private ComputerServiceImpl() {
-        computerDAO = ComputerDAO.getInstance();
-    }
-
-    /**
-     * return instance of ComputerService singleton.
-     * @return instance of ComputerService
-     */
-    public static synchronized ComputerServiceImpl getInstance() {
-        if(computerService == null) {
-            synchronized(ComputerServiceImpl.class) {
-                if (computerService == null) {
-                    computerService = new ComputerServiceImpl();
-                }
-            }
-        }
-        return computerService;
-    }
+    @Autowired
+    @Qualifier("computerDAO")
+    private ComputerDAO computerDAO;
 
     @Override
     public Computer get(int id) {

@@ -9,6 +9,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
@@ -22,10 +25,14 @@ import com.mysql.jdbc.Statement;
  * @see GenericDAO
  *
  */
+@Component("companyDAO")
 public class CompanyDAO extends GenericDAO<Company> {
-
+    
+    @Autowired
+    @Qualifier("companyMapper")
+    private CompanyMapper companyMapper;
+    
     static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
-    private static CompanyDAO instance = null;
     private final ConnectionManager connectionManager = ConnectionManager.getInstance();
     public static final String DETAIL_REQUEST = "SELECT * FROM company WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM company;";
@@ -36,23 +43,6 @@ public class CompanyDAO extends GenericDAO<Company> {
     public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM company WHERE name like ?";
     public static final String DELETE_COMPUTER = "DELETE FROM computer WHERE company_id=?";
     Connection con = null;
-
-    /**
-     * Getting instance of CompanyDAO Singleton.
-     * @return CompanyDAO Object
-     */
-    public static synchronized CompanyDAO getInstance() {
-        if (instance == null) {
-            instance = new CompanyDAO();
-        }
-        return instance;
-    }
-
-    /**
-     * Default CompanyDAO Constructor.
-     */
-    private CompanyDAO() {
-    }
 
     /**
      * Getting a company under ResultSet form.
@@ -71,7 +61,6 @@ public class CompanyDAO extends GenericDAO<Company> {
                 PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST)) {
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
-            companyMapper = CompanyMapper.getInstance();
             companyList = (ArrayList<Company>) companyMapper.map(rs);
             if (companyList.size() >= 1) {
                 LOGGER.debug("getting company of id : " + id);
@@ -102,7 +91,6 @@ public class CompanyDAO extends GenericDAO<Company> {
                 PreparedStatement stmt = con
                         .prepareStatement(LISTALL_REQUEST)) {
             rs = stmt.executeQuery();
-            companyMapper = CompanyMapper.getInstance();
             return companyMapper.map(rs);
 
         } catch (SQLException e) {
@@ -142,7 +130,6 @@ public class CompanyDAO extends GenericDAO<Company> {
             stmt.setInt(2, start);
             stmt.setInt(3, offset);
             rs = stmt.executeQuery();
-            companyMapper = CompanyMapper.getInstance();
             elementList = (ArrayList<Company>) companyMapper.map(rs);
             Page<Company> page = new Page<>(elementList, start, offset);
 

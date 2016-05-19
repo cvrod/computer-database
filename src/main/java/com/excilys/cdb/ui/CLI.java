@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+
 import com.excilys.cdb.dao.UnknowTypeException;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
@@ -26,10 +29,18 @@ public class CLI {
     public static final String COMPANY_TABLE = "company";
     static Scanner sc = null;
     static int choice = -1;
-    static ComputerServiceImpl computerService = null;
-    static CompanyServiceImpl companyService = null;
-    static CompanyMapper companyMapper = null;
-    static ComputerMapper computerMapper = null;
+    @Autowired
+    @Qualifier("computerService")
+    static ComputerServiceImpl computerService;
+    @Autowired
+    @Qualifier("companyService")
+    static CompanyServiceImpl companyService;
+    @Autowired
+    @Qualifier("companyMapper")
+    static CompanyMapper companyMapper;
+    @Autowired
+    @Qualifier("computerMapper")
+    static ComputerMapper computerMapper;
     static ConnectionFactory connection = null;
 
     /**
@@ -336,11 +347,6 @@ public class CLI {
      *            command line arguments
      */
     public static void main(String[] args) {
-
-        computerService = ComputerServiceImpl.getInstance();
-        companyService = CompanyServiceImpl.getInstance();
-        companyMapper = CompanyMapper.getInstance();
-        computerMapper = ComputerMapper.getInstance();
         connection = ConnectionFactory.getInstance();
         sc = new Scanner(System.in);
         sc.useDelimiter("\\n");

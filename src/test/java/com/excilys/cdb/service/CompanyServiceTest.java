@@ -8,55 +8,55 @@ import com.excilys.cdb.model.*;
 import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.validator.ValidatorException;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+        "file:src/main/webapp/WEB-INF/applicationContext.xml" })
 public class CompanyServiceTest {
-    
-    static CompanyServiceImpl companyService = null;
-    
+
+    @Autowired
+    @Qualifier("companyService")
+    private CompanyServiceImpl companyService;
+
     @Spy
     static Company companyTest = null;
 
-    /**
-     * @throws java.lang.Exception
-     */
-    @BeforeClass
-    public static void setUpBeforeClass() throws Exception {
-        companyService = CompanyServiceImpl.getInstance();
+    @Before
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#getInstance()}.
-     */
-    @Test
-    public void testGetInstance() {
-        assertNotNull("Null Instance", companyService);
-        assertEquals("Wrong instance", CompanyServiceImpl.getInstance(), companyService);
-    }
-
-    /**
-     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#get(int)}.
+     * Test method for
+     * {@link com.excilys.cdb.service.CompanyServiceImpl#get(int)}.
      */
     @Test
     public void testGet() {
         Mockito.when(companyTest.getId()).thenReturn(new Long(1));
         Mockito.when(companyTest.getName()).thenReturn("Apple Inc.");
         Company c = companyService.get(1);
-        
+
         assertEquals("problem on get (Id)", companyTest.getId(), c.getId());
-        assertEquals("problem on get (name)", companyTest.getName(), c.getName());
+        assertEquals("problem on get (name)", companyTest.getName(),
+                c.getName());
         c = companyService.get(600);
         assertNull("Company not null", c);
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#add(com.excilys.cdb.model.Company)}.
+     * Test method for
+     * {@link com.excilys.cdb.service.CompanyServiceImpl#add(com.excilys.cdb.model.Company)}
+     * .
      */
     @Test
     public void testAdd() {
@@ -68,24 +68,28 @@ public class CompanyServiceTest {
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#delete(int)}.
+     * Test method for
+     * {@link com.excilys.cdb.service.CompanyServiceImpl#delete(int)}.
      */
     @Test
     public void testDelete() {
         Company c = new Company("testCompany2");
         Company testAddCompany = companyService.add(c);
 
-        int deleteResult = companyService.delete(testAddCompany.getId().intValue());
+        int deleteResult = companyService
+                .delete(testAddCompany.getId().intValue());
         assertEquals(deleteResult, 1);
     }
-    
+
     @Test(expected = ValidatorException.class)
-    public void testExceptionDelete(){
+    public void testExceptionDelete() {
         companyService.delete(-1);
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#update(int, com.excilys.cdb.model.Company)}.
+     * Test method for
+     * {@link com.excilys.cdb.service.CompanyServiceImpl#update(int, com.excilys.cdb.model.Company)}
+     * .
      */
     @Test
     public void testUpdate() {
@@ -93,7 +97,8 @@ public class CompanyServiceTest {
         Company testAddCompany = companyService.add(c);
         c.setName("NewName");
 
-        int updateResult = companyService.update(testAddCompany.getId().intValue(), c);
+        int updateResult = companyService
+                .update(testAddCompany.getId().intValue(), c);
         assertEquals(updateResult, 1);
         testAddCompany = companyService.get(testAddCompany.getId().intValue());
         assertEquals(testAddCompany.getName(), c.getName());
@@ -102,21 +107,25 @@ public class CompanyServiceTest {
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#listAll()}.
+     * Test method for
+     * {@link com.excilys.cdb.service.CompanyServiceImpl#listAll()}.
      */
     @Test
     public void testListAll() {
         Company c = new Company("testCompany");
         Company testAddCompany = companyService.add(c);
-        ArrayList<Company> testList = (ArrayList<Company>) companyService.listAll();
-        
+        ArrayList<Company> testList = (ArrayList<Company>) companyService
+                .listAll();
+
         assertTrue(testList.contains(testAddCompany));
-        
+
         companyService.delete(testAddCompany.getId().intValue());
     }
 
     /**
-     * Test method for {@link com.excilys.cdb.service.CompanyServiceImpl#listAllByPage(int, int)}.
+     * Test method for
+     * {@link com.excilys.cdb.service.CompanyServiceImpl#listAllByPage(int, int)}
+     * .
      */
     @Test
     public void testListAllByPage() {

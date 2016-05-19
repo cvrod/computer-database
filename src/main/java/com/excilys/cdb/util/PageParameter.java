@@ -4,16 +4,22 @@ import java.util.ArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.dto.model.ComputerDTO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
 import com.excilys.cdb.service.ComputerServiceImpl;
 
-
+@Component
 public class PageParameter {
     static final Logger LOGGER = LoggerFactory.getLogger(PageParameter.class);
-    static ComputerServiceImpl computerService = null;
+
+    @Autowired
+    @Qualifier("computerService")
+    private ComputerServiceImpl computerService;
     private int offset = 10;
     private int currentPage = 0;
     private String search;
@@ -23,15 +29,26 @@ public class PageParameter {
 
     private Page<ComputerDTO> computerDtoPage = null;
 
+    public PageParameter() {
+
+    }
+
     /**
      * PageParameter constructor.
-     * @param offsetStr offset parameter
-     * @param pageStr page parameter
-     * @param search search parameter
-     * @param order order parameter
-     * @param dir direction parameter
+     * 
+     * @param offsetStr
+     *            offset parameter
+     * @param pageStr
+     *            page parameter
+     * @param search
+     *            search parameter
+     * @param order
+     *            order parameter
+     * @param dir
+     *            direction parameter
      */
-    public PageParameter(String offsetStr, String pageStr, String search, String order, String dir) {
+    public PageParameter(String offsetStr, String pageStr, String search,
+            String order, String dir) {
         if (isPresent(offsetStr)) {
             try {
                 setOffset(Integer.parseInt(offsetStr));
@@ -51,7 +68,6 @@ public class PageParameter {
             }
         }
 
-        computerService = ComputerServiceImpl.getInstance();
         this.setSearch(search);
         this.setOrder(order);
         this.setDir(dir);
@@ -64,30 +80,30 @@ public class PageParameter {
         Page<Computer> computerPage = null;
         String order = this.getOrder();
 
-        //if a direction is given we put it in the request
+        // if a direction is given we put it in the request
         if (isPresent(this.getOrder()) && isPresent(this.getDir())) {
             order += " " + this.getDir();
         }
 
-        //if we dont have any search or order parameter -> return all computers
+        // if we dont have any search or order parameter -> return all computers
         if (!isPresent(this.getSearch()) && !isPresent(this.getOrder())) {
-            computerPage = computerService.listAllByPage(getCurrentPage() * getOffset(),
-                    getOffset());
+            computerPage = computerService
+                    .listAllByPage(getCurrentPage() * getOffset(), getOffset());
             this.setCountComputer(computerService.count());
-        } else if (!isPresent(this.getOrder())) { //default order -> by id
+        } else if (!isPresent(this.getOrder())) { // default order -> by id
             computerPage = computerService.listByPage(this.getSearch(), "id",
                     getCurrentPage() * getOffset(), getOffset());
             this.setCountComputer(computerService.count(this.getSearch()));
-        } else { //if we have search and order parameter
-            computerPage = computerService.listByPage(this.getSearch(),
-                    order, getCurrentPage() * getOffset(), getOffset());
+        } else { // if we have search and order parameter
+            computerPage = computerService.listByPage(this.getSearch(), order,
+                    getCurrentPage() * getOffset(), getOffset());
             this.setCountComputer(computerService.count(this.getSearch()));
         }
 
         ArrayList<ComputerDTO> computerDtoArray = new ArrayList<>();
         ComputerDTO dtoTmp = null;
 
-        //Convert Computer list in ComputerDTO list
+        // Convert Computer list in ComputerDTO list
         for (Computer c : computerPage.getElementList()) {
             dtoTmp = new ComputerDTO(c);
             computerDtoArray.add(dtoTmp);
@@ -98,7 +114,9 @@ public class PageParameter {
 
     /**
      * check if a given url parent is null or empty.
-     * @param param parameter to verify
+     * 
+     * @param param
+     *            parameter to verify
      * @return boolean true if is present, false else
      */
     protected boolean isPresent(String param) {
@@ -113,12 +131,28 @@ public class PageParameter {
         this.offset = offset;
     }
 
+    public void setOffset(String offset) {
+        if (isPresent(offset)) {
+            this.offset = Integer.parseInt(offset);
+        } else {
+            this.offset = 10;
+        }
+    }
+
     public int getCurrentPage() {
         return currentPage;
     }
 
     public void setCurrentPage(int currentPage) {
         this.currentPage = currentPage;
+    }
+
+    public void setCurrentPage(String currentPage) {
+        if (isPresent(currentPage)) {
+            this.currentPage = Integer.parseInt(currentPage);
+        } else {
+            this.currentPage = 0;
+        }
     }
 
     public String getSearch() {

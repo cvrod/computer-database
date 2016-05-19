@@ -3,6 +3,7 @@ package com.excilys.cdb.controller.computer;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
@@ -26,27 +30,34 @@ import com.excilys.cdb.dao.DAOException;
 @WebServlet(name = "AddComputer", urlPatterns = { "/computer/add" })
 public class AddComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
-    ComputerServiceImpl computerService = null;
+    @Autowired
+    @Qualifier("computerService")
+    ComputerServiceImpl computerService;
+    @Autowired
+    @Qualifier("companyService")
     CompanyServiceImpl companyService = null;
     static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
     ArrayList<Company> companies = null;
 
-    /**
-     * AddComputer Servlet constructor.
-     */
-    public AddComputer() {
-        super();
-        computerService = ComputerServiceImpl.getInstance();
-        companyService = CompanyServiceImpl.getInstance();
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+                config.getServletContext());
     }
 
     /**
      * return addcomputer form.
-     * @param request request object
-     * @param response response object
+     * 
+     * @param request
+     *            request object
+     * @param response
+     *            response object
      *
-     * @throws ServletException ServletException
-     * @throws IOException IOException
+     * @throws ServletException
+     *             ServletException
+     * @throws IOException
+     *             IOException
      */
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
@@ -64,11 +75,16 @@ public class AddComputer extends HttpServlet {
 
     /**
      * add a computer to DB.
-     * @param request request object
-     * @param response response object
+     * 
+     * @param request
+     *            request object
+     * @param response
+     *            response object
      *
-     * @throws ServletException Servlet Exception
-     * @throws IOException IOException
+     * @throws ServletException
+     *             Servlet Exception
+     * @throws IOException
+     *             IOException
      */
     protected void doPost(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {

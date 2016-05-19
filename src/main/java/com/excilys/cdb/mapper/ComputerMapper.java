@@ -7,6 +7,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
@@ -18,33 +21,26 @@ import com.excilys.cdb.persistence.ConnectionFactory;
  *
  * @see Mapper
  */
+@Component("computerMapper")
 public class ComputerMapper implements Mapper<Computer> {
     public static final String ID = "id";
     public static final String NAME = "name";
-    public CompanyMapper companyMapper = null;
-    public CompanyDAO companyDAO = null;
+    
+    @Autowired
+    @Qualifier("companyMapper")
+    private CompanyMapper companyMapper;
+    
+    @Autowired
+    @Qualifier("companyDAO")
+    public CompanyDAO companyDAO;
     public ConnectionFactory connection = null;
     static final Logger LOGGER = LoggerFactory
             .getLogger(ComputerMapper.class);
-    static ComputerMapper instance = null;
-
-    /**
-     * getting ComputerMapper instance.
-     * @return instance of ComputerMapper
-     */
-    public static synchronized ComputerMapper getInstance() {
-        if (instance == null) {
-            instance = new ComputerMapper();
-        }
-        return instance;
-    }
 
     /**
      * ComputerMapper constructor.
      */
-    private ComputerMapper() {
-        companyMapper = CompanyMapper.getInstance();
-        companyDAO = CompanyDAO.getInstance();
+    public ComputerMapper() {
         connection = ConnectionFactory.getInstance();
     }
 

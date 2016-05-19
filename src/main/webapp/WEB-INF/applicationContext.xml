@@ -7,8 +7,7 @@
     http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
     http://www.springframework.org/schema/context
     http://www.springframework.org/schema/context/spring-context-4.2.xsd">
-
-    <context:component-scan base-package="com.excilys.cdb.service" />
-    <context:component-scan base-package="com.excilys.cdb.dao"/>
-    <context:component-scan base-package="com.excilys.cdb.controller.computer"/>
+    
+	<context:component-scan base-package="com.excilys.cdb" />
+	
 </beans>

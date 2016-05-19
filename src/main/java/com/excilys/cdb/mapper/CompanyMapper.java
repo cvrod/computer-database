@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.persistence.ConnectionFactory;
@@ -16,6 +17,7 @@ import com.excilys.cdb.persistence.ConnectionFactory;
  *
  * @see Mapper
  */
+@Component("companyMapper")
 public class CompanyMapper implements Mapper<Company> {
     public static final String ID = "id";
     public static final String NAME = "name";
@@ -23,23 +25,10 @@ public class CompanyMapper implements Mapper<Company> {
     static final Logger LOGGER = LoggerFactory
             .getLogger(CompanyMapper.class);
 
-    static CompanyMapper instance = null;
-
-    /**
-     * return instance of Singleton CompanyMapper.
-     * @return CompanyMapper
-     */
-    public static synchronized CompanyMapper getInstance() {
-        if (instance == null) {
-            instance = new CompanyMapper();
-        }
-        return instance;
-    }
-
     /**
      * CompanyMapper constructor.
      */
-    private CompanyMapper() {
+    public CompanyMapper() {
         connection = ConnectionFactory.getInstance();
     }
 

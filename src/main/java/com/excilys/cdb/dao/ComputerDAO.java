@@ -10,6 +10,9 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
@@ -22,9 +25,17 @@ import com.mysql.jdbc.Statement;
  *
  * @see GenericDAO
  */
+@Component("computerDAO")
 public class ComputerDAO extends GenericDAO<Computer> {
 
-    CompanyDAO companyDAO = null;
+    @Autowired
+    @Qualifier("companyDAO")
+    private CompanyDAO companyDAO;
+    
+    @Autowired
+    @Qualifier("computerMapper")
+    private ComputerMapper computerMapper;
+
     private final ConnectionManager connectionManager = ConnectionManager.getInstance();
     public static final String INSERT_REQUEST = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
     public static final String DETAIL_REQUEST = "SELECT * FROM computer WHERE id=?";
@@ -35,28 +46,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM computer WHERE name LIKE ?";
     public static final String DELETE_ALL_REQUEST = "DELETE FROM computer WHERE company_id=?";
     static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
-    Connection con = null;
-
-    private static ComputerDAO instance = null;
-
-    /**
-     * getting instance of ComputerDAO Singleton.
-     *
-     * @return ComputerDAO Instance
-     */
-    public static synchronized ComputerDAO getInstance() {
-        if (instance == null) {
-            instance = new ComputerDAO();
-        }
-        return instance;
-    }
-
-    /**
-     * default constructor.
-     */
-    private ComputerDAO() {
-        companyDAO = CompanyDAO.getInstance();
-    }
+    protected Connection con = null;
 
     /**
      * Remove a computer from base.
@@ -111,7 +101,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
                 PreparedStatement stmt = con
                         .prepareStatement(LISTALL_REQUEST)) {
             rs = stmt.executeQuery();
-            computerMapper = ComputerMapper.getInstance();
             return computerMapper.map(rs);
 
         } catch (SQLException e) {
@@ -149,7 +138,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
             stmt.setInt(2, start);
             stmt.setInt(3, offset);
             rs = stmt.executeQuery();
-            computerMapper = ComputerMapper.getInstance();
 
             elementList = (ArrayList<Computer>) computerMapper.map(rs);
             Page<Computer> page = new Page<>(elementList, start, offset);
@@ -219,7 +207,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
                 PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST)) {
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
-            computerMapper = ComputerMapper.getInstance();
             computerList = (ArrayList<Computer>) computerMapper.map(rs);
             if (computerList.size() >= 1) {
                 LOGGER.info("Found computer of id : " + id);
