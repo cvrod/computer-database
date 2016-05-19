@@ -19,6 +19,8 @@
 		<!-- Logs -->
 		<slf4j.version>1.7.21</slf4j.version>
 		<logback.version>1.0.13</logback.version>
+		<logback-extension-version>0.1.4</logback-extension-version>
+		<jcl.version>1.7.0</jcl.version>
 
 		<!-- SQL -->
 		<sql.version>5.1.6</sql.version>
@@ -102,7 +104,13 @@
 		<dependency>
 			<groupId>org.logback-extensions</groupId>
 			<artifactId>logback-ext-spring</artifactId>
-			<version>0.1.2</version>
+			<version>${logback-extension-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${jcl.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- SQL -->
