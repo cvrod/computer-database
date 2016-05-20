@@ -1,30 +1,30 @@
 package com.excilys.cdb.dao;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import com.excilys.cdb.pagination.Page;
-import com.excilys.cdb.persistence.ConnectionFactory;
 
 /**
  * Main DAO class.
  */
 public abstract class GenericDAO<T> {
-    protected ConnectionFactory connection = null;
     public ResultSet setRes = null;
     StringBuffer res;
     static final Logger LOGGER = LoggerFactory.getLogger(GenericDAO.class);
+    protected DataSource dataSource;
 
-    /**
-     * Generic DAO constructor.
-     */
-    public GenericDAO() {
-        connection = ConnectionFactory.getInstance();
+
+    public Connection getConnection() {
+        return DataSourceUtils.getConnection(dataSource);
     }
-
     /**
      * list all object from a given type.
      * @return list of all object in table

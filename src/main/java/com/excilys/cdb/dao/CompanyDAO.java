@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Component;
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.pagination.Page;
-import com.excilys.cdb.persistence.ConnectionManager;
 import com.mysql.jdbc.Statement;
 
 /**
@@ -32,9 +33,7 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Qualifier("companyMapper")
     private CompanyMapper companyMapper;
 
-    static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
-    private final ConnectionManager connectionManager = ConnectionManager
-            .getInstance();
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
     public static final String DETAIL_REQUEST = "SELECT * FROM company WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM company;";
     public static final String LISTPAGE_REQUEST = "SELECT * FROM company WHERE company.name LIKE ? ORDER BY %s LIMIT ?,?";
@@ -43,8 +42,15 @@ public class CompanyDAO extends GenericDAO<Company> {
     public static final String UPDATE_REQUEST = "UPDATE company SET name=? WHERE id=?";
     public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM company WHERE name like ?";
     public static final String DELETE_COMPUTER = "DELETE FROM computer WHERE company_id=?";
-    Connection con = null;
 
+    /**
+     * CompanyDAO main constructor.
+     * @param dataSource dataSource instanciate by Spring
+     */
+    @Autowired
+    public CompanyDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
     /**
      * Getting a company under ResultSet form.
      *
@@ -58,8 +64,9 @@ public class CompanyDAO extends GenericDAO<Company> {
         ResultSet rs = null;
         ArrayList<Company> companyList = null;
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST);
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
             companyList = (ArrayList<Company>) companyMapper.map(rs);
@@ -88,9 +95,10 @@ public class CompanyDAO extends GenericDAO<Company> {
 
         ResultSet rs = null;
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con
-                        .prepareStatement(LISTALL_REQUEST)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con
+                    .prepareStatement(LISTALL_REQUEST);
             rs = stmt.executeQuery();
             return companyMapper.map(rs);
 
@@ -125,8 +133,9 @@ public class CompanyDAO extends GenericDAO<Company> {
             request = String.format(LISTPAGE_REQUEST, "id");
         }
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(request)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(request);
             stmt.setString(1, "%" + name + "%");
             stmt.setInt(2, start);
             stmt.setInt(3, offset);
@@ -151,9 +160,10 @@ public class CompanyDAO extends GenericDAO<Company> {
      */
     public int delete(int companyId) {
         LOGGER.debug("delete a Company");
-        Connection con = this.connectionManager.get();
+        Connection con = this.getConnection();
         int res = 0;
-        try (PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
+        try {
+            PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST);
             stmt.setInt(1, companyId);
             res = stmt.executeUpdate();
         } catch (SQLException e) {
@@ -174,9 +184,10 @@ public class CompanyDAO extends GenericDAO<Company> {
     public Company add(Company c) {
         LOGGER.debug("adding Company");
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(INSERT_REQUEST,
-                        Statement.RETURN_GENERATED_KEYS)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(INSERT_REQUEST,
+                    Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, c.getName());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
@@ -203,8 +214,9 @@ public class CompanyDAO extends GenericDAO<Company> {
         LOGGER.debug("update Computer");
         int res = 0;
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST);
             stmt.setString(1, c.getName());
             stmt.setInt(2, id);
             res = stmt.executeUpdate();
@@ -220,8 +232,9 @@ public class CompanyDAO extends GenericDAO<Company> {
         LOGGER.debug("count company");
         ResultSet rs = null;
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST);
             stmt.setString(1, "%" + name + "%");
             rs = stmt.executeQuery();
             rs.next();

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import com.excilys.cdb.dto.model.ComputerDTO;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
-import com.excilys.cdb.service.ComputerServiceImpl;
+import com.excilys.cdb.service.ComputerService;
 
 @Component
 public class PageParameter {
@@ -19,7 +19,7 @@ public class PageParameter {
 
     @Autowired
     @Qualifier("computerService")
-    private ComputerServiceImpl computerService;
+    private ComputerService computerService;
     private int offset = 10;
     private int currentPage = 0;
     private String search;

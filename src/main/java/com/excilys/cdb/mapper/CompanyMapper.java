@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.model.Company;
-import com.excilys.cdb.persistence.ConnectionFactory;
 
 /**
  * Company mapper, who convert a given ResultSet to a List of Company.
@@ -21,16 +20,8 @@ import com.excilys.cdb.persistence.ConnectionFactory;
 public class CompanyMapper implements Mapper<Company> {
     public static final String ID = "id";
     public static final String NAME = "name";
-    public ConnectionFactory connection = null;
     static final Logger LOGGER = LoggerFactory
             .getLogger(CompanyMapper.class);
-
-    /**
-     * CompanyMapper constructor.
-     */
-    public CompanyMapper() {
-        connection = ConnectionFactory.getInstance();
-    }
 
     /**
      * Getting an ArrayList of Company from a ResultSet.

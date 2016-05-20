@@ -28,7 +28,7 @@ public class ComputerServiceTest {
 
     @Autowired
     @Qualifier("computerService")
-    private ComputerServiceImpl computerService;
+    private ComputerService computerService;
 
     @Spy
     static Computer computerTest = null;

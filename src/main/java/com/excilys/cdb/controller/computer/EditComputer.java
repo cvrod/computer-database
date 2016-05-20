@@ -20,8 +20,8 @@ import com.excilys.cdb.dao.DAOException;
 import com.excilys.cdb.dto.model.ComputerDTO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyServiceImpl;
-import com.excilys.cdb.service.ComputerServiceImpl;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.validator.ValidatorException;
 
@@ -33,10 +33,10 @@ public class EditComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
     @Autowired
     @Qualifier("computerService")
-    ComputerServiceImpl computerService;
+    ComputerService computerService;
     @Autowired
     @Qualifier("companyService")
-    CompanyServiceImpl companyService;
+    CompanyService companyService;
     static final Logger LOGGER = LoggerFactory.getLogger(EditComputer.class);
     ArrayList<Company> companies = null;
     ComputerDTO computerDTO = null;

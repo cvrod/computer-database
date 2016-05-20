@@ -26,7 +26,7 @@ public class CompanyServiceTest {
 
     @Autowired
     @Qualifier("companyService")
-    private CompanyServiceImpl companyService;
+    private CompanyService companyService;
 
     @Spy
     static Company companyTest = null;

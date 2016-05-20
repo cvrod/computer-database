@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 import com.excilys.cdb.dao.CompanyDAO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.ConnectionFactory;
 
 /**
  * Computer mapper, who convert a given ResultSet to a List of Computer.
@@ -33,15 +32,7 @@ public class ComputerMapper implements Mapper<Computer> {
     @Autowired
     @Qualifier("companyDAO")
     public CompanyDAO companyDAO;
-    public ConnectionFactory connection = null;
     static final Logger LOGGER = LoggerFactory.getLogger(ComputerMapper.class);
-
-    /**
-     * ComputerMapper constructor.
-     */
-    public ComputerMapper() {
-        connection = ConnectionFactory.getInstance();
-    }
 
     /**
      * Getting an ArrayList of Computer from a ResultSet.

@@ -14,7 +14,6 @@ import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.persistence.ConnectionFactory;
 import com.excilys.cdb.service.CompanyServiceImpl;
 import com.excilys.cdb.service.ComputerServiceImpl;
 
@@ -41,7 +40,6 @@ public class CLI {
     @Autowired
     @Qualifier("computerMapper")
     static ComputerMapper computerMapper;
-    static ConnectionFactory connection = null;
 
     /**
      * Printing Menu.
@@ -347,7 +345,6 @@ public class CLI {
      *            command line arguments
      */
     public static void main(String[] args) {
-        connection = ConnectionFactory.getInstance();
         sc = new Scanner(System.in);
         sc.useDelimiter("\\n");
 

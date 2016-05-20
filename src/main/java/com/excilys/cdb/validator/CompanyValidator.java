@@ -15,7 +15,7 @@ public class CompanyValidator {
     static final Logger LOGGER = LoggerFactory
             .getLogger(CompanyValidator.class);
     private static final Pattern INT_REGEX = Pattern
-            .compile("[0-9]*[1-9][0-9]*");
+            .compile("\\d+");
 
     /**
      * validate Company name.

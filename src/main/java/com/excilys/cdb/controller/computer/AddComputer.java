@@ -18,8 +18,8 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyServiceImpl;
-import com.excilys.cdb.service.ComputerServiceImpl;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.validator.ValidatorException;
 import com.excilys.cdb.dao.DAOException;
@@ -32,10 +32,10 @@ public class AddComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
     @Autowired
     @Qualifier("computerService")
-    ComputerServiceImpl computerService;
+    ComputerService computerService;
     @Autowired
     @Qualifier("companyService")
-    CompanyServiceImpl companyService = null;
+    CompanyService companyService = null;
     static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
     ArrayList<Company> companies = null;
 

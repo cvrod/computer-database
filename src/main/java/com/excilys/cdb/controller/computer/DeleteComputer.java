@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
-import com.excilys.cdb.service.ComputerServiceImpl;
+import com.excilys.cdb.service.ComputerService;
 
 /**
  * Servlet implementation class DeleteComputer.
@@ -25,7 +25,7 @@ public class DeleteComputer extends HttpServlet {
     private static final long serialVersionUID = 1L;
     @Autowired
     @Qualifier("computerService")
-    private ComputerServiceImpl computerService = null;
+    private ComputerService computerService = null;
     static final Logger LOGGER = LoggerFactory.getLogger(DeleteComputer.class);
 
     @Override

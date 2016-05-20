@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,6 @@ import org.springframework.stereotype.Component;
 import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
-import com.excilys.cdb.persistence.ConnectionManager;
 import com.mysql.jdbc.Statement;
 
 /**
@@ -36,8 +37,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
     @Qualifier("computerMapper")
     private ComputerMapper computerMapper;
 
-    private final ConnectionManager connectionManager = ConnectionManager
-            .getInstance();
     public static final String INSERT_REQUEST = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
     public static final String DETAIL_REQUEST = "SELECT * FROM computer WHERE id=?";
     public static final String DELETE_REQUEST = "DELETE FROM computer WHERE id=?";
@@ -47,8 +46,15 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM computer WHERE name LIKE ?";
     public static final String DELETE_ALL_REQUEST = "DELETE FROM computer WHERE company_id=?";
     static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
-    protected Connection con = null;
 
+    /**
+     * ComputerDAO constructor.
+     * @param dataSource datasource instanciate by Spring
+     */
+    @Autowired
+    public ComputerDAO(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
     /**
      * Remove a computer from base.
      *
@@ -60,8 +66,9 @@ public class ComputerDAO extends GenericDAO<Computer> {
         LOGGER.debug("delete Computer");
         int res = -1;
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST);
             stmt.setInt(1, id);
             res = stmt.executeUpdate();
         } catch (SQLException e) {
@@ -79,9 +86,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
      */
     public void deleteAll(int companyId) {
         LOGGER.debug("delete All Computer from a company ID");
-        Connection con = this.connectionManager.get();
-        try (PreparedStatement stmt = con
-                .prepareStatement(DELETE_ALL_REQUEST)) {
+        Connection con = this.getConnection();
+        try {
+            PreparedStatement stmt = con
+                    .prepareStatement(DELETE_ALL_REQUEST);
             stmt.setInt(1, companyId);
             stmt.executeUpdate();
         } catch (SQLException e) {
@@ -101,9 +109,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
         ResultSet rs = null;
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con
-                        .prepareStatement(LISTALL_REQUEST)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con
+                    .prepareStatement(LISTALL_REQUEST);
             rs = stmt.executeQuery();
             return computerMapper.map(rs);
 
@@ -136,8 +145,9 @@ public class ComputerDAO extends GenericDAO<Computer> {
             request = String.format(LISTPAGE_REQUEST, "id");
         }
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(request)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(request);
             stmt.setString(1, name + "%");
             stmt.setInt(2, start);
             stmt.setInt(3, offset);
@@ -164,9 +174,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public Computer add(Computer c) {
         LOGGER.debug("adding Computer");
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(INSERT_REQUEST,
-                        Statement.RETURN_GENERATED_KEYS)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(INSERT_REQUEST,
+                    Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, c.getName());
             if (c.getIntroduced() == null) {
                 stmt.setNull(2, java.sql.Types.TIMESTAMP);
@@ -207,8 +218,9 @@ public class ComputerDAO extends GenericDAO<Computer> {
         ResultSet rs = null;
         ArrayList<Computer> computerList = null;
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST);
             stmt.setLong(1, id);
             rs = stmt.executeQuery();
             computerList = (ArrayList<Computer>) computerMapper.map(rs);
@@ -239,8 +251,9 @@ public class ComputerDAO extends GenericDAO<Computer> {
         LOGGER.debug("update Computer");
 
         int res = 0;
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST);
             stmt.setString(1, c.getName());
             if (c.getIntroduced() == null) {
                 stmt.setNull(2, java.sql.Types.TIMESTAMP);
@@ -271,8 +284,9 @@ public class ComputerDAO extends GenericDAO<Computer> {
         LOGGER.debug("count computers");
         ResultSet rs = null;
 
-        try (Connection con = connection.openConnection();
-                PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST)) {
+        try {
+            Connection con = this.getConnection();
+            PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST);
             stmt.setString(1, "%" + name + "%");
             rs = stmt.executeQuery();
             rs.next();
