@@ -64,7 +64,7 @@ public class ComputerValidator {
      */
     public static void validate(Computer c) {
         validateName(c.getName());
-        if(c.getCompany() != null){
+        if (c.getCompany() != null) {
             validateId(c.getCompany().getId().toString());
         }
         boolean introduced = false;
