@@ -4,28 +4,16 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
 	id="WebApp_ID" version="3.0">
 	<display-name>computer-database</display-name>
+	
+	<!-- Spring Listener -->
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<listener>
 		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
 	</listener>
-	<servlet>
-		<servlet-name>IndexComputer</servlet-name>
-		<servlet-class>com.excilys.cdb.controller.computer.IndexComputer</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>AddComputer</servlet-name>
-		<servlet-class>com.excilys.cdb.controller.computer.AddComputer</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>EditComputer</servlet-name>
-		<servlet-class>com.excilys.cdb.controller.computer.EditComputer</servlet-class>
-	</servlet>
-	<servlet>
-		<servlet-name>DeleteComputer</servlet-name>
-		<servlet-class>com.excilys.cdb.controller.computer.DeleteComputer</servlet-class>
-	</servlet>
+
+	<!-- Error redirection -->
 	<error-page>
 		<exception-type>com.excilys.cdb.dao.DAOException</exception-type>
 		<location>/WEB-INF/views/500.jsp</location>
