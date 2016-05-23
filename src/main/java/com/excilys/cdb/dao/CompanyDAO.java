@@ -1,11 +1,9 @@
 package com.excilys.cdb.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -13,12 +11,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.mapper.CompanyMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.pagination.Page;
-import com.mysql.jdbc.Statement;
 
 /**
  * CompanyDAO : handle company request.
@@ -33,7 +33,11 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Qualifier("companyMapper")
     private CompanyMapper companyMapper;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CompanyDAO.class);
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    private static final Logger LOGGER = LoggerFactory
+            .getLogger(CompanyDAO.class);
     public static final String DETAIL_REQUEST = "SELECT * FROM company WHERE id=?";
     public static final String LISTALL_REQUEST = "SELECT * FROM company;";
     public static final String LISTPAGE_REQUEST = "SELECT * FROM company WHERE company.name LIKE ? ORDER BY %s LIMIT ?,?";
@@ -45,12 +49,15 @@ public class CompanyDAO extends GenericDAO<Company> {
 
     /**
      * CompanyDAO main constructor.
-     * @param dataSource dataSource instanciate by Spring
+     * 
+     * @param dataSource
+     *            dataSource instanciate by Spring
      */
     @Autowired
     public CompanyDAO(DataSource dataSource) {
         this.dataSource = dataSource;
     }
+
     /**
      * Getting a company under ResultSet form.
      *
@@ -61,27 +68,15 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public Company get(int id) {
         LOGGER.debug("getting a company by id");
-        ResultSet rs = null;
-        ArrayList<Company> companyList = null;
-
+        Company c = null;
         try {
-            Connection con = this.getConnection();
-            PreparedStatement stmt = con.prepareStatement(DETAIL_REQUEST);
-            stmt.setLong(1, id);
-            rs = stmt.executeQuery();
-            companyList = (ArrayList<Company>) companyMapper.map(rs);
-            if (companyList.size() >= 1) {
-                LOGGER.debug("getting company of id : " + id);
-                return companyList.get(0);
-            } else {
-                LOGGER.warn("Couldn't find Company of id : " + id);
-                return null;
-            }
-
-        } catch (SQLException e) {
+            c = jdbcTemplate.queryForObject(DETAIL_REQUEST, new Object[] { id },
+                    new CompanyMapper());
+        } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             throw new DAOException(e);
         }
+        return c;
     }
 
     /**
@@ -92,20 +87,7 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public List<Company> listAll() {
         LOGGER.debug("List all company");
-
-        ResultSet rs = null;
-
-        try {
-            Connection con = this.getConnection();
-            PreparedStatement stmt = con
-                    .prepareStatement(LISTALL_REQUEST);
-            rs = stmt.executeQuery();
-            return companyMapper.map(rs);
-
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new DAOException(e);
-        }
+        return jdbcTemplate.query(LISTALL_REQUEST, new CompanyMapper());
     }
 
     /**
@@ -121,7 +103,6 @@ public class CompanyDAO extends GenericDAO<Company> {
         }
         LOGGER.debug("List company by Page");
 
-        ResultSet rs = null;
         ArrayList<Company> elementList = null;
         String request = null;
 
@@ -133,22 +114,12 @@ public class CompanyDAO extends GenericDAO<Company> {
             request = String.format(LISTPAGE_REQUEST, "id");
         }
 
-        try {
-            Connection con = this.getConnection();
-            PreparedStatement stmt = con.prepareStatement(request);
-            stmt.setString(1, "%" + name + "%");
-            stmt.setInt(2, start);
-            stmt.setInt(3, offset);
-            rs = stmt.executeQuery();
-            elementList = (ArrayList<Company>) companyMapper.map(rs);
-            Page<Company> page = new Page<>(elementList, start, offset);
+        Object[] args = { "%" + name + "%", start, offset };
+        elementList = (ArrayList<Company>) jdbcTemplate.query(request, args,
+                new CompanyMapper());
+        Page<Company> page = new Page<>(elementList, start, offset);
 
-            return page;
-
-        } catch (SQLException e) {
-            LOGGER.error(e.getMessage());
-            throw new DAOException(e);
-        }
+        return page;
     }
 
     /**
@@ -160,13 +131,11 @@ public class CompanyDAO extends GenericDAO<Company> {
      */
     public int delete(int companyId) {
         LOGGER.debug("delete a Company");
-        Connection con = this.getConnection();
+        Object[] args = { companyId };
         int res = 0;
         try {
-            PreparedStatement stmt = con.prepareStatement(DELETE_REQUEST);
-            stmt.setInt(1, companyId);
-            res = stmt.executeUpdate();
-        } catch (SQLException e) {
+            res = jdbcTemplate.update(DELETE_REQUEST, args);
+        } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             throw new DAOException(e);
         }
@@ -184,17 +153,16 @@ public class CompanyDAO extends GenericDAO<Company> {
     public Company add(Company c) {
         LOGGER.debug("adding Company");
 
+        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
+                .withTableName("company").usingGeneratedKeyColumns("id")
+                .usingColumns("name");
         try {
-            Connection con = this.getConnection();
-            PreparedStatement stmt = con.prepareStatement(INSERT_REQUEST,
-                    Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, c.getName());
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            rs.next();
-            c.setId(rs.getLong(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("name", c.getName());
+            Long id = insert.executeAndReturnKey(parameters).longValue();
+            c.setId(id);
+        } catch (DataAccessException e) {
+            LOGGER.error(e.getMessage());
             throw new DAOException(e);
         }
         return c;
@@ -212,36 +180,28 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public int update(int id, Company c) {
         LOGGER.debug("update Computer");
+        Object[] args = { c.getName(), c.getId() };
         int res = 0;
-
         try {
-            Connection con = this.getConnection();
-            PreparedStatement stmt = con.prepareStatement(UPDATE_REQUEST);
-            stmt.setString(1, c.getName());
-            stmt.setInt(2, id);
-            res = stmt.executeUpdate();
-            return res;
-        } catch (SQLException e) {
-            e.printStackTrace();
+            res = jdbcTemplate.update(UPDATE_REQUEST, args);
+        } catch (DataAccessException e) {
+            LOGGER.error(e.getMessage());
             throw new DAOException(e);
         }
+        return res;
     }
 
     @Override
     public Long count(String name) {
         LOGGER.debug("count company");
-        ResultSet rs = null;
-
+        Long res = 0L;
+        Object[] args = { name };
         try {
-            Connection con = this.getConnection();
-            PreparedStatement stmt = con.prepareStatement(COUNT_REQUEST);
-            stmt.setString(1, "%" + name + "%");
-            rs = stmt.executeQuery();
-            rs.next();
-            return rs.getLong(1);
-        } catch (SQLException e) {
+            res = jdbcTemplate.queryForObject(COUNT_REQUEST, args, Long.class);
+        } catch (DataAccessException e) {
             e.printStackTrace();
             throw new DAOException(e);
         }
+        return res;
     }
 }

@@ -49,8 +49,6 @@ public class CompanyServiceTest {
         assertEquals("problem on get (Id)", companyTest.getId(), c.getId());
         assertEquals("problem on get (name)", companyTest.getName(),
                 c.getName());
-        c = companyService.get(600);
-        assertNull("Company not null", c);
     }
 
     /**
