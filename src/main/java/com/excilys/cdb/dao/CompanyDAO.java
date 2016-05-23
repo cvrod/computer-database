@@ -49,7 +49,7 @@ public class CompanyDAO extends GenericDAO<Company> {
 
     /**
      * CompanyDAO main constructor.
-     * 
+     *
      * @param dataSource
      *            dataSource instanciate by Spring
      */
@@ -70,8 +70,8 @@ public class CompanyDAO extends GenericDAO<Company> {
         LOGGER.debug("getting a company by id");
         Company c = null;
         try {
-            c = jdbcTemplate.queryForObject(DETAIL_REQUEST, new Object[] { id },
-                    new CompanyMapper());
+            c = jdbcTemplate.queryForObject(DETAIL_REQUEST, new Object[] {id},
+                    companyMapper);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             throw new DAOException(e);
@@ -87,7 +87,14 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public List<Company> listAll() {
         LOGGER.debug("List all company");
-        return jdbcTemplate.query(LISTALL_REQUEST, new CompanyMapper());
+        List<Company> listRes;
+        try {
+            listRes = jdbcTemplate.query(LISTALL_REQUEST, companyMapper);
+        } catch (DataAccessException e) {
+            LOGGER.error(e.getMessage());
+            throw new DAOException(e);
+        }
+        return listRes;
     }
 
     /**
@@ -114,9 +121,14 @@ public class CompanyDAO extends GenericDAO<Company> {
             request = String.format(LISTPAGE_REQUEST, "id");
         }
 
-        Object[] args = { "%" + name + "%", start, offset };
-        elementList = (ArrayList<Company>) jdbcTemplate.query(request, args,
-                new CompanyMapper());
+        Object[] args = {"%" + name + "%", start, offset};
+        try {
+            elementList = (ArrayList<Company>) jdbcTemplate.query(request, args,
+                    new CompanyMapper());
+        } catch (DataAccessException e) {
+            LOGGER.error(e.getMessage());
+            throw new DAOException(e);
+        }
         Page<Company> page = new Page<>(elementList, start, offset);
 
         return page;
@@ -131,7 +143,7 @@ public class CompanyDAO extends GenericDAO<Company> {
      */
     public int delete(int companyId) {
         LOGGER.debug("delete a Company");
-        Object[] args = { companyId };
+        Object[] args = {companyId};
         int res = 0;
         try {
             res = jdbcTemplate.update(DELETE_REQUEST, args);
@@ -180,7 +192,7 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public int update(int id, Company c) {
         LOGGER.debug("update Computer");
-        Object[] args = { c.getName(), c.getId() };
+        Object[] args = {c.getName(), c.getId()};
         int res = 0;
         try {
             res = jdbcTemplate.update(UPDATE_REQUEST, args);
@@ -194,8 +206,8 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public Long count(String name) {
         LOGGER.debug("count company");
-        Long res = 0L;
-        Object[] args = { name };
+        Long res = new Long(0);
+        Object[] args = {name + "%"};
         try {
             res = jdbcTemplate.queryForObject(COUNT_REQUEST, args, Long.class);
         } catch (DataAccessException e) {

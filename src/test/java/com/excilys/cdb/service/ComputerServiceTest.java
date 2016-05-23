@@ -65,9 +65,6 @@ public class ComputerServiceTest {
                 c.getDiscontinued());
         assertEquals("problem on get (Company)", computerTest.getCompany(),
                 c.getCompany());
-
-        c = computerService.get(200000);
-        assertNull("Company not null", c);
     }
 
     @Test
