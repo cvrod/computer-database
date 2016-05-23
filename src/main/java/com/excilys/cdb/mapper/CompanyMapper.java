@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.model.Company;
@@ -17,7 +18,7 @@ import com.excilys.cdb.model.Company;
  * @see Mapper
  */
 @Component("companyMapper")
-public class CompanyMapper implements Mapper<Company> {
+public class CompanyMapper implements Mapper<Company>, RowMapper<Company> {
     public static final String ID = "id";
     public static final String NAME = "name";
     static final Logger LOGGER = LoggerFactory
@@ -44,5 +45,10 @@ public class CompanyMapper implements Mapper<Company> {
             throw new MapperException(e);
         }
         return res;
+    }
+
+    @Override
+    public Company mapRow(ResultSet rs, int rowNumber) throws SQLException {
+        return new Company(rs.getLong(ID), rs.getString(NAME));
     }
 }
