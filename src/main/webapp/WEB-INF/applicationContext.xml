@@ -10,13 +10,18 @@
     http://www.springframework.org/schema/tx
     http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-	<context:component-scan base-package="com.excilys.cdb" />
+	<context:component-scan base-package="com.excilys.cdb.dao" />
+	<context:component-scan base-package="com.excilys.cdb.service" />
+	<context:component-scan base-package="com.excilys.cdb.mapper" />
+	<context:component-scan base-package="com.excilys.cdb.util" />
+
 	<tx:annotation-driven transaction-manager="txManager" />
-	
+
 	<bean name="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull" />
+		<property name="url"
+			value="jdbc:mysql://127.0.0.1:3306/computer-database-db?zeroDateTimeBehavior=convertToNull" />
 		<property name="username" value="admincdb" />
 		<property name="password" value="qwerty1234" />
 	</bean>
