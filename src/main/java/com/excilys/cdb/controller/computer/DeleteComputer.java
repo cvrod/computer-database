@@ -1,75 +1,37 @@
 package com.excilys.cdb.controller.computer;
 
-import java.io.IOException;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.service.ComputerService;
 
 /**
  * Servlet implementation class DeleteComputer.
  */
-@WebServlet(name = "DeleteComputer", urlPatterns = { "/computer/delete" })
-public class DeleteComputer extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping("/delete")
+public class DeleteComputer {
     @Autowired
     @Qualifier("computerService")
     private ComputerService computerService = null;
     static final Logger LOGGER = LoggerFactory.getLogger(DeleteComputer.class);
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-                config.getServletContext());
-    }
-
     /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-     *      response)
-     * @param request
-     *            request object
-     * @param response
-     *            response object
-     *
-     * @throws ServletException
-     *             ServletException
-     * @throws IOException
-     *             IOException
+     * Processing deleting computer request.
+     * @param model use to transmit attributes
+     * @param selection id's of computer candidates for deletion
+     * @return controller name redirection
      */
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-        response.getWriter().append("Served at: ")
-                .append(request.getContextPath());
-    }
-
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-     *      response)
-     * @param request
-     *            request object
-     * @param response
-     *            response object
-     *
-     * @throws ServletException
-     *             ServletException
-     * @throws IOException
-     *             IOException
-     */
-    protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-        final String selection = request.getParameter("selection");
+    @RequestMapping(value = { "/", "" }, method = RequestMethod.POST)
+    protected String doPost(ModelMap model,
+            @RequestParam(value = "selection") String selection) {
         LOGGER.debug("received : " + selection);
         String[] selectionSplit = null;
 
@@ -79,6 +41,6 @@ public class DeleteComputer extends HttpServlet {
         for (String s : selectionSplit) {
             computerService.delete(Integer.parseInt(s));
         }
-        response.sendRedirect(request.getContextPath() + "/computer");
+        return "redirect:computer";
     }
 }

@@ -1,20 +1,16 @@
 package com.excilys.cdb.controller.computer;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
@@ -25,11 +21,11 @@ import com.excilys.cdb.validator.ValidatorException;
 import com.excilys.cdb.dao.DAOException;
 
 /**
- * Servlet implementation class AddComputer.
+ * Add page controller.
  */
-@WebServlet(name = "AddComputer", urlPatterns = { "/computer/add" })
-public class AddComputer extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping("/add")
+public class AddComputer {
     @Autowired
     @Qualifier("computerService")
     ComputerService computerService;
@@ -39,28 +35,13 @@ public class AddComputer extends HttpServlet {
     static final Logger LOGGER = LoggerFactory.getLogger(AddComputer.class);
     ArrayList<Company> companies = null;
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-                config.getServletContext());
-    }
-
     /**
-     * return addcomputer form.
-     *
-     * @param request
-     *            request object
-     * @param response
-     *            response object
-     *
-     * @throws ServletException
-     *             ServletException
-     * @throws IOException
-     *             IOException
+     * adding computer form.
+     * @param model ModelMap object use to transmit attribute
+     * @return controller name
      */
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping(value = { "/", "" }, method = RequestMethod.GET)
+    protected String doGet(ModelMap model) {
         try {
             companies = (ArrayList<Company>) companyService.listAll();
             LOGGER.debug("Getting CompanyService.listAll()");
@@ -68,33 +49,28 @@ public class AddComputer extends HttpServlet {
             LOGGER.debug("Can't get companies list !");
             companies = new ArrayList<>();
         }
-        request.setAttribute("companies", companies);
-        request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
-                .forward(request, response);
+        model.addAttribute("companies", companies);
+        return "addComputer";
     }
 
     /**
-     * add a computer to DB.
-     *
-     * @param request
-     *            request object
-     * @param response
-     *            response object
-     *
-     * @throws ServletException
-     *             Servlet Exception
-     * @throws IOException
-     *             IOException
+     * Processing adding computer request.
+     * @param model ModelMap object use to transmit attribute
+     * @param nameParam computer name
+     * @param introducedParam introduced date
+     * @param discontinuedParam discontinued date
+     * @param companyIdParam company id
+     * @return controller name redirection
      */
-    protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-        String nameParam = request.getParameter("computerName");
+    @RequestMapping(value = { "/", "" }, method = RequestMethod.POST)
+    protected String doPost(ModelMap model,
+            @RequestParam(value = "computerName") String nameParam,
+            @RequestParam(value = "introduced") String introducedParam,
+            @RequestParam(value = "discontinued") String discontinuedParam,
+            @RequestParam(value = "companyId") String companyIdParam) {
         LOGGER.debug("nameParam : " + nameParam);
-        String introducedParam = request.getParameter("introduced");
         LOGGER.debug("introducedParam : " + introducedParam);
-        String discontinuedParam = request.getParameter("discontinued");
         LOGGER.debug("discontinuedParam : " + discontinuedParam);
-        String companyIdParam = request.getParameter("companyId");
         LOGGER.debug("companyIdParam : " + companyIdParam);
         int companyID = 0;
 
@@ -114,24 +90,24 @@ public class AddComputer extends HttpServlet {
                 discontinuedParam = null;
             }
             try {
-                Company c;
-                c = companyService.get(companyID);
+                Company c = null;
+                if (companyID != 0) {
+                    c = companyService.get(companyID);
+                }
 
                 Computer comp = new Computer.Builder().name(nameParam)
                         .introduced(introducedParam)
                         .discontinued(discontinuedParam).company(c).build();
                 computerService.add(comp);
-                response.sendRedirect(request.getContextPath() + "/computer");
+                return "redirect:computer";
 
             } catch (DAOException e) {
-                request.getRequestDispatcher("/WEB-INF/views/500.html")
-                        .forward(request, response);
+                return "500";
             }
 
         } catch (ValidatorException e) {
-            request.setAttribute("companies", companies);
-            request.getRequestDispatcher("/WEB-INF/views/addComputer.jsp")
-                    .forward(request, response);
+            model.addAttribute("companies", companies);
+            return "redirect:add";
         }
     }
 }

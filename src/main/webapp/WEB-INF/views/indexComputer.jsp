@@ -45,7 +45,7 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="${pageContext.request.contextPath}/computer/add">Add
+						href="${pageContext.request.contextPath}/add">Add
 						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
@@ -53,7 +53,7 @@
 		</div>
 
 		<form id="deleteForm"
-			action="${pageContext.request.contextPath}/computer/delete"
+			action="${pageContext.request.contextPath}/delete"
 			method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>

@@ -38,12 +38,10 @@ public class EditComputer {
     ComputerDTO computerDTO = null;
 
     /**
-     * doGet.
-     *
-     * @param request
-     *            request object
-     * @param response
-     *            response object
+     * edit form request.
+     * @param model use to transmit attribute to the view
+     * @param paramId id url param
+     * @return controller name redirection
      */
     @RequestMapping(value = { "/", "" }, method = RequestMethod.GET)
     protected String doGet(ModelMap model,
@@ -81,12 +79,14 @@ public class EditComputer {
     }
 
     /**
-     * . doPost.
-     *
-     * @param request
-     *            request object
-     * @param response
-     *            response object
+     * processing edit request.
+     * @param model model use to transmit attribute to the view
+     * @param nameParam computer name url param
+     * @param introducedParam introduced date url param
+     * @param discontinuedParam discontinued date url param
+     * @param companyIdParam company id url param
+     * @param idParam computer id url param
+     * @return controller name redirection
      */
     @RequestMapping(value = { "/", "" }, method = RequestMethod.POST)
     protected String doPost(ModelMap model,
@@ -120,7 +120,7 @@ public class EditComputer {
             }
             try {
                 Company c = null;
-                if(companyID != 0) {
+                if (companyID != 0) {
                     c = companyService.get(companyID);
                 }
 
@@ -132,7 +132,6 @@ public class EditComputer {
 
             } catch (DAOException e) {
                 return "500";
-                        
             }
 
         } catch (ValidatorException e) {

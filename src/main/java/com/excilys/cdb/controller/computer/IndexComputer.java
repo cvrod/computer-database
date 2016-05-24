@@ -1,7 +1,5 @@
 package com.excilys.cdb.controller.computer;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +25,14 @@ public class IndexComputer {
     static final Logger LOGGER = LoggerFactory.getLogger(IndexComputer.class);
 
     /**
-     * return a computer page.
-     *
-     * @param request
-     *            request object
-     * @param response
-     *            response object
-     * @throws IOException
-     *             IOException
+     * Processing page listing.
+     * @param model use to transmit attributes to jsp
+     * @param paramOffset offset url param
+     * @param paramPage page url param
+     * @param paramSearch search url param
+     * @param paramOrder order url param
+     * @param paramDirection direction url param
+     * @return controller name redirection
      */
     @RequestMapping(value = { "/", "" }, method = RequestMethod.GET)
     protected String doGet(
