@@ -1,20 +1,16 @@
 package com.excilys.cdb.controller.computer;
 
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.cdb.dao.DAOException;
 import com.excilys.cdb.dto.model.ComputerDTO;
@@ -26,11 +22,11 @@ import com.excilys.cdb.validator.ComputerValidator;
 import com.excilys.cdb.validator.ValidatorException;
 
 /**
- * Servlet implementation class EditComputer.
+ * Edit Page Controller.
  */
-@WebServlet(name = "EditComputer", urlPatterns = { "/computer/edit" })
-public class EditComputer extends HttpServlet {
-    private static final long serialVersionUID = 1L;
+@Controller
+@RequestMapping("/edit")
+public class EditComputer {
     @Autowired
     @Qualifier("computerService")
     ComputerService computerService;
@@ -41,13 +37,6 @@ public class EditComputer extends HttpServlet {
     ArrayList<Company> companies = null;
     ComputerDTO computerDTO = null;
 
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-                config.getServletContext());
-    }
-
     /**
      * doGet.
      *
@@ -55,16 +44,11 @@ public class EditComputer extends HttpServlet {
      *            request object
      * @param response
      *            response object
-     *
-     * @throws ServletException
-     *             Servlet Exception
-     * @throws IOException
-     *             IOException
      */
-    protected void doGet(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
+    @RequestMapping(value = { "/", "" }, method = RequestMethod.GET)
+    protected String doGet(ModelMap model,
+            @RequestParam(value = "id") String paramId) {
 
-        String paramId = request.getParameter("id");
         int id = 0;
         LOGGER.debug("Try to retrieve Computer of id(str) : " + paramId);
         Computer computer = null;
@@ -89,12 +73,11 @@ public class EditComputer extends HttpServlet {
             companies = new ArrayList<>();
         }
 
-        request.setAttribute("companies", companies);
-        request.setAttribute("id", id);
-        request.setAttribute("computer", computerDTO);
+        model.addAttribute("companies", companies);
+        model.addAttribute("id", id);
+        model.addAttribute("computer", computerDTO);
 
-        request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
-                .forward(request, response);
+        return "editComputer";
     }
 
     /**
@@ -104,23 +87,20 @@ public class EditComputer extends HttpServlet {
      *            request object
      * @param response
      *            response object
-     *
-     * @throws ServletException
-     *             Servlet Exception
-     * @throws IOException
-     *             IOException
      */
-    protected void doPost(HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException {
-        String nameParam = request.getParameter("computerName");
+    @RequestMapping(value = { "/", "" }, method = RequestMethod.POST)
+    protected String doPost(ModelMap model,
+            @RequestParam(value = "computerName") String nameParam,
+            @RequestParam(value = "introduced") String introducedParam,
+            @RequestParam(value = "discontinued") String discontinuedParam,
+            @RequestParam(value = "companyId") String companyIdParam,
+            @RequestParam(value = "id") String idParam) {
+        LOGGER.debug("Trying to update computer " + idParam + " with : ");
         LOGGER.debug("nameParam : " + nameParam);
-        String introducedParam = request.getParameter("introduced");
         LOGGER.debug("introducedParam : " + introducedParam);
-        String discontinuedParam = request.getParameter("discontinued");
         LOGGER.debug("discontinuedParam : " + discontinuedParam);
-        String companyIdParam = request.getParameter("companyId");
         LOGGER.debug("companyIdParam : " + companyIdParam);
-        int id = Integer.parseInt(request.getParameter("id"));
+        int id = Integer.parseInt(idParam);
         int companyID = 0;
 
         try {
@@ -139,26 +119,27 @@ public class EditComputer extends HttpServlet {
                 discontinuedParam = null;
             }
             try {
-                Company c;
-                c = companyService.get(companyID);
+                Company c = null;
+                if(companyID != 0) {
+                    c = companyService.get(companyID);
+                }
 
                 Computer comp = new Computer.Builder().name(nameParam)
                         .introduced(introducedParam)
                         .discontinued(discontinuedParam).company(c).build();
                 computerService.update(id, comp);
-                response.sendRedirect(request.getContextPath() + "/computer");
+                return "redirect:computer";
 
             } catch (DAOException e) {
-                request.getRequestDispatcher("/WEB-INF/views/500.html")
-                        .forward(request, response);
+                return "500";
+                        
             }
 
         } catch (ValidatorException e) {
-            request.setAttribute("id", id);
-            request.setAttribute("computer", computerDTO);
-            request.setAttribute("companies", companies);
-            request.getRequestDispatcher("/WEB-INF/views/editComputer.jsp")
-                    .forward(request, response);
+            model.addAttribute("id", id);
+            model.addAttribute("computer", computerDTO);
+            model.addAttribute("companies", companies);
+            return "redirect:edit";
         }
     }
 }

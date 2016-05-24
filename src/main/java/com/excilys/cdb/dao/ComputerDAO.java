@@ -220,7 +220,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
                 (c.getDiscontinued() == null) ? null
                         : Date.valueOf(c.getDiscontinued()),
                 (c.getCompany() == null) ? null : c.getCompany().getId(),
-                c.getId()};
+                id};
         int res = 0;
         try {
             res = jdbcTemplate.update(UPDATE_REQUEST, args);

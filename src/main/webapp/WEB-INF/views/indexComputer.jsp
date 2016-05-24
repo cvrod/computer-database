@@ -103,7 +103,7 @@
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}" id="${computer.name}_id"></td>
 							<td><a
-								href="computer/edit?id=${computer.id}"
+								href="edit?id=${computer.id}"
 								onclick="" id="${computer.name}_name">${computer.name}</a></td>
 							<td>${computer.introduced}</td>
 							<td>${computer.discontinued}</td>
