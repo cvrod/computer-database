@@ -26,6 +26,7 @@
 			<a class="navbar-brand"
 				href="${pageContext.request.contextPath}/computer?page=0">
 				Application - <spring:message code="header.title" text="Computer Database" /></a>
+				<span class="navbar-brand navbar-right"><a href="${pageContext.request.contextPath}/computer?lang=fr">fr</a> / <a href="${pageContext.request.contextPath}/computer?lang=en">en</a></span>
 		</div>
 	</header>
 	<section id="main">
