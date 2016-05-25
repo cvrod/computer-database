@@ -26,7 +26,13 @@
 			<a class="navbar-brand"
 				href="${pageContext.request.contextPath}/computer?page=0">
 				Application - <spring:message code="header.title" text="Computer Database" /></a>
-				<span class="navbar-brand navbar-right"><a href="${pageContext.request.contextPath}/computer?lang=fr">fr</a> / <a href="${pageContext.request.contextPath}/computer?lang=en">en</a></span>
+				<span class="navbar-brand navbar-right">
+				<a href="${pageContext.request.contextPath}/computer?lang=fr">
+					<img src="${pageContext.request.contextPath}/resources/images/france_flag.png" alt="FR" style="width:30px;"/>
+				</a> / 
+				<a href="${pageContext.request.contextPath}/computer?lang=en">
+					<img src="${pageContext.request.contextPath}/resources/images/uk_flag.png" alt="EN" style="width:30px;"/>
+				</a></span>
 		</div>
 	</header>
 	<section id="main">
@@ -40,8 +46,8 @@
 					<form id="searchForm" action="#" method="GET" class="form-inline">
 
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
+							class="form-control" placeholder="<spring:message code="header.search" text="Search name" />" /> <input
+							type="submit" id="searchsubmit" value="<spring:message code="header.filter" text="Filter by name" />"
 							class="btn btn-primary" />
 					</form>
 				</div>
