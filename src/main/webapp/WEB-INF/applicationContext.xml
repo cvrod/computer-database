@@ -32,6 +32,8 @@
 	cache-period="31556926"/>
 	<mvc:resources mapping="/resources/js/**" location="/resources/js/"  
 	cache-period="31556926"/>
+	<mvc:resources mapping="/resources/fonts/**" location="/resources/fonts/"  
+	cache-period="31556926"/>
 	
 	<mvc:annotation-driven />
 	
@@ -54,6 +56,22 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
+	<!-- i18n -->
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="en" />
+	</bean>
 
+	<mvc:interceptors>
+        <bean id="localeChangeInterceptor"
+            class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+            <property name="paramName" value="lang" />
+        </bean>
+    </mvc:interceptors>
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages" />
+	</bean>
 
 </beans>

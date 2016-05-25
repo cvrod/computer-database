@@ -6,4 +6,5 @@
 <%@ attribute name="search" required="false" %>
 <%@ attribute name="order" required="false"%>
 <%@ attribute name="dir" required="false"%>
+<%@ attribute name="lang" required="false"%>
 href="${target}?page=${page}&offset=${offset}&search=${search}&order=${order}&dir=${dir}"

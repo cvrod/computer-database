@@ -2,11 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Computer Database</title>
+<title><spring:message code="header.title" text="Computer Database" /></title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
@@ -24,14 +25,14 @@
 		<div class="container">
 			<a class="navbar-brand"
 				href="${pageContext.request.contextPath}/computer?page=0">
-				Application - Computer Database </a>
+				Application - <spring:message code="header.title" text="Computer Database" /></a>
 		</div>
 	</header>
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
 				<span id="countComputer"><c:out value="${pageParam.countComputer}" /></span>
-				Computers found
+				<spring:message code="header.compFound" text="Computers found" />
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
@@ -45,9 +46,9 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="${pageContext.request.contextPath}/add">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+						href="${pageContext.request.contextPath}/add"><spring:message code="header.add" text="Add computer" /></a> 
+					<a class="btn btn-default" id="editComputer" href="#"
+						onclick="$.fn.toggleEditMode();"><spring:message code="header.edit" text="Edit" /></a>
 				</div>
 			</div>
 		</div>
@@ -68,31 +69,32 @@
 						<th class="editMode" style="width: 60px; height: 22px;"><input
 							type="checkbox" id="selectall" /> <span
 							style="vertical-align: top;"> - <a href="#"
-								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
+								id="deleteSelected" onclick="$.fn.deleteSelected('<spring:message code="confirmation.delete" text="test" />');"> <i
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
 						<th><a
 							<tags:link target="" offset="${pageParam.offset}" 
 							page="0" search="${ pageParam.search }" 
-							order="name" dir="${pageParam.dir == 'asc' && pageParam.order == 'name' ? 'desc' : 'asc'}"/>>Computer
-								name</a></th>
+							order="name" dir="${pageParam.dir == 'asc' && pageParam.order == 'name' ? 'desc' : 'asc'}"/>>
+							<spring:message code="computer.name" text="Computer name" /></a></th>
 						<th><a
 							<tags:link target="" offset="${pageParam.offset}" 
 							page="0" search="${ pageParam.search }" 
-							order="introduced" dir="${pageParam.dir == 'asc' && pageParam.order == 'introduced' ? 'desc' : 'asc'}"/>>Introduced
-								date</a></th>
+							order="introduced" dir="${pageParam.dir == 'asc' && pageParam.order == 'introduced' ? 'desc' : 'asc'}"/>>
+							<spring:message code="computer.introduced" text="Introduced date" /></a></th>
 						<!-- Table header for Discontinued Date -->
 						<th><a
 							<tags:link target="" offset="${pageParam.offset}" 
 							page="0" search="${ pageParam.search }" 
-							order="discontinued" dir="${pageParam.dir == 'asc' && pageParam.order == 'discontinued' ? 'desc' : 'asc'}"/>>Discontinued
-								date</a></th>
+							order="discontinued" dir="${pageParam.dir == 'asc' && pageParam.order == 'discontinued' ? 'desc' : 'asc'}"/>>
+							<spring:message code="computer.discontinued" text="discontinued date" /></a></th>
 						<!-- Table header for Company -->
 						<th><a
 							<tags:link target="" offset="${pageParam.offset}" 
 							page="0" search="${ pageParam.search }" 
-							order="company_id" dir="${pageParam.dir == 'asc' && pageParam.order == 'company_id' ? 'desc' : 'asc'}"/>>Company</a></th>
+							order="company_id" dir="${pageParam.dir == 'asc' && pageParam.order == 'company_id' ? 'desc' : 'asc'}"/>>
+							<spring:message code="computer.company" text="Company" /></a></th>
 
 					</tr>
 				</thead>
