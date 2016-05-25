@@ -56,11 +56,11 @@ public class ComputerMapper implements Mapper<Computer>, RowMapper<Computer> {
         int companyId;
         try {
             while (setRes.next()) {
-                id = setRes.getLong("id");
-                name = setRes.getString("name");
-                introduced = setRes.getString("introduced");
-                discontinued = setRes.getString("discontinued");
-                companyId = setRes.getInt("company_id");
+                id = setRes.getLong(ID);
+                name = setRes.getString(NAME);
+                introduced = setRes.getString(INTRODUCED);
+                discontinued = setRes.getString(DISCONTINUED);
+                companyId = setRes.getInt(COMPANY_ID);
                 if (companyId != 0) {
                     c = companyDAO.get(companyId);
                 }
