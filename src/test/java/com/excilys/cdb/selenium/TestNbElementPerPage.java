@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-@Ignore
 public class TestNbElementPerPage {
     private WebDriver driver;
     private String baseUrl;
@@ -15,7 +14,7 @@ public class TestNbElementPerPage {
     @Before
     public void setUp() throws Exception {
         driver = new FirefoxDriver();
-        baseUrl = "http://localhost:8080/";
+        baseUrl = "http://localhost:8080";
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 

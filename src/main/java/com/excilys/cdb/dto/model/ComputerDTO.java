@@ -2,6 +2,11 @@ package com.excilys.cdb.dto.model;
 
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.excilys.cdb.model.Computer;
 
 /**
@@ -10,8 +15,12 @@ import com.excilys.cdb.model.Computer;
  */
 public class ComputerDTO {
     protected long id = -1;
+    @NotNull
+    @NotEmpty
     protected String name;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected String introduced;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     protected String discontinued;
     protected long idCompany;
     protected String nameCompany;

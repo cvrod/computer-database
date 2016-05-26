@@ -7,7 +7,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-@Ignore
 public class TestAddFindRemoveComputer {
     private WebDriver driver;
     private String baseUrl;
@@ -17,7 +16,7 @@ public class TestAddFindRemoveComputer {
     @Before
     public void setUp() throws Exception {
         driver = new FirefoxDriver();
-        baseUrl = "http://localhost:8080/";
+        baseUrl = "http://localhost:8080";
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
