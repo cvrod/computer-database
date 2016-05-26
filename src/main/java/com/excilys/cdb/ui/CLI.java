@@ -6,41 +6,33 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.cdb.dao.UnknowTypeException;
-import com.excilys.cdb.mapper.CompanyMapper;
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
-import com.excilys.cdb.service.CompanyServiceImpl;
-import com.excilys.cdb.service.ComputerServiceImpl;
+import com.excilys.cdb.service.CompanyService;
+import com.excilys.cdb.service.ComputerService;
 
 /**
  * Command Line Interface implementation Take request from user.
  */
+
 public class CLI {
 
     public static final int MAX_CHOICE = 10;
     public static final int PAGE_OFFSET = 20;
     public static final String COMPUTER_TABLE = "computer";
     public static final String COMPANY_TABLE = "company";
+    public static final CLI instance = new CLI();
     static Scanner sc = null;
     static int choice = -1;
-    @Autowired
-    @Qualifier("computerService")
-    static ComputerServiceImpl computerService;
-    @Autowired
-    @Qualifier("companyService")
-    static CompanyServiceImpl companyService;
-    @Autowired
-    @Qualifier("companyMapper")
-    static CompanyMapper companyMapper;
-    @Autowired
-    @Qualifier("computerMapper")
-    static ComputerMapper computerMapper;
 
+    private ComputerService computerService;
+
+    private CompanyService companyService;
     /**
      * Printing Menu.
      */
@@ -110,7 +102,8 @@ public class CLI {
     /**
      * Call DAO functions.
      *
-     * @param choice user choice
+     * @param choice
+     *            user choice
      */
     public static void makeRequest(int choice) {
         int updateRes = -1;
@@ -119,17 +112,19 @@ public class CLI {
             switch (choice) {
             case 1: // List all Computer
                 System.out.println("\n--> Computer List : \n");
-                printComputer((ArrayList<Computer>) computerService.listAll());
+                printComputer((ArrayList<Computer>) instance.computerService
+                        .listAll());
                 break;
             case 2: // List all Companies
                 System.out.println("\n--> Companies List : \n");
-                printCompany((ArrayList<Company>) companyService.listAll());
+                printCompany(
+                        (ArrayList<Company>) instance.companyService.listAll());
                 break;
             case 3: // Getting computer detail
                 System.out.println("\n--> Getting computer detail :");
                 System.out.println("\tid ?");
                 int id = getValidNumber();
-                tmpComputer = computerService.get(id);
+                tmpComputer = instance.computerService.get(id);
                 if (tmpComputer != null) {
                     System.out.println(tmpComputer.toString());
                 }
@@ -138,7 +133,7 @@ public class CLI {
                 System.out.println("\n--> Delete Computer : ");
                 System.out.println("\tid ?");
                 id = getValidNumber();
-                updateRes = computerService.delete(id);
+                updateRes = instance.computerService.delete(id);
                 if (updateRes == 1) {
                     System.out.println("Delete Sucess !");
                 } else {
@@ -147,7 +142,7 @@ public class CLI {
                 break;
             case 5: // Create a computer
                 tmpComputer = getComputerFromCLI();
-                tmpComputer = computerService.add(tmpComputer);
+                tmpComputer = instance.computerService.add(tmpComputer);
                 if (tmpComputer != null) {
                     System.out.println("Insertion Success !");
                 } else {
@@ -159,7 +154,7 @@ public class CLI {
                 System.out.println("\tid ?");
                 id = getValidNumber();
                 tmpComputer = getComputerFromCLI();
-                updateRes = computerService.update(id, tmpComputer);
+                updateRes = instance.computerService.update(id, tmpComputer);
                 if (updateRes == 1) {
                     System.out.println("Update Success !");
                 } else {
@@ -179,7 +174,7 @@ public class CLI {
                 System.out.println("\n--> Delete Company : ");
                 System.out.println("\tid ?");
                 id = getValidNumber();
-                updateRes = companyService.delete(id);
+                updateRes = instance.companyService.delete(id);
                 if (updateRes == 1) {
                     System.out.println("Delete Sucess !");
                 } else {
@@ -198,7 +193,8 @@ public class CLI {
      *
      * @param type
      *            GenericDAO.COMPUTER_TABLE or GenericDAO.COMPANY_TABLE
-     * @throws UnknowTypeException if given table doesnt exist
+     * @throws UnknowTypeException
+     *             if given table doesnt exist
      */
     private static void printListByPage(String type)
             throws UnknowTypeException {
@@ -210,8 +206,8 @@ public class CLI {
         boolean hasNext = true;
         while (!isFinished) {
             if (type.equals(COMPUTER_TABLE)) {
-                computerList = computerService.listAllByPage(start, offset)
-                        .getElementList();
+                computerList = instance.computerService
+                        .listAllByPage(start, offset).getElementList();
                 printComputer(computerList);
                 if (computerList.size() != 20) {
                     hasNext = false;
@@ -219,8 +215,8 @@ public class CLI {
                     hasNext = true;
                 }
             } else if (type.equals(COMPANY_TABLE)) {
-                companyList = companyService.listAllByPage(start, offset)
-                        .getElementList();
+                companyList = instance.companyService
+                        .listAllByPage(start, offset).getElementList();
                 printCompany(companyList);
                 if (companyList.size() != 20) {
                     hasNext = false;
@@ -284,7 +280,7 @@ public class CLI {
         System.out.println("Company ?");
         int idCompany = getValidNumber();
         Company c;
-        c = companyService.get(idCompany);
+        c = instance.companyService.get(idCompany);
 
         res = new Computer(name, intro, discontinued, c);
         return res;
@@ -347,6 +343,12 @@ public class CLI {
     public static void main(String[] args) {
         sc = new Scanner(System.in);
         sc.useDelimiter("\\n");
+        // Get application context
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
+                "applicationContext.xml");
+        instance.companyService = (CompanyService) applicationContext.getBean("companyService");
+        instance.computerService = (ComputerService) applicationContext.getBean("computerService");
+        
 
         boolean isFinished = false;
         while (!isFinished) {
@@ -362,5 +364,6 @@ public class CLI {
                 makeRequest(choice);
             }
         }
+        ((ConfigurableApplicationContext) applicationContext).close();
     }
 }
