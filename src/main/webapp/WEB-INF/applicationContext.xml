@@ -74,6 +74,7 @@
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basename" value="messages" />
+		<property name="fallbackToSystemLocale" value="false"/>
 	</bean>
 
 </beans>

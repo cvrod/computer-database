@@ -55,7 +55,7 @@
 					<a class="btn btn-success" id="addComputer"
 						href="${pageContext.request.contextPath}/add"><spring:message code="header.add" text="Add computer" /></a> 
 					<a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();"><spring:message code="header.edit" text="Edit" /></a>
+						onclick="$.fn.toggleEditMode('<spring:message code="header.edit" text="Edit" />','<spring:message code="header.view" text="View" />');"><spring:message code="header.edit" text="Edit" /></a>
 				</div>
 			</div>
 		</div>
