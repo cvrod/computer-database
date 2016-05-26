@@ -45,7 +45,7 @@
 	</bean>
 	
 	<!-- properties file -->
-	<context:property-placeholder location="classpath:dao.properties" />
+	<context:property-placeholder location="classpath:db.properties" />
 	<!-- dataSource bean -->
 	<bean name="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
