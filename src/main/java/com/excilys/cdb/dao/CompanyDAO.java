@@ -1,25 +1,22 @@
 package com.excilys.cdb.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.mapper.CompanyMapper;
@@ -39,25 +36,16 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Qualifier("companyMapper")
     private CompanyMapper companyMapper;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
     protected EntityManager entityManager;
 
     protected CriteriaBuilder criteriaBuilder;
     protected CriteriaQuery<Company> criteriaQuery;
+    protected CriteriaUpdate<Company> criteriaUpdate;
     protected Root<Company> companyRoot;
+    protected Root<Company> companyRootUpdate;
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(CompanyDAO.class);
-    public static final String DETAIL_REQUEST = "SELECT * FROM company WHERE id=?";
-    public static final String LISTALL_REQUEST = "SELECT * FROM company;";
-    public static final String LISTPAGE_REQUEST = "SELECT * FROM company WHERE company.name LIKE ? ORDER BY %s LIMIT ?,?";
-    public static final String DELETE_REQUEST = "DELETE FROM company WHERE id=?";
-    public static final String INSERT_REQUEST = "INSERT INTO company (name) VALUES(?)";
-    public static final String UPDATE_REQUEST = "UPDATE company SET name=? WHERE id=?";
-    public static final String COUNT_REQUEST = "SELECT COUNT(*) FROM company WHERE name like ?";
-    public static final String DELETE_COMPUTER = "DELETE FROM computer WHERE company_id=?";
 
     /**
      * CompanyDAO main constructor.
@@ -77,6 +65,8 @@ public class CompanyDAO extends GenericDAO<Company> {
         criteriaBuilder = entityManager.getCriteriaBuilder();
         criteriaQuery = criteriaBuilder.createQuery(Company.class);
         companyRoot = criteriaQuery.from(Company.class);
+        criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Company.class);
+        companyRootUpdate = criteriaUpdate.from(Company.class);
     }
 
     @PersistenceContext
@@ -131,26 +121,24 @@ public class CompanyDAO extends GenericDAO<Company> {
             return null;
         }
         LOGGER.debug("List company by Page");
-
         ArrayList<Company> elementList = null;
-        String request = null;
 
+        criteriaQuery.select(companyRoot);
+        criteriaQuery.where(criteriaBuilder.like(companyRoot.get("name"), "%" + name + "%"));
         if (order.equals("id") || order.equals("name")
                 || order.equals("introduced") || order.equals("discontinued")
                 || order.equals("company_id")) {
-            request = String.format(LISTPAGE_REQUEST, order);
+            criteriaQuery.orderBy(criteriaBuilder.asc(companyRoot.get(order.split(" ")[0])));
         } else {
-            request = String.format(LISTPAGE_REQUEST, "id");
+            criteriaQuery.orderBy(criteriaBuilder.asc(companyRoot.get("id")));
         }
 
-        Object[] args = { "%" + name + "%", start, offset };
-        try {
-            elementList = (ArrayList<Company>) jdbcTemplate.query(request, args,
-                    new CompanyMapper());
-        } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
-            throw new DAOException(e);
-        }
+        TypedQuery<Company> typedQuery = entityManager
+                .createQuery(criteriaQuery)
+                .setFirstResult(start)
+                .setMaxResults(offset);
+        
+        elementList = (ArrayList<Company>) typedQuery.getResultList();
         Page<Company> page = new Page<>(elementList, start, offset);
 
         return page;
@@ -165,15 +153,11 @@ public class CompanyDAO extends GenericDAO<Company> {
      */
     public int delete(int companyId) {
         LOGGER.debug("delete a Company");
-        Object[] args = { companyId };
-        int res = 0;
-        try {
-            res = jdbcTemplate.update(DELETE_REQUEST, args);
-        } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
-            throw new DAOException(e);
-        }
-        return res;
+        CriteriaDelete<Company> delete = criteriaBuilder.
+                createCriteriaDelete(Company.class);
+             Root<Company> e = delete.from(Company.class);
+             delete.where(criteriaBuilder.equal(e.get("id"), companyId));
+             return this.entityManager.createQuery(delete).executeUpdate();
     }
 
     /**
@@ -187,18 +171,8 @@ public class CompanyDAO extends GenericDAO<Company> {
     public Company add(Company c) {
         LOGGER.debug("adding Company");
 
-        SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbcTemplate)
-                .withTableName("company").usingGeneratedKeyColumns("id")
-                .usingColumns("name");
-        try {
-            Map<String, String> parameters = new HashMap<>();
-            parameters.put("name", c.getName());
-            Long id = insert.executeAndReturnKey(parameters).longValue();
-            c.setId(id);
-        } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
-            throw new DAOException(e);
-        }
+        this.entityManager.persist(c);
+        this.entityManager.flush();
         return c;
     }
 
@@ -214,15 +188,9 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public int update(int id, Company c) {
         LOGGER.debug("update Computer");
-        Object[] args = { c.getName(), c.getId() };
-        int res = 0;
-        try {
-            res = jdbcTemplate.update(UPDATE_REQUEST, args);
-        } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
-            throw new DAOException(e);
-        }
-        return res;
+        criteriaUpdate.set("name", c.getName());
+        criteriaUpdate.where(criteriaBuilder.equal(companyRootUpdate.get("id"), id));
+        return this.entityManager.createQuery(criteriaUpdate).executeUpdate();
     }
 
     @Override
