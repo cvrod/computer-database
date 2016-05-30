@@ -30,7 +30,7 @@ public class Computer {
     private LocalDate discontinued = null;
     
     @ManyToOne
-    @JoinColumn(name = "companyId")
+    @JoinColumn(name = "company_id")
     private Company company = null;
     static final Logger LOGGER = LoggerFactory.getLogger(Computer.class);
 

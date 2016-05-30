@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -46,6 +47,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
     private JdbcTemplate jdbcTemplate;
 
     protected EntityManager entityManager;
+    
+    protected CriteriaBuilder criteriaBuilder;
+    protected CriteriaQuery<Computer> criteriaQuery;
+    protected Root<Computer> companyRoot;
 
     public static final String INSERT_REQUEST = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
     public static final String DETAIL_REQUEST = "SELECT * FROM computer WHERE id=?";
@@ -64,6 +69,14 @@ public class ComputerDAO extends GenericDAO<Computer> {
      *            datasource instanciate by Spring
      */
     public ComputerDAO() {
+    
+    }
+    
+    @PostConstruct
+    public void postConstruct() {
+        criteriaBuilder = entityManager.getCriteriaBuilder();
+        criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+        companyRoot = criteriaQuery.from(Computer.class);
     }
 
     public EntityManager getEntityManager() {
@@ -121,28 +134,13 @@ public class ComputerDAO extends GenericDAO<Computer> {
     @Override
     public List<Computer> listAll() {
         LOGGER.debug("List all computer");
-        List<Computer> listRes = new ArrayList<>();
-        //List<Computer> listRes;
-        try {
-            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-            CriteriaQuery<Object> criteriaQuery = criteriaBuilder.createQuery();
-            Root<Computer> from = criteriaQuery.from(Computer.class);
-            
-            CriteriaQuery<Object> select = criteriaQuery.select(from);
-            TypedQuery<Object> typedQuery = entityManager.createQuery(select);
-            List<Object> resultlist = typedQuery.getResultList();
-            
-            for(Object o:resultlist) {
-                Computer c = (Computer)o;
-                listRes.add(c);
-             }
-            
-            //listRes = jdbcTemplate.query(LISTALL_REQUEST, computerMapper);
-        } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
-            throw new DAOException(e);
-        }
-        return listRes;
+        List<Computer> list = null;
+
+        criteriaQuery.select(companyRoot);
+        TypedQuery<Computer> typedQuery = entityManager
+                .createQuery(criteriaQuery);
+        list = typedQuery.getResultList();
+        return list;
     }
 
     /**

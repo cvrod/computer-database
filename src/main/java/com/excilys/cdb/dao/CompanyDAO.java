@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -40,8 +41,12 @@ public class CompanyDAO extends GenericDAO<Company> {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    
+
     protected EntityManager entityManager;
+
+    protected CriteriaBuilder criteriaBuilder;
+    protected CriteriaQuery<Company> criteriaQuery;
+    protected Root<Company> companyRoot;
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(CompanyDAO.class);
@@ -62,9 +67,16 @@ public class CompanyDAO extends GenericDAO<Company> {
      */
     public CompanyDAO() {
     }
-    
+
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    @PostConstruct
+    public void postConstruct() {
+        criteriaBuilder = entityManager.getCriteriaBuilder();
+        criteriaQuery = criteriaBuilder.createQuery(Company.class);
+        companyRoot = criteriaQuery.from(Company.class);
     }
 
     @PersistenceContext
@@ -83,13 +95,10 @@ public class CompanyDAO extends GenericDAO<Company> {
     public Company get(int id) {
         LOGGER.debug("getting a company by id");
         Company c = null;
-        try {
-            c = jdbcTemplate.queryForObject(DETAIL_REQUEST, new Object[] {id},
-                    companyMapper);
-        } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
-            throw new DAOException(e);
-        }
+        criteriaQuery.select(companyRoot).where(criteriaBuilder.equal(companyRoot.get("id"),id));
+        TypedQuery<Company> typedQuery = entityManager
+                .createQuery(criteriaQuery);
+        c = typedQuery.getSingleResult();
         return c;
     }
 
@@ -101,12 +110,9 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public List<Company> listAll() {
         LOGGER.debug("List all company");
-        List<Company> list = null;        
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Company> criteriaQuery = criteriaBuilder
-                .createQuery(Company.class);
-        Root<Company> company = criteriaQuery.from(Company.class);
-        criteriaQuery.select(company);
+        List<Company> list = null;
+
+        criteriaQuery.select(companyRoot);
         TypedQuery<Company> typedQuery = entityManager
                 .createQuery(criteriaQuery);
         list = typedQuery.getResultList();
@@ -137,7 +143,7 @@ public class CompanyDAO extends GenericDAO<Company> {
             request = String.format(LISTPAGE_REQUEST, "id");
         }
 
-        Object[] args = {"%" + name + "%", start, offset};
+        Object[] args = { "%" + name + "%", start, offset };
         try {
             elementList = (ArrayList<Company>) jdbcTemplate.query(request, args,
                     new CompanyMapper());
@@ -159,7 +165,7 @@ public class CompanyDAO extends GenericDAO<Company> {
      */
     public int delete(int companyId) {
         LOGGER.debug("delete a Company");
-        Object[] args = {companyId};
+        Object[] args = { companyId };
         int res = 0;
         try {
             res = jdbcTemplate.update(DELETE_REQUEST, args);
@@ -208,7 +214,7 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public int update(int id, Company c) {
         LOGGER.debug("update Computer");
-        Object[] args = {c.getName(), c.getId()};
+        Object[] args = { c.getName(), c.getId() };
         int res = 0;
         try {
             res = jdbcTemplate.update(UPDATE_REQUEST, args);
@@ -222,14 +228,8 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public Long count(String name) {
         LOGGER.debug("count company");
-        Long res = new Long(0);
-        Object[] args = {name + "%"};
-        try {
-            res = jdbcTemplate.queryForObject(COUNT_REQUEST, args, Long.class);
-        } catch (DataAccessException e) {
-            e.printStackTrace();
-            throw new DAOException(e);
-        }
-        return res;
+        CriteriaQuery<Long> cq = criteriaBuilder.createQuery(Long.class);
+        cq.select(criteriaBuilder.count(cq.from(Company.class)));
+        return entityManager.createQuery(cq).getSingleResult();
     }
 }
