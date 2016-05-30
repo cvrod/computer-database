@@ -5,7 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +40,8 @@ public class CompanyDAO extends GenericDAO<Company> {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    
+    protected EntityManager entityManager;
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(CompanyDAO.class);
@@ -53,9 +60,16 @@ public class CompanyDAO extends GenericDAO<Company> {
      * @param dataSource
      *            dataSource instanciate by Spring
      */
-    @Autowired
-    public CompanyDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public CompanyDAO() {
+    }
+    
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    @PersistenceContext
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     /**
@@ -87,14 +101,16 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public List<Company> listAll() {
         LOGGER.debug("List all company");
-        List<Company> listRes;
-        try {
-            listRes = jdbcTemplate.query(LISTALL_REQUEST, companyMapper);
-        } catch (DataAccessException e) {
-            LOGGER.error(e.getMessage());
-            throw new DAOException(e);
-        }
-        return listRes;
+        List<Company> list = null;        
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Company> criteriaQuery = criteriaBuilder
+                .createQuery(Company.class);
+        Root<Company> company = criteriaQuery.from(Company.class);
+        criteriaQuery.select(company);
+        TypedQuery<Company> typedQuery = entityManager
+                .createQuery(criteriaQuery);
+        list = typedQuery.getResultList();
+        return list;
     }
 
     /**

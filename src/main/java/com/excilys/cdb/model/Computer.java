@@ -2,6 +2,14 @@ package com.excilys.cdb.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,11 +18,19 @@ import com.excilys.cdb.dto.model.ComputerDTO;
 /**
  * Computer object Contain a row from computer table.
  */
+@Entity
+@Table(name = "computer")
 public class Computer {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = null;
     private String name = null;
     private LocalDate introduced = null;
     private LocalDate discontinued = null;
+    
+    @ManyToOne
+    @JoinColumn(name = "companyId")
     private Company company = null;
     static final Logger LOGGER = LoggerFactory.getLogger(Computer.class);
 

@@ -6,7 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +45,8 @@ public class ComputerDAO extends GenericDAO<Computer> {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    protected EntityManager entityManager;
+
     public static final String INSERT_REQUEST = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES(?, ?, ?, ?)";
     public static final String DETAIL_REQUEST = "SELECT * FROM computer WHERE id=?";
     public static final String DELETE_REQUEST = "DELETE FROM computer WHERE id=?";
@@ -56,9 +63,16 @@ public class ComputerDAO extends GenericDAO<Computer> {
      * @param dataSource
      *            datasource instanciate by Spring
      */
-    @Autowired
-    public ComputerDAO(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public ComputerDAO() {
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
+    }
+
+    @PersistenceContext
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     /**
@@ -71,7 +85,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public int delete(int id) {
         LOGGER.debug("delete Computer");
 
-        Object[] args = {id};
+        Object[] args = { id };
         int res = 0;
         try {
             res = jdbcTemplate.update(DELETE_REQUEST, args);
@@ -90,7 +104,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
      */
     public void deleteAll(int companyId) {
         LOGGER.debug("delete All Computer from a company ID");
-        Object[] args = {companyId};
+        Object[] args = { companyId };
         try {
             jdbcTemplate.update(DELETE_ALL_REQUEST, args);
         } catch (DataAccessException e) {
@@ -107,9 +121,23 @@ public class ComputerDAO extends GenericDAO<Computer> {
     @Override
     public List<Computer> listAll() {
         LOGGER.debug("List all computer");
-        List<Computer> listRes;
+        List<Computer> listRes = new ArrayList<>();
+        //List<Computer> listRes;
         try {
-            listRes = jdbcTemplate.query(LISTALL_REQUEST, computerMapper);
+            CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+            CriteriaQuery<Object> criteriaQuery = criteriaBuilder.createQuery();
+            Root<Computer> from = criteriaQuery.from(Computer.class);
+            
+            CriteriaQuery<Object> select = criteriaQuery.select(from);
+            TypedQuery<Object> typedQuery = entityManager.createQuery(select);
+            List<Object> resultlist = typedQuery.getResultList();
+            
+            for(Object o:resultlist) {
+                Computer c = (Computer)o;
+                listRes.add(c);
+             }
+            
+            //listRes = jdbcTemplate.query(LISTALL_REQUEST, computerMapper);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
             throw new DAOException(e);
@@ -139,7 +167,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
             request = String.format(LISTPAGE_REQUEST, "id");
         }
 
-        Object[] args = {"%" + name + "%", start, offset};
+        Object[] args = { "%" + name + "%", start, offset };
         try {
             elementList = (ArrayList<Computer>) jdbcTemplate.query(request,
                     args, computerMapper);
@@ -194,7 +222,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
         LOGGER.debug("getting computer detail");
         Computer c = null;
         try {
-            c = jdbcTemplate.queryForObject(DETAIL_REQUEST, new Object[] {id},
+            c = jdbcTemplate.queryForObject(DETAIL_REQUEST, new Object[] { id },
                     computerMapper);
         } catch (DataAccessException e) {
             LOGGER.error(e.getMessage());
@@ -214,13 +242,12 @@ public class ComputerDAO extends GenericDAO<Computer> {
      */
     public int update(int id, Computer c) {
         LOGGER.debug("update Computer");
-        Object[] args = {c.getName(),
+        Object[] args = { c.getName(),
                 (c.getIntroduced() == null) ? null
                         : Date.valueOf(c.getIntroduced()),
                 (c.getDiscontinued() == null) ? null
                         : Date.valueOf(c.getDiscontinued()),
-                (c.getCompany() == null) ? null : c.getCompany().getId(),
-                id};
+                (c.getCompany() == null) ? null : c.getCompany().getId(), id };
         int res = 0;
         try {
             res = jdbcTemplate.update(UPDATE_REQUEST, args);
@@ -235,7 +262,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public Long count(String name) {
         LOGGER.debug("count computers");
         Long res = new Long(0);
-        Object[] args = {name + "%"};
+        Object[] args = { name + "%" };
         try {
             res = jdbcTemplate.queryForObject(COUNT_REQUEST, args, Long.class);
         } catch (DataAccessException e) {

@@ -1,14 +1,25 @@
 package com.excilys.cdb.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * Object company, contain a row from company table.
  */
+@Entity
+@Table(name = "company")
 public class Company implements Comparable<Company> {
-    protected String name = null;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id = null;
+    protected String name = null;
     static final Logger LOGGER = LoggerFactory.getLogger(Company.class);
 
     /**
