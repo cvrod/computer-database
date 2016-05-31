@@ -1,7 +1,6 @@
 package com.excilys.cdb.dao;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -132,7 +131,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
         if (start < 0 || offset < 0) {
             return null;
         }
-        ArrayList<Computer> elementList = null;
+        List<Computer> elementList = null;
 
         CriteriaQuery<Computer> criteriaQuery = criteriaBuilder
                 .createQuery(Computer.class);
@@ -164,7 +163,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
                 .createQuery(criteriaQuery).setFirstResult(start)
                 .setMaxResults(offset);
 
-        elementList = (ArrayList<Computer>) typedQuery.getResultList();
+        elementList = typedQuery.getResultList();
         Page<Computer> page = new Page<>(elementList, start, offset);
 
         return page;

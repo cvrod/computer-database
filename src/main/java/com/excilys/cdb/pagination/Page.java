@@ -1,6 +1,6 @@
 package com.excilys.cdb.pagination;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  * @param <T>
  */
 public class Page<T> {
-    ArrayList<T> elementList = null;
+    List<T> elementList = null;
     int start = -1;
     int offset = -1;
     static final Logger LOGGER = LoggerFactory.getLogger(Page.class);
@@ -22,18 +22,18 @@ public class Page<T> {
      * @param start start index
      * @param offset page offset
      */
-    public Page(ArrayList<T> elementList, int start, int offset) {
+    public Page(List<T> elementList, int start, int offset) {
         LOGGER.debug("Page creation");
         this.elementList = elementList;
         this.start = start;
         this.offset = offset;
     }
 
-    public ArrayList<T> getElementList() {
+    public List<T> getElementList() {
         return elementList;
     }
 
-    public void setElementList(ArrayList<T> elementList) {
+    public void setElementList(List<T> elementList) {
         this.elementList = elementList;
     }
 

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.context.ApplicationContext;
@@ -198,8 +199,8 @@ public class CLI {
      */
     private static void printListByPage(String type)
             throws UnknowTypeException {
-        ArrayList<Company> companyList = null;
-        ArrayList<Computer> computerList = null;
+        List<Company> companyList = null;
+        List<Computer> computerList = null;
         int start = 0;
         int offset = PAGE_OFFSET;
         boolean isFinished = false;
@@ -310,7 +311,7 @@ public class CLI {
      * @param computerList
      *            list to print
      */
-    private static void printComputer(ArrayList<Computer> computerList) {
+    private static void printComputer(List<Computer> computerList) {
         if (computerList.size() == 0) {
             System.out.println("Nothing to show !");
         }
@@ -325,7 +326,7 @@ public class CLI {
      * @param companyList
      *            list to print
      */
-    private static void printCompany(ArrayList<Company> companyList) {
+    private static void printCompany(List<Company> companyList) {
         if (companyList.size() == 0) {
             System.out.println("Nothing to show !");
         }
