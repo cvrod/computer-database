@@ -1,14 +1,11 @@
 package com.excilys.cdb.dao;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.List;
 
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import com.excilys.cdb.pagination.Page;
 
@@ -19,12 +16,7 @@ public abstract class GenericDAO<T> {
     public ResultSet setRes = null;
     StringBuffer res;
     static final Logger LOGGER = LoggerFactory.getLogger(GenericDAO.class);
-    protected DataSource dataSource;
 
-
-    public Connection getConnection() {
-        return DataSourceUtils.getConnection(dataSource);
-    }
     /**
      * list all object from a given type.
      * @return list of all object in table
