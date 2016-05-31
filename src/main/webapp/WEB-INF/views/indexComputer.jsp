@@ -127,7 +127,7 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<tags:pagination offset="${pageParam.offset}" current="${pageParam.currentPage}"
-				nbPages="${nbPages}" search="${pageParam.search}" />
+				nbPages="${nbPages}" search="${pageParam.search}" order="${pageParam.order}" dir="${pageParam.dir}" />
 		</div>
 	</footer>
 	<script
