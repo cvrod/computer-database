@@ -21,14 +21,14 @@ import com.excilys.cdb.dto.model.ComputerDTO;
 @Entity
 @Table(name = "computer")
 public class Computer {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id = null;
     private String name = null;
     private LocalDate introduced = null;
     private LocalDate discontinued = null;
-    
+
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company = null;
@@ -79,7 +79,9 @@ public class Computer {
 
     /**
      * Computer constructor from ComputerDTO.
-     * @param c source ComputerDTO
+     *
+     * @param c
+     *            source ComputerDTO
      */
     public Computer(ComputerDTO c) {
         this.id = c.getId();

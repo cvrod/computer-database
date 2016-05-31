@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 @Entity
 @Table(name = "company")
 public class Company implements Comparable<Company> {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id = null;
@@ -112,8 +112,9 @@ public class Company implements Comparable<Company> {
         return true;
     }
 
-    /**.
-     * return str describing a Company
+    /**
+     * . return str describing a Company
+     *
      * @return str Company
      */
     public String toString() {

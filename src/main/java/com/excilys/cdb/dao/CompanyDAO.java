@@ -46,9 +46,6 @@ public class CompanyDAO extends GenericDAO<Company> {
 
     /**
      * CompanyDAO main constructor.
-     *
-     * @param dataSource
-     *            dataSource instanciate by Spring
      */
     public CompanyDAO() {
     }

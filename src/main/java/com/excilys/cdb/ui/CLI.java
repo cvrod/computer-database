@@ -26,7 +26,7 @@ public class CLI {
     public static final int PAGE_OFFSET = 20;
     public static final String COMPUTER_TABLE = "computer";
     public static final String COMPANY_TABLE = "company";
-    public static final CLI instance = new CLI();
+    public static final CLI INSTANCE = new CLI();
     static Scanner sc = null;
     static int choice = -1;
 
@@ -112,19 +112,19 @@ public class CLI {
             switch (choice) {
             case 1: // List all Computer
                 System.out.println("\n--> Computer List : \n");
-                printComputer((ArrayList<Computer>) instance.computerService
+                printComputer((ArrayList<Computer>) INSTANCE.computerService
                         .listAll());
                 break;
             case 2: // List all Companies
                 System.out.println("\n--> Companies List : \n");
                 printCompany(
-                        (ArrayList<Company>) instance.companyService.listAll());
+                        (ArrayList<Company>) INSTANCE.companyService.listAll());
                 break;
             case 3: // Getting computer detail
                 System.out.println("\n--> Getting computer detail :");
                 System.out.println("\tid ?");
                 int id = getValidNumber();
-                tmpComputer = instance.computerService.get(id);
+                tmpComputer = INSTANCE.computerService.get(id);
                 if (tmpComputer != null) {
                     System.out.println(tmpComputer.toString());
                 }
@@ -133,7 +133,7 @@ public class CLI {
                 System.out.println("\n--> Delete Computer : ");
                 System.out.println("\tid ?");
                 id = getValidNumber();
-                updateRes = instance.computerService.delete(id);
+                updateRes = INSTANCE.computerService.delete(id);
                 if (updateRes == 1) {
                     System.out.println("Delete Sucess !");
                 } else {
@@ -142,7 +142,7 @@ public class CLI {
                 break;
             case 5: // Create a computer
                 tmpComputer = getComputerFromCLI();
-                tmpComputer = instance.computerService.add(tmpComputer);
+                tmpComputer = INSTANCE.computerService.add(tmpComputer);
                 if (tmpComputer != null) {
                     System.out.println("Insertion Success !");
                 } else {
@@ -154,7 +154,7 @@ public class CLI {
                 System.out.println("\tid ?");
                 id = getValidNumber();
                 tmpComputer = getComputerFromCLI();
-                updateRes = instance.computerService.update(id, tmpComputer);
+                updateRes = INSTANCE.computerService.update(id, tmpComputer);
                 if (updateRes == 1) {
                     System.out.println("Update Success !");
                 } else {
@@ -174,7 +174,7 @@ public class CLI {
                 System.out.println("\n--> Delete Company : ");
                 System.out.println("\tid ?");
                 id = getValidNumber();
-                updateRes = instance.companyService.delete(id);
+                updateRes = INSTANCE.companyService.delete(id);
                 if (updateRes == 1) {
                     System.out.println("Delete Sucess !");
                 } else {
@@ -206,7 +206,7 @@ public class CLI {
         boolean hasNext = true;
         while (!isFinished) {
             if (type.equals(COMPUTER_TABLE)) {
-                computerList = instance.computerService
+                computerList = INSTANCE.computerService
                         .listAllByPage(start, offset).getElementList();
                 printComputer(computerList);
                 if (computerList.size() != 20) {
@@ -215,7 +215,7 @@ public class CLI {
                     hasNext = true;
                 }
             } else if (type.equals(COMPANY_TABLE)) {
-                companyList = instance.companyService
+                companyList = INSTANCE.companyService
                         .listAllByPage(start, offset).getElementList();
                 printCompany(companyList);
                 if (companyList.size() != 20) {
@@ -280,7 +280,7 @@ public class CLI {
         System.out.println("Company ?");
         int idCompany = getValidNumber();
         Company c;
-        c = instance.companyService.get(idCompany);
+        c = INSTANCE.companyService.get(idCompany);
 
         res = new Computer(name, intro, discontinued, c);
         return res;
@@ -346,9 +346,8 @@ public class CLI {
         // Get application context
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
                 "applicationContext.xml");
-        instance.companyService = (CompanyService) applicationContext.getBean("companyService");
-        instance.computerService = (ComputerService) applicationContext.getBean("computerService");
-        
+        INSTANCE.companyService = (CompanyService) applicationContext.getBean("companyService");
+        INSTANCE.computerService = (ComputerService) applicationContext.getBean("computerService");
 
         boolean isFinished = false;
         while (!isFinished) {

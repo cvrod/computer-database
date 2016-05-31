@@ -49,9 +49,6 @@ public class ComputerDAO extends GenericDAO<Computer> {
 
     /**
      * ComputerDAO constructor.
-     *
-     * @param dataSource
-     *            datasource instanciate by Spring
      */
     public ComputerDAO() {
 
@@ -145,17 +142,15 @@ public class ComputerDAO extends GenericDAO<Computer> {
         criteriaQuery.where(criteriaBuilder.like(computerRoot.get("name"),
                 "%" + name + "%"));
         if (!order.equals("")) {
-            String [] orderSplit = order.split(" ");
-            if(orderSplit.length == 1){
+            String[] orderSplit = order.split(" ");
+            if (orderSplit.length == 1) {
             criteriaQuery.orderBy(
                     criteriaBuilder.asc(computerRoot.get(order.split(" ")[0])));
-            }
-            else if (orderSplit.length == 2){
-                if (orderSplit[1].equals("asc")){
+            } else if (orderSplit.length == 2) {
+                if (orderSplit[1].equals("asc")) {
                     criteriaQuery.orderBy(
                             criteriaBuilder.asc(computerRoot.get(order.split(" ")[0])));
-                }
-                else if (orderSplit[1].equals("desc")) {
+                } else if (orderSplit[1].equals("desc")) {
                     criteriaQuery.orderBy(
                             criteriaBuilder.desc(computerRoot.get(order.split(" ")[0])));
                 }

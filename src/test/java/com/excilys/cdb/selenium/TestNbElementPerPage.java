@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-@Ignore
 public class TestNbElementPerPage {
     private WebDriver driver;
     private String baseUrl;

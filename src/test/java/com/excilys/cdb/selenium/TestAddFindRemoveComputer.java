@@ -7,7 +7,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.Select;
 
-@Ignore
 public class TestAddFindRemoveComputer {
     private WebDriver driver;
     private String baseUrl;
