@@ -61,6 +61,8 @@
 
 		<!-- Hibernate Version -->
 		<hibernateValidator.version>5.2.4.Final</hibernateValidator.version>
+		<hibernate.version>5.1.0.Final</hibernate.version>
+		<hibernatePersistence.version>1.0.0.Final</hibernatePersistence.version>
 
 	</properties>
 	<dependencies>
@@ -203,17 +205,17 @@
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>1.0.0.Final</version>
+			<version>${hibernatePersistence.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-java8</artifactId>
-			<version>5.1.0.Final</version>
+			<version>${hibernate.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.1.0.Final</version>
+			<version>${hibernate.version}</version>
 		</dependency>
 
 	</dependencies>
