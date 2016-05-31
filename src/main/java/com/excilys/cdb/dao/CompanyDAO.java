@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -39,10 +40,6 @@ public class CompanyDAO extends GenericDAO<Company> {
     protected EntityManager entityManager;
 
     protected CriteriaBuilder criteriaBuilder;
-    protected CriteriaQuery<Company> criteriaQuery;
-    protected CriteriaUpdate<Company> criteriaUpdate;
-    protected Root<Company> companyRoot;
-    protected Root<Company> companyRootUpdate;
 
     private static final Logger LOGGER = LoggerFactory
             .getLogger(CompanyDAO.class);
@@ -63,13 +60,9 @@ public class CompanyDAO extends GenericDAO<Company> {
     @PostConstruct
     public void postConstruct() {
         criteriaBuilder = entityManager.getCriteriaBuilder();
-        criteriaQuery = criteriaBuilder.createQuery(Company.class);
-        companyRoot = criteriaQuery.from(Company.class);
-        criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Company.class);
-        companyRootUpdate = criteriaUpdate.from(Company.class);
     }
 
-    @PersistenceContext
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -85,7 +78,13 @@ public class CompanyDAO extends GenericDAO<Company> {
     public Company get(int id) {
         LOGGER.debug("getting a company by id");
         Company c = null;
-        criteriaQuery.select(companyRoot).where(criteriaBuilder.equal(companyRoot.get("id"),id));
+
+        CriteriaQuery<Company> criteriaQuery = criteriaBuilder
+                .createQuery(Company.class);
+        Root<Company> companyRoot = criteriaQuery.from(Company.class);
+
+        criteriaQuery.select(companyRoot)
+                .where(criteriaBuilder.equal(companyRoot.get("id"), id));
         TypedQuery<Company> typedQuery = entityManager
                 .createQuery(criteriaQuery);
         c = typedQuery.getSingleResult();
@@ -101,6 +100,10 @@ public class CompanyDAO extends GenericDAO<Company> {
     public List<Company> listAll() {
         LOGGER.debug("List all company");
         List<Company> list = null;
+
+        CriteriaQuery<Company> criteriaQuery = criteriaBuilder
+                .createQuery(Company.class);
+        Root<Company> companyRoot = criteriaQuery.from(Company.class);
 
         criteriaQuery.select(companyRoot);
         TypedQuery<Company> typedQuery = entityManager
@@ -123,21 +126,26 @@ public class CompanyDAO extends GenericDAO<Company> {
         LOGGER.debug("List company by Page");
         ArrayList<Company> elementList = null;
 
+        CriteriaQuery<Company> criteriaQuery = criteriaBuilder
+                .createQuery(Company.class);
+        Root<Company> companyRoot = criteriaQuery.from(Company.class);
+
         criteriaQuery.select(companyRoot);
-        criteriaQuery.where(criteriaBuilder.like(companyRoot.get("name"), "%" + name + "%"));
+        criteriaQuery.where(criteriaBuilder.like(companyRoot.get("name"),
+                "%" + name + "%"));
         if (order.equals("id") || order.equals("name")
                 || order.equals("introduced") || order.equals("discontinued")
                 || order.equals("company_id")) {
-            criteriaQuery.orderBy(criteriaBuilder.asc(companyRoot.get(order.split(" ")[0])));
+            criteriaQuery.orderBy(
+                    criteriaBuilder.asc(companyRoot.get(order.split(" ")[0])));
         } else {
             criteriaQuery.orderBy(criteriaBuilder.asc(companyRoot.get("id")));
         }
 
         TypedQuery<Company> typedQuery = entityManager
-                .createQuery(criteriaQuery)
-                .setFirstResult(start)
+                .createQuery(criteriaQuery).setFirstResult(start)
                 .setMaxResults(offset);
-        
+
         elementList = (ArrayList<Company>) typedQuery.getResultList();
         Page<Company> page = new Page<>(elementList, start, offset);
 
@@ -153,11 +161,11 @@ public class CompanyDAO extends GenericDAO<Company> {
      */
     public int delete(int companyId) {
         LOGGER.debug("delete a Company");
-        CriteriaDelete<Company> delete = criteriaBuilder.
-                createCriteriaDelete(Company.class);
-             Root<Company> e = delete.from(Company.class);
-             delete.where(criteriaBuilder.equal(e.get("id"), companyId));
-             return this.entityManager.createQuery(delete).executeUpdate();
+        CriteriaDelete<Company> delete = criteriaBuilder
+                .createCriteriaDelete(Company.class);
+        Root<Company> e = delete.from(Company.class);
+        delete.where(criteriaBuilder.equal(e.get("id"), companyId));
+        return this.entityManager.createQuery(delete).executeUpdate();
     }
 
     /**
@@ -188,8 +196,14 @@ public class CompanyDAO extends GenericDAO<Company> {
     @Override
     public int update(int id, Company c) {
         LOGGER.debug("update Computer");
+
+        CriteriaUpdate<Company> criteriaUpdate = criteriaBuilder
+                .createCriteriaUpdate(Company.class);
+        Root<Company> companyRootUpdate = criteriaUpdate.from(Company.class);
+
         criteriaUpdate.set("name", c.getName());
-        criteriaUpdate.where(criteriaBuilder.equal(companyRootUpdate.get("id"), id));
+        criteriaUpdate
+                .where(criteriaBuilder.equal(companyRootUpdate.get("id"), id));
         return this.entityManager.createQuery(criteriaUpdate).executeUpdate();
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -43,11 +44,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
     protected EntityManager entityManager;
 
     protected CriteriaBuilder criteriaBuilder;
-    protected CriteriaQuery<Computer> criteriaQuery;
-    protected CriteriaUpdate<Computer> criteriaUpdate;
-    protected Root<Computer> computerRoot;
-    protected Root<Computer> computerRootUpdate;
-    
+
     static final Logger LOGGER = LoggerFactory.getLogger(ComputerDAO.class);
 
     /**
@@ -63,17 +60,13 @@ public class ComputerDAO extends GenericDAO<Computer> {
     @PostConstruct
     public void postConstruct() {
         criteriaBuilder = entityManager.getCriteriaBuilder();
-        criteriaQuery = criteriaBuilder.createQuery(Computer.class);
-        computerRoot = criteriaQuery.from(Computer.class);
-        criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Computer.class);
-        computerRootUpdate = criteriaUpdate.from(Computer.class);
     }
 
     public EntityManager getEntityManager() {
         return entityManager;
     }
 
-    @PersistenceContext
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -117,7 +110,11 @@ public class ComputerDAO extends GenericDAO<Computer> {
     @Override
     public List<Computer> listAll() {
         LOGGER.debug("List all computer");
+
         List<Computer> list = null;
+        CriteriaQuery<Computer> criteriaQuery = criteriaBuilder
+                .createQuery(Computer.class);
+        Root<Computer> computerRoot = criteriaQuery.from(Computer.class);
 
         criteriaQuery.select(computerRoot);
         TypedQuery<Computer> typedQuery = entityManager
@@ -134,24 +131,29 @@ public class ComputerDAO extends GenericDAO<Computer> {
     @Override
     public Page<Computer> listAllByPage(String name, String order, int start,
             int offset) {
+        LOGGER.debug("List computer by Page");
         if (start < 0 || offset < 0) {
             return null;
         }
-        LOGGER.debug("List computer by Page");
         ArrayList<Computer> elementList = null;
-        
+
+        CriteriaQuery<Computer> criteriaQuery = criteriaBuilder
+                .createQuery(Computer.class);
+        Root<Computer> computerRoot = criteriaQuery.from(Computer.class);
+
         criteriaQuery.select(computerRoot);
-        criteriaQuery.where(criteriaBuilder.like(computerRoot.get("name"), "%" + name + "%"));
+        criteriaQuery.where(criteriaBuilder.like(computerRoot.get("name"),
+                "%" + name + "%"));
         if (!order.equals("")) {
-            criteriaQuery.orderBy(criteriaBuilder.asc(computerRoot.get(order.split(" ")[0])));
+            criteriaQuery.orderBy(
+                    criteriaBuilder.asc(computerRoot.get(order.split(" ")[0])));
 
         } else {
             criteriaQuery.orderBy(criteriaBuilder.asc(computerRoot.get("id")));
         }
 
         TypedQuery<Computer> typedQuery = entityManager
-                .createQuery(criteriaQuery)
-                .setFirstResult(start)
+                .createQuery(criteriaQuery).setFirstResult(start)
                 .setMaxResults(offset);
 
         elementList = (ArrayList<Computer>) typedQuery.getResultList();
@@ -171,6 +173,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
         LOGGER.debug("adding Computer");
         this.entityManager.persist(c);
         this.entityManager.flush();
+        this.entityManager.clear();
         return c;
     }
 
@@ -184,6 +187,11 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public Computer get(int id) {
         LOGGER.debug("getting computer detail");
         Computer c = null;
+
+        CriteriaQuery<Computer> criteriaQuery = criteriaBuilder
+                .createQuery(Computer.class);
+        Root<Computer> computerRoot = criteriaQuery.from(Computer.class);
+
         criteriaQuery.select(computerRoot)
                 .where(criteriaBuilder.equal(computerRoot.get("id"), id));
         TypedQuery<Computer> typedQuery = entityManager
@@ -203,14 +211,25 @@ public class ComputerDAO extends GenericDAO<Computer> {
      */
     public int update(int id, Computer c) {
         LOGGER.debug("update Computer");
+        int res = 0;
+
+        CriteriaUpdate<Computer> criteriaUpdate = criteriaBuilder
+                .createCriteriaUpdate(Computer.class);
+        Root<Computer> computerRootUpdate = criteriaUpdate.from(Computer.class);
+
         criteriaUpdate.set("name", c.getName());
         criteriaUpdate.set("introduced", (c.getIntroduced() == null) ? null
                 : Date.valueOf(c.getIntroduced()));
         criteriaUpdate.set("discontinued", (c.getDiscontinued() == null) ? null
-                        : Date.valueOf(c.getDiscontinued()));
-        criteriaUpdate.set("company_id", (c.getCompany() == null) ? null : c.getCompany().getId());
-        criteriaUpdate.where(criteriaBuilder.equal(computerRootUpdate.get("id"), id));
-        return this.entityManager.createQuery(criteriaUpdate).executeUpdate();
+                : Date.valueOf(c.getDiscontinued()));
+        criteriaUpdate.set("company",
+                (c.getCompany() == null) ? null : c.getCompany().getId());
+        criteriaUpdate
+                .where(criteriaBuilder.equal(computerRootUpdate.get("id"), id));
+
+        res = this.entityManager.createQuery(criteriaUpdate).executeUpdate();
+        this.entityManager.clear();
+        return res;
     }
 
     @Override

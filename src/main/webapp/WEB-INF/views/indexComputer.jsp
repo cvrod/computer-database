@@ -100,7 +100,7 @@
 						<th><a
 							<tags:link target="" offset="${pageParam.offset}" 
 							page="0" search="${ pageParam.search }" 
-							order="company_id" dir="${pageParam.dir == 'asc' && pageParam.order == 'company_id' ? 'desc' : 'asc'}"/>>
+							order="company" dir="${pageParam.dir == 'asc' && pageParam.order == 'company' ? 'desc' : 'asc'}"/>>
 							<spring:message code="computer.company" text="Company" /></a></th>
 
 					</tr>
