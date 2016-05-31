@@ -211,7 +211,10 @@ public class CompanyDAO extends GenericDAO<Company> {
     public Long count(String name) {
         LOGGER.debug("count company");
         CriteriaQuery<Long> cq = criteriaBuilder.createQuery(Long.class);
-        cq.select(criteriaBuilder.count(cq.from(Company.class)));
+        Root<Company> companyRoot = cq.from(Company.class);
+        cq.select(criteriaBuilder.count(companyRoot)).where(criteriaBuilder
+                .like(companyRoot.get("name"), "%" + name + "%"));
+
         return entityManager.createQuery(cq).getSingleResult();
     }
 }

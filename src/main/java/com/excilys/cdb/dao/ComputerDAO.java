@@ -236,7 +236,10 @@ public class ComputerDAO extends GenericDAO<Computer> {
     public Long count(String name) {
         LOGGER.debug("count computers");
         CriteriaQuery<Long> cq = criteriaBuilder.createQuery(Long.class);
-        cq.select(criteriaBuilder.count(cq.from(Computer.class)));
+        Root<Computer> computerRoot = cq.from(Computer.class);
+        cq.select(criteriaBuilder.count(computerRoot)).where(criteriaBuilder
+                .like(computerRoot.get("name"), "%" + name + "%"));
+
         return entityManager.createQuery(cq).getSingleResult();
     }
 }
