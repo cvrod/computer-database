@@ -15,6 +15,7 @@
 		<selenium.version>2.53.0</selenium.version>
 		<junit.version>4.12</junit.version>
 		<mockito.version>1.9.5</mockito.version>
+		<el.version>3.0.1-b04</el.version>
 
 		<!-- Logs -->
 		<slf4j.version>1.7.21</slf4j.version>
@@ -76,6 +77,11 @@
 			<artifactId>mockito-all</artifactId>
 			<version>${mockito.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>${el.version}</version>
 		</dependency>
 
 		<!-- selenium -->

@@ -98,7 +98,7 @@ public class ComputerDAO extends GenericDAO<Computer> {
         CriteriaDelete<Computer> delete = criteriaBuilder
                 .createCriteriaDelete(Computer.class);
         Root<Computer> e = delete.from(Computer.class);
-        delete.where(criteriaBuilder.equal(e.get("company_id"), companyId));
+        delete.where(criteriaBuilder.equal(e.get("company"), companyId));
         this.entityManager.createQuery(delete).executeUpdate();
     }
 
