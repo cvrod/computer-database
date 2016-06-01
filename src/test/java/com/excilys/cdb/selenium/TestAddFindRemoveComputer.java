@@ -22,7 +22,13 @@ public class TestAddFindRemoveComputer {
 
     @Test
     public void testAddFindRemove() throws Exception {
-
+        driver.get(baseUrl + "/computer-database/login");
+        driver.findElement(By.id("username")).clear();
+        driver.findElement(By.id("username")).sendKeys("camille");
+        driver.findElement(By.id("password")).clear();
+        driver.findElement(By.id("password")).sendKeys("azertyy");
+        driver.findElement(By.cssSelector("button.btn")).click();
+        
         //Adding a computer named "SeleniumTest" to DB
         driver.get(baseUrl + "/computer-database/computer");
         driver.findElement(By.id("addComputer")).click();

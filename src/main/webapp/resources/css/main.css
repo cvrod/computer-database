@@ -27,3 +27,8 @@ input[type='checkbox'] {
 	border-radius: 5px;
 	white-space: nowrap;
 }
+
+#login_form {
+    width: 30%;
+    margin: auto;
+}

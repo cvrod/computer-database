@@ -30,17 +30,17 @@ public class UserTest {
     
     @Test
     public void testSetUserRole() {
-      userTest.setRole(UserRole.ADMIN_ROLE);
-      assertEquals(userTest.getRole(), UserRole.ADMIN_ROLE);
+      userTest.setRole(UserRole.ROLE_ADMIN);
+      assertEquals(userTest.getRole(), UserRole.ROLE_ADMIN);
     }
     
     @Test
     public void testConstructor() {
-        User userTest = new User("login", "password", UserRole.ADMIN_ROLE);
+        User userTest = new User("login", "password", UserRole.ROLE_ADMIN);
         assertNull(userTest.getId());
         assertEquals(userTest.getLogin(), "login");
         assertEquals(userTest.getPassword(), "password");
-        assertEquals(userTest.getRole(), UserRole.ADMIN_ROLE);
+        assertEquals(userTest.getRole(), UserRole.ROLE_ADMIN);
     }
     
 }

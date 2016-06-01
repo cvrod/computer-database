@@ -23,7 +23,7 @@ public class UserServiceTest {
 
     @Test
     public void testAdd() {
-        User user = new User("testLogin", "testPassword", UserRole.ADMIN_ROLE);
+        User user = new User("testLogin", "testPassword", UserRole.ROLE_ADMIN);
         User userDb = userService.add(user);
         assertNotNull(userDb);
         assertEquals(user.getLogin(), userDb.getLogin());
@@ -34,7 +34,7 @@ public class UserServiceTest {
 
     @Test
     public void testGet() {
-        User user = new User("testLogin", "testPassword", UserRole.ADMIN_ROLE);
+        User user = new User("testLogin", "testPassword", UserRole.ROLE_ADMIN);
         userService.add(user);
         User userDb = userService.getByLogin("testLogin");
         assertNotNull(userDb);

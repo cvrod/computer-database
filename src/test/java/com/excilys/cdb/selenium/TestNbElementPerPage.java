@@ -20,6 +20,13 @@ public class TestNbElementPerPage {
 
     @Test
     public void testNbElement() throws Exception {
+        driver.get(baseUrl + "/computer-database/login");
+        driver.findElement(By.id("username")).clear();
+        driver.findElement(By.id("username")).sendKeys("camille");
+        driver.findElement(By.id("password")).clear();
+        driver.findElement(By.id("password")).sendKeys("azertyy");
+        driver.findElement(By.cssSelector("button.btn")).click();
+        
         driver.get(baseUrl + "/computer-database/computer");
         driver.findElement(By.cssSelector("button.btn.btn-default")).click();
         driver.findElement(By.xpath("(//button[@type='button'])[2]")).click();
