@@ -16,11 +16,8 @@ import javax.persistence.criteria.Root;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.pagination.Page;
 
@@ -31,14 +28,6 @@ import com.excilys.cdb.pagination.Page;
  */
 @Component("computerDAO")
 public class ComputerDAO extends GenericDAO<Computer> {
-
-    @Autowired
-    @Qualifier("companyDAO")
-    private CompanyDAO companyDAO;
-
-    @Autowired
-    @Qualifier("computerMapper")
-    private ComputerMapper computerMapper;
 
     protected EntityManager entityManager;
 

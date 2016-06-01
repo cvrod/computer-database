@@ -1,6 +1,5 @@
 package com.excilys.cdb.dao;
 
-import java.sql.ResultSet;
 import java.util.List;
 
 
@@ -13,8 +12,6 @@ import com.excilys.cdb.pagination.Page;
  * Main DAO class.
  */
 public abstract class GenericDAO<T> {
-    public ResultSet setRes = null;
-    StringBuffer res;
     static final Logger LOGGER = LoggerFactory.getLogger(GenericDAO.class);
 
     /**
