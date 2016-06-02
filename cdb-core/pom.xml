@@ -1,0 +1,44 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<artifactId>cdb-core</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<name>Core module</name>
+	<packaging>jar</packaging>
+
+	<parent>
+		<artifactId>computer-database</artifactId>
+		<groupId>computer-database</groupId>
+		<relativePath>../pom.xml</relativePath>
+		<version>0.6.0-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<parentBasedir>../</parentBasedir>
+		<!-- Tests -->
+		<junit.version>4.12</junit.version>
+		<mockito.version>1.9.5</mockito.version>
+		<el.version>3.0.1-b04</el.version>
+	</properties>
+
+	<dependencies>
+		<!-- Tests -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+			<version>${mockito.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.el</groupId>
+			<artifactId>javax.el-api</artifactId>
+			<version>${el.version}</version>
+		</dependency>
+	</dependencies>
+	
+</project>
