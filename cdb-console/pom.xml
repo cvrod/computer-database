@@ -38,24 +38,6 @@
 	    </dependency>
 	</dependencies>
 	<build>
-		<plugins>
-			<!-- exec-java-plugin -->
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>${exec.version}</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>com.excilys.cdb.ui.CLI</mainClass>
-				</configuration>
-			</plugin>
-		</plugins>
 		<finalName>cdb</finalName>
 	</build>	
 </project>

@@ -103,12 +103,20 @@
         <security:intercept-url pattern="/add" access="hasRole('ROLE_USER')" />
         <security:intercept-url pattern="/edit" access="hasRole('ROLE_USER')" />
         <security:intercept-url pattern="/delete" access="hasRole('ROLE_USER')" />
-        <security:form-login
-                login-page="/login"
-                authentication-failure-url="/login"
-                default-target-url="/computer"/>
         <security:csrf />
+        <security:custom-filter ref="digestFilter" after="BASIC_AUTH_FILTER" />
     </security:http>
+    
+    <bean id="digestFilter" class="org.springframework.security.web.authentication.www.DigestAuthenticationFilter">
+        <property name="userDetailsService" ref="userDetailsService" />
+        <property name="authenticationEntryPoint" ref="digestEntryPoint" />
+        <property name="passwordAlreadyEncoded" value="true" />
+    </bean>
+    
+    <bean id="digestEntryPoint" class="org.springframework.security.web.authentication.www.DigestAuthenticationEntryPoint">
+        <property name="realmName" value="Http Digest Authentication" />
+        <property name="key" value="realmsalt" />
+    </bean>
 
     <security:authentication-manager>
         <security:authentication-provider user-service-ref="userDetailsService" >
