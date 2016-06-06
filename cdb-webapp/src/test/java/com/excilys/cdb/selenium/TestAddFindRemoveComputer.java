@@ -16,18 +16,12 @@ public class TestAddFindRemoveComputer {
     @Before
     public void setUp() throws Exception {
         driver = new FirefoxDriver();
-        baseUrl = "http://localhost:8080";
+        baseUrl = "http://cvrod:azertyy@localhost:8080";
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test
     public void testAddFindRemove() throws Exception {
-        driver.get(baseUrl + "/cdb-webapp/login");
-        driver.findElement(By.id("username")).clear();
-        driver.findElement(By.id("username")).sendKeys("camille");
-        driver.findElement(By.id("password")).clear();
-        driver.findElement(By.id("password")).sendKeys("azertyy");
-        driver.findElement(By.cssSelector("button.btn")).click();
 
         //Adding a computer named "SeleniumTest" to DB
         driver.get(baseUrl + "/cdb-webapp/computer");

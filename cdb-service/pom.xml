@@ -9,7 +9,7 @@
 		<artifactId>computer-database</artifactId>
 		<groupId>computer-database</groupId>
 		<relativePath>../pom.xml</relativePath>
-		<version>0.6.0-SNAPSHOT</version>
+		<version>${computer-database.version}</version>
 	</parent>
 
 	<dependencies>
