@@ -25,6 +25,9 @@ public class ComputerDTO {
     protected long idCompany;
     protected String nameCompany;
 
+    public ComputerDTO(){
+    	
+    }
     /**
      * ComputerDTO main constructor.
      * @param c Computer to map

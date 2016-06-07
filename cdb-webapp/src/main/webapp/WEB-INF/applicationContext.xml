@@ -20,6 +20,7 @@
 	<context:component-scan base-package="com.excilys.cdb.mapper" />
 	<context:component-scan base-package="com.excilys.cdb.util" />
 	<context:component-scan base-package="com.excilys.cdb.controller.computer" />
+	<context:component-scan base-package="com.excilys.cdb.controller.rest" />
 
 	<tx:annotation-driven transaction-manager="transactionManager" />
 

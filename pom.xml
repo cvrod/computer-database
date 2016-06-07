@@ -11,7 +11,7 @@
 		<checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
 
 		<!-- Version -->
-		<computer-database.version>0.6.0-RELEASE</computer-database.version>
+		<computer-database.version>0.7.0-SNAPSHOT</computer-database.version>
 		
 		<!-- Tests -->
 		<selenium.version>2.53.0</selenium.version>
@@ -68,6 +68,8 @@
 		<hibernate.version>5.1.0.Final</hibernate.version>
 		<hibernatePersistence.version>1.0.0.Final</hibernatePersistence.version>
 
+		<!-- Jackson -->
+		<jackson.version>2.7.4</jackson.version>
 	</properties>
 	<dependencies>
 		<!-- Logs -->
@@ -80,6 +82,7 @@
 			<groupId>org.logback-extensions</groupId>
 			<artifactId>logback-ext-spring</artifactId>
 			<version>${logback-extension-version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
