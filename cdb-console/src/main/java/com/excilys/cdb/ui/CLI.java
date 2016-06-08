@@ -21,6 +21,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.excilys.cdb.dao.UnknowTypeException;
 import com.excilys.cdb.dto.model.ComputerDTO;
+import com.excilys.cdb.mapper.ComputerMapper;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 import com.excilys.cdb.service.CompanyService;
@@ -134,13 +135,7 @@ public class CLI {
 				List<ComputerDTO> computerDTOList = response
 						.readEntity(new GenericType<List<ComputerDTO>>() {
 						});
-				List<Computer> computerList = new ArrayList<>();
-
-				// FIXME
-				for (ComputerDTO c : computerDTOList) {
-					computerList.add(new Computer(c));
-				}
-				printComputer((ArrayList<Computer>) computerList);
+				printComputer(computerDTOList);
 				break;
 			case 2: // List all Companies
 				System.out.println("\n--> Companies List : \n");
@@ -238,7 +233,7 @@ public class CLI {
 			if (type.equals(COMPUTER_TABLE)) {
 				computerList = INSTANCE.computerService
 						.listAllByPage(start, offset).getElementList();
-				printComputer(computerList);
+				printComputer(ComputerMapper.toDTO(computerList));
 				if (computerList.size() != 20) {
 					hasNext = false;
 				} else {
@@ -340,12 +335,13 @@ public class CLI {
 	 * @param computerList
 	 *            list to print
 	 */
-	private static void printComputer(List<Computer> computerList) {
+	private static void printComputer(List<ComputerDTO> computerList) {
 		if (computerList.size() == 0) {
 			System.out.println("Nothing to show !");
 		}
-		for (Computer c : computerList) {
-			System.out.println("ID : " + c.getId() + ", Name : " + c.getName());
+		for (ComputerDTO c : computerList) {
+			//System.out.println("ID : " + c.getId() + ", Name : " + c.getName());
+			System.out.println(c.toString());
 		}
 	}
 

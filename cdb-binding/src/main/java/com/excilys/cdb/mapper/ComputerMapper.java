@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 import com.excilys.cdb.dao.CompanyDAO;
+import com.excilys.cdb.dto.model.ComputerDTO;
 import com.excilys.cdb.model.Company;
 import com.excilys.cdb.model.Computer;
 
@@ -90,5 +91,18 @@ public class ComputerMapper implements Mapper<Computer>, RowMapper<Computer> {
         return new Computer.Builder().id(id).name(name)
                 .introduced(introduced).discontinued(discontinued).company(c)
                 .build();
+    }
+    
+    /**
+     * Translate a list of computer in a list of ComputerDTO
+     * @param list Computer List to translate
+     * @return list of DTO
+     */
+    public static List<ComputerDTO> toDTO(List<Computer> list) {
+    	List<ComputerDTO> listDto = new ArrayList<>();
+    	for(Computer c : list) {
+    		listDto.add(new ComputerDTO(c));
+    	}
+    	return listDto;
     }
 }

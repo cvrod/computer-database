@@ -96,7 +96,7 @@ public class ComputerDTO {
     public void setNameCompany(String nameCompany) {
         this.nameCompany = nameCompany;
     }
-
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -111,6 +111,28 @@ public class ComputerDTO {
         result = prime * result
                 + ((nameCompany == null) ? 0 : nameCompany.hashCode());
         return result;
+    }
+    
+    /**
+     * return a ComputerDTO under str form.
+     *
+     * @return ComputerDTO str
+     */
+    public String toString() {
+        StringBuffer s = new StringBuffer(name);
+        if (!getIntroduced().equals("")) {
+            s.append(", introduced in ");
+            s.append(this.introduced);
+        }
+        if (!getDiscontinued().equals("")) {
+            s.append(", discontinued in ");
+            s.append(this.discontinued);
+        }
+        if (!getNameCompany().equals("")) {
+            s.append(", provided by ");
+            s.append(this.getNameCompany());
+        }
+        return s.toString();
     }
 
     @Override
