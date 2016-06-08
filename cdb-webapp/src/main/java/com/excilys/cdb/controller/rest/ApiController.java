@@ -56,12 +56,13 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/computer/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Computer> getComputer(@PathVariable("id") int id){
+	public ResponseEntity<ComputerDTO> getComputer(@PathVariable("id") int id){
 		Computer res = computerService.get(id);
 		if (res == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
-			return new ResponseEntity<>(res, HttpStatus.OK);
+			ComputerDTO resDTO = new ComputerDTO(res);
+			return new ResponseEntity<>(resDTO, HttpStatus.OK);
 		}
 	}
 	

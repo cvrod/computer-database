@@ -9,8 +9,10 @@ import java.util.Scanner;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.springframework.context.ApplicationContext;
@@ -158,9 +160,11 @@ public class CLI {
 				rootTarget = clientJackson.target(
 						"http://localhost:8080/cdb-webapp/rest/computer/" + id);
 				response = rootTarget.request().get();
-				//FIXME LocalDate
-				tmpComputer = response.readEntity(Computer.class);
-				if (tmpComputer != null) {
+				
+				ComputerDTO tmpDTO = response.readEntity(ComputerDTO.class);
+				
+				if (tmpDTO != null) {
+					tmpComputer = new Computer(tmpDTO);
 					System.out.println(tmpComputer.toString());
 				}
 				break;
@@ -168,21 +172,15 @@ public class CLI {
 				System.out.println("\n--> Delete Computer : ");
 				System.out.println("\tid ?");
 				id = getValidNumber();
-				updateRes = INSTANCE.computerService.delete(id);
-				if (updateRes == 1) {
-					System.out.println("Delete Sucess !");
-				} else {
-					System.out.println("Error occur during delete !");
-				}
+				rootTarget = clientJackson.target(
+						"http://localhost:8080/cdb-webapp/rest/computer/delete/" + id);
+				response = rootTarget.request().delete();
 				break;
 			case 5: // Create a computer
 				tmpComputer = getComputerFromCLI();
-				tmpComputer = INSTANCE.computerService.add(tmpComputer);
-				if (tmpComputer != null) {
-					System.out.println("Insertion Success !");
-				} else {
-					System.out.println("Error occur during insertion !");
-				}
+				rootTarget = clientJackson.target(
+						"http://localhost:8080/cdb-webapp/rest/computer/");
+				rootTarget.request().post(Entity.entity(tmpComputer, MediaType.APPLICATION_JSON));
 				break;
 			case 6: // Update a computer
 				System.out.println("\n--> Update Computer");

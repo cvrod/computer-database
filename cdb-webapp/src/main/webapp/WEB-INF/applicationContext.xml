@@ -97,7 +97,7 @@
 	<!-- Security -->
 	<bean id="springSecurityFilterChain" class="org.springframework.web.filter.DelegatingFilterProxy"/>
     <bean id="userDetailsService" class="com.excilys.cdb.service.UserServiceImpl"/>
-
+	<security:http pattern="/rest/**" security="none" />
     <security:http auto-config="true" >
         <security:http-basic />
         <security:intercept-url pattern="/computer" access="hasRole('ROLE_USER')" />
