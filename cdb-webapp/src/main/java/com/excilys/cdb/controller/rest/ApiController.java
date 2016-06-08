@@ -56,7 +56,7 @@ public class ApiController {
 	}
 
 	@RequestMapping(value = "/computer/{id}", method = RequestMethod.GET)
-	public ResponseEntity<ComputerDTO> getComputer(@PathVariable("id") int id){
+	public ResponseEntity<ComputerDTO> getComputer(@PathVariable("id") int id) {
 		Computer res = computerService.get(id);
 		if (res == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,13 +67,17 @@ public class ApiController {
 	}
 	
 	@RequestMapping(value = "/computer/delete/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Computer> deleteComputer(@PathVariable("id") int id){
-		computerService.delete(id);
+	public ResponseEntity<Computer> deleteComputer(@PathVariable("id") int id) {
+		int res = computerService.delete(id);
+		if(res == 0) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
 	}
 	
 	@RequestMapping(value = { "/computer/", "/computer" }, method = RequestMethod.POST)
-	public ResponseEntity<Computer> addComputer(@RequestBody Computer c){
+	public ResponseEntity<Computer> addComputer(@RequestBody Computer c) {
 		try {
 			ComputerValidator.validate(c);
 		} catch (ValidatorException e) {

@@ -18,6 +18,7 @@ import javax.ws.rs.core.Response;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.http.HttpStatus;
 
 import com.excilys.cdb.dao.UnknowTypeException;
 import com.excilys.cdb.dto.model.ComputerDTO;
@@ -132,50 +133,69 @@ public class CLI {
 				rootTarget = clientJackson.target(
 						"http://localhost:8080/cdb-webapp/rest/computer");
 				response = rootTarget.request().get();
-				List<ComputerDTO> computerDTOList = response
-						.readEntity(new GenericType<List<ComputerDTO>>() {
-						});
-				printComputer(computerDTOList);
+				if(response.getStatus() == HttpStatus.OK.value()) {
+					List<ComputerDTO> computerDTOList = response
+							.readEntity(new GenericType<List<ComputerDTO>>() {
+							});
+					printComputer(computerDTOList);
+				} else {
+					System.out.println("Request Problem");
+				}
 				break;
 			case 2: // List all Companies
 				System.out.println("\n--> Companies List : \n");
 				rootTarget = clientJackson.target(
 						"http://localhost:8080/cdb-webapp/rest/company");
 				response = rootTarget.request().get();
-				List<Company> companyList = response
-						.readEntity(new GenericType<List<Company>>() {
-						});
-				printCompany((ArrayList<Company>) companyList);
+				if(response.getStatus() == HttpStatus.OK.value()) {
+					List<Company> companyList = response
+							.readEntity(new GenericType<List<Company>>() {
+							});
+					printCompany((ArrayList<Company>) companyList);
+				} else {
+					System.out.println("Request Problem");
+				}
+					
 				break;
 			case 3: // Getting computer detail
 				System.out.println("\n--> Getting computer detail :");
 				System.out.println("\tid ?");
 				int id = getValidNumber();
-				
+
 				rootTarget = clientJackson.target(
 						"http://localhost:8080/cdb-webapp/rest/computer/" + id);
 				response = rootTarget.request().get();
-				
-				ComputerDTO tmpDTO = response.readEntity(ComputerDTO.class);
-				
-				if (tmpDTO != null) {
-					tmpComputer = new Computer(tmpDTO);
-					System.out.println(tmpComputer.toString());
+
+				if (response.getStatus() == HttpStatus.NOT_FOUND.value()) {
+					System.out.println("Computer not found !!");
+				} else {
+					ComputerDTO tmpDTO = response.readEntity(ComputerDTO.class);
+					if (tmpDTO != null) {
+						tmpComputer = new Computer(tmpDTO);
+						System.out.println(tmpComputer.toString());
+					}
 				}
 				break;
 			case 4: // Delete a computer (by id)
 				System.out.println("\n--> Delete Computer : ");
 				System.out.println("\tid ?");
 				id = getValidNumber();
-				rootTarget = clientJackson.target(
-						"http://localhost:8080/cdb-webapp/rest/computer/delete/" + id);
+				rootTarget = clientJackson
+						.target("http://localhost:8080/cdb-webapp/rest/computer/delete/"
+								+ id);
 				response = rootTarget.request().delete();
+				if(response.getStatus() == HttpStatus.NOT_FOUND.value()) {
+					System.out.println("Computer not found !");
+				} else {
+					System.out.println("deletion success !");
+				}
 				break;
 			case 5: // Create a computer
 				tmpComputer = getComputerFromCLI();
 				rootTarget = clientJackson.target(
 						"http://localhost:8080/cdb-webapp/rest/computer/");
-				rootTarget.request().post(Entity.entity(tmpComputer, MediaType.APPLICATION_JSON));
+				response = rootTarget.request().post(
+						Entity.entity(tmpComputer, MediaType.APPLICATION_JSON));
 				break;
 			case 6: // Update a computer
 				System.out.println("\n--> Update Computer");
@@ -184,7 +204,8 @@ public class CLI {
 				tmpComputer = getComputerFromCLI();
 				rootTarget = clientJackson.target(
 						"http://localhost:8080/cdb-webapp/rest/computer/" + id);
-				rootTarget.request().put(Entity.entity(tmpComputer, MediaType.APPLICATION_JSON));
+				rootTarget.request().put(
+						Entity.entity(tmpComputer, MediaType.APPLICATION_JSON));
 				break;
 			case 7: // List All Computer By Page
 				System.out.println("All Computer by page");
@@ -340,7 +361,8 @@ public class CLI {
 			System.out.println("Nothing to show !");
 		}
 		for (ComputerDTO c : computerList) {
-			//System.out.println("ID : " + c.getId() + ", Name : " + c.getName());
+			// System.out.println("ID : " + c.getId() + ", Name : " +
+			// c.getName());
 			System.out.println(c.toString());
 		}
 	}
