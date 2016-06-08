@@ -133,7 +133,7 @@ public class CLI {
 				rootTarget = clientJackson.target(
 						"http://localhost:8080/cdb-webapp/rest/computer");
 				response = rootTarget.request().get();
-				if(response.getStatus() == HttpStatus.OK.value()) {
+				if (response.getStatus() == HttpStatus.OK.value()) {
 					List<ComputerDTO> computerDTOList = response
 							.readEntity(new GenericType<List<ComputerDTO>>() {
 							});
@@ -147,7 +147,7 @@ public class CLI {
 				rootTarget = clientJackson.target(
 						"http://localhost:8080/cdb-webapp/rest/company");
 				response = rootTarget.request().get();
-				if(response.getStatus() == HttpStatus.OK.value()) {
+				if (response.getStatus() == HttpStatus.OK.value()) {
 					List<Company> companyList = response
 							.readEntity(new GenericType<List<Company>>() {
 							});
@@ -155,7 +155,7 @@ public class CLI {
 				} else {
 					System.out.println("Request Problem");
 				}
-					
+
 				break;
 			case 3: // Getting computer detail
 				System.out.println("\n--> Getting computer detail :");
@@ -184,7 +184,7 @@ public class CLI {
 						.target("http://localhost:8080/cdb-webapp/rest/computer/delete/"
 								+ id);
 				response = rootTarget.request().delete();
-				if(response.getStatus() == HttpStatus.NOT_FOUND.value()) {
+				if (response.getStatus() == HttpStatus.NOT_FOUND.value()) {
 					System.out.println("Computer not found !");
 				} else {
 					System.out.println("deletion success !");

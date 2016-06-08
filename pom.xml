@@ -11,7 +11,7 @@
 		<checkstyle.config.location>checkstyle.xml</checkstyle.config.location>
 
 		<!-- Version -->
-		<computer-database.version>0.7.0-RELEASE</computer-database.version>
+		<computer-database.version>0.8.0-SNAPSHOT</computer-database.version>
 		
 		<!-- Tests -->
 		<selenium.version>2.53.0</selenium.version>
