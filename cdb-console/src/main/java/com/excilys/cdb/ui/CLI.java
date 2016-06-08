@@ -187,12 +187,9 @@ public class CLI {
 				System.out.println("\tid ?");
 				id = getValidNumber();
 				tmpComputer = getComputerFromCLI();
-				updateRes = INSTANCE.computerService.update(id, tmpComputer);
-				if (updateRes == 1) {
-					System.out.println("Update Success !");
-				} else {
-					System.out.println("Problem during update !");
-				}
+				rootTarget = clientJackson.target(
+						"http://localhost:8080/cdb-webapp/rest/computer/" + id);
+				rootTarget.request().put(Entity.entity(tmpComputer, MediaType.APPLICATION_JSON));
 				break;
 			case 7: // List All Computer By Page
 				System.out.println("All Computer by page");
